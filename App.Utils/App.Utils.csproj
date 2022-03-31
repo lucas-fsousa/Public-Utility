@@ -2,6 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <PlatformTarget>x86</PlatformTarget>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Authors>lucas-fsousa</Authors>
+    <Description>[EN]: Public utility package containing several items that can assist in the development of new Apps
+[PT-BR]: Pacote de utilidade publica contendo diversos itens que podem auxiliar no desenvolvimento de novos Apps</Description>
   </PropertyGroup>
 
   <ItemGroup>

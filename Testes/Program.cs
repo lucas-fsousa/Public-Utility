@@ -22,12 +22,13 @@ namespace Testes {
       //List<FileInfo> files = All.XSystem.GrabFilesFromFolder(@"C:\MyDocs");
       //bool is64Bits = All.XSystem.IsOS64Bits();
       //All.XSystem.Exit();,
-      //int exitCode = All.XSystem.RunCmdScript(new string[] { "echo TESTE CARAI >> teste.txt", "echo nova linha >> teste.txt" });
+      string[] comands = { "", "" };
+      int exitCode = All.XSystem.RunCmdScript(new string[] { "echo TESTE CARAI >> teste.txt", "echo nova linha >> teste.txt" });
       #endregion
 
       #region TESTE CLASS XSCREEN
       //IntPtr handle = All.XSystem.GetAllProcessByName("opera", true).Where(x => x.MainWindowTitle == "Picture in Picture").First().MainWindowHandle;
-      //All.XScreen.ClickAt(All.XScreen.DesktopWidth, All.XScreen.DesktopHeight);
+      //All.XScreen.ClickAt(All.XScreen.DesktopWidth / 2, All.XScreen.DesktopHeight / 2);
       //int codigoRetorno = All.XScreen.ShowMessageBox("INFO", "UMA CAIXA DE TESTE NOVA", 3);
       //Point point = All.XScreen.GetXyByHandle(handle);
       //Rectangle rectangle = All.XScreen.GetDemensionByHandle(handle);
@@ -47,17 +48,19 @@ namespace Testes {
       //SqlCommand sqlCommand= new SqlCommand();
       //string errorMessage;
 
-      //sqlCommand.CommandText = "insert into _TB values (@valor)"; // VOID NO RESULT
-      //sqlCommand.Parameters.AddWithValue("@valor", "Val"); // PARAMS
+      //sqlCommand.CommandText = "insert into yourTable values (@stringExample, @integerExample, @floatExample)";
+      //sqlCommand.Parameters.AddWithValue("@stringExample", "Hello"); // PARAM
+      //sqlCommand.Parameters.AddWithValue("@integerExample", 1); // PARAM
+      //sqlCommand.Parameters.AddWithValue("@floatExample", 5.5); // PARAM
 
       //sqlCommand.CommandText = "select * from _TB"; // RESULT DATA TABLE SELECT
 
       //All.XSql xSql = new All.XSql(@"your connection string here", sqlCommand);
-      //DataTable dataTable = xSql.ReturnData(out errorMessage);
+      //xSql.GoExec(out errorMessage);
       #endregion
 
 
-      ExecCompile();
+      //ExecCompile();
     }
 
     public static void ExecCompile() {
