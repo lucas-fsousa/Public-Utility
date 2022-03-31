@@ -60,6 +60,8 @@ namespace Testes {
       #endregion
 
 
+      All.XScreen.ShowMessageBox("INFORMATION", "THIS IS A MESSAGE BOX");
+
       //ExecCompile();
     }
 

@@ -50,13 +50,11 @@ xSql.GoExec(out errorMessage);
 
 // ================= examples of use of the XScreen class =================
 
-// gets the dimensions of the main screen
-int desktopWidth = All.XScreen.DesktopWidth;
-int desktopHeight = All.XScreen.DesktopHeight;
-
 // Simulates a mouse click in the center of the screen
 All.XScreen.ClickAt(desktopWidth / 2, desktopHeight / 2);
 
+// shows a text box in graphic format
+All.XScreen.ShowMessageBox("INFORMATION", "THIS IS A MESSAGE BOX");
 ```
 
 ## Contributing

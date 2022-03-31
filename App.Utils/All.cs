@@ -406,7 +406,7 @@ namespace App.Utils {
       /// [EN]: Returns an integer value representing the selected button<br></br>
       /// [PT-BR]: Retorna um inteiro representando o botão selecionado na janela
       /// </returns>
-      public static int ShowMessageBox(string caption, string text, uint type) => MessageBox(new IntPtr(0), text, caption, type);
+      public static int ShowMessageBox(string caption, string text, uint type=1) => MessageBox(new IntPtr(0), text, caption, type);
 
       /// <summary>
       /// [EN]: Capture the start of a window through the Handle and convert it to X,Y coordinates<br></br>
