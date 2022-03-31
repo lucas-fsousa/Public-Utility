@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Net.Mail;
+using App.AssistantCompile;
 
 namespace Testes {
   internal class Program {
@@ -56,6 +57,11 @@ namespace Testes {
       #endregion
 
 
+      ExecCompile();
+    }
+
+    public static void ExecCompile() {
+      Build.CompileCpp("shared_lib.cpp", "SHARED_LIB", @"C:\Users\Lucas\source\repos\Testes\App.AssistantCompile\CppDlls\");
     }
 
 

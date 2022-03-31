@@ -1,5 +1,5 @@
-#ifndef LIB_TESTE_H
-#define LIB_TESTE_H
+#ifndef SHARED_LIB_H
+#define SHARED_LIB_H
 
 #include <iostream>
 #include <string>
@@ -12,19 +12,19 @@
 using namespace std;
 
 #ifdef __cplusplus
-extern "C" {
+    extern "C" {
 #endif
 
-#ifdef MY_DLLIMPORT
-#define LIB_TESTE_H __declspec(dllexport)
+#ifdef BUILD_MY_DLL
+    #define SHARED_LIB __declspec(dllexport)
 #else
-#define LIB_TESTE_H __declspec(dllimport)
+    #define SHARED_LIB __declspec(dllimport)
 #endif
 
-  void LIB_TESTE_H GetDesktopResolution(char* newStr);
+void SHARED_LIB GetDesktopResolution(char *newStr);
 
 #ifdef __cplusplus
-}
+    }
 
 #endif
 #endif

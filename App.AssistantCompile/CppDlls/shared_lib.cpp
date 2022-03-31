@@ -1,4 +1,4 @@
-#include "lib_teste.h"
+#include "shared_lib.h"
 
 #define STRING(num)
 
