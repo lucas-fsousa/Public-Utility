@@ -5,9 +5,14 @@ VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testes", "Testes\Testes.csproj", "{62B6A78F-F7FB-4C61-9209-7A196E109BE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.AssistantCompile", "App.AssistantCompile\App.AssistantCompile.csproj", "{95BEF638-4451-4058-A9CB-DFBB6D7400AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.AssistantCompile", "App.AssistantCompile\App.AssistantCompile.csproj", "{95BEF638-4451-4058-A9CB-DFBB6D7400AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Utils", "App.Utils\App.Utils.csproj", "{AF43394C-77B3-4A86-B4BD-27C97B7016EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Utils", "App.Utils\App.Utils.csproj", "{AF43394C-77B3-4A86-B4BD-27C97B7016EA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E35D5CF8-777C-4BEE-8A05-746B2C83AD39}"
+	ProjectSection(SolutionItems) = preProject
+		README.MD = README.MD
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -22,8 +22,8 @@ namespace Testes {
       //List<FileInfo> files = All.XSystem.GrabFilesFromFolder(@"C:\MyDocs");
       //bool is64Bits = All.XSystem.IsOS64Bits();
       //All.XSystem.Exit();,
-      string[] comands = { "", "" };
-      int exitCode = All.XSystem.RunCmdScript(new string[] { "echo TESTE CARAI >> teste.txt", "echo nova linha >> teste.txt" });
+      //string[] comands = { "", "" };
+      //int exitCode = All.XSystem.RunCmdScript(new string[] { "echo TESTE CARAI >> teste.txt", "echo nova linha >> teste.txt" });
       #endregion
 
       #region TESTE CLASS XSCREEN
