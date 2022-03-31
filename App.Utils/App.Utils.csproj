@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Authors>lucas-fsousa</Authors>
     <Description>
@@ -20,7 +20,8 @@
     <PackageProjectUrl>https://github.com/lucas-fsousa/Public-Utility</PackageProjectUrl>
     <PackageId>LucasFsousa.PublicUtility</PackageId>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <Version>1.0.1</Version>
+    <Version>1.0.0</Version>
+    <Copyright>Lucas F Sousa - All rights reserved</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

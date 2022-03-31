@@ -1,13 +1,21 @@
-﻿# App Utils
+﻿# Public Utility Package
 
 App Utils is a library that contains utilities for asp.net / .net / c# application development
 
 ## Installation
 
-Use the package manager [nuget](https://www.nuget.org/packages) to install App Utils.
+Use the package manager [NuGet](https://www.nuget.org/packages) to install this package or:
 
 ```bash
-install-package App.Utils
+using PM >
+  Install-Package LucasFsousa.PublicUtility -Version 1.0.0
+
+using .NET CLI >
+  dotnet add package LucasFsousa.PublicUtility --version 1.0.0
+
+using Package Reference >
+  <PackageReference Include="LucasFsousa.PublicUtility" Version="1.0.0" />
+
 ```
 
 ## Usage
