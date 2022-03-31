@@ -44,13 +44,6 @@ namespace App.Utils {
     private static extern bool GetWindowRect(IntPtr hwnd, ref Rectangle rectangle);
     #endregion
 
-    #region PERSONAL
-
-    [DllImport(@"C:\Users\Public\CppSource\shared_lib.dll")]
-    private static extern void GetDesktopResolution(StringBuilder sb);
-
-    #endregion
-
     #endregion
 
     #region CLASS XEMAIL
@@ -302,8 +295,28 @@ namespace App.Utils {
       /// </summary>
       public static void Exit() => Environment.Exit(0);
 
+      /// <summary>
+      /// [EN]: Search and capture all files contained in the destination folder <br></br>
+      /// [PT-BR]: Faz uma busca  e captura todos os arquivos contidos na pasta de destino
+      /// </summary>
+      /// <param name="dirPath">
+      /// [EN]: folder path <br></br>
+      /// [PT-BR]: caminho da pasta
+      /// </param>
+      /// <returns>
+      /// [EN]: returns a list of files sorted by creation date <br></br>
+      /// [PT-BR]: retorna uma lista de arquivos ordenadas por data de criação
+      /// </returns>
       public static List<FileInfo> GrabFilesFromFolder(string dirPath) => new DirectoryInfo(dirPath).GetFiles().OrderBy(x => x.CreationTime).ToList();
 
+      /// <summary>
+      /// [EN]: Checks if the operating system is 64bits type <br></br>
+      /// [PT-BR]: Verifica se o sistema operacional é do tipo 64bits
+      /// </summary>
+      /// <returns>
+      /// [EN]: returns a boolean <br></br>
+      /// [PT-BR]: retorna um booleano
+      /// </returns>
       public static bool IsOS64Bits() => Environment.Is64BitOperatingSystem;
 
       /// <summary>
@@ -358,7 +371,6 @@ namespace App.Utils {
         return exitCode;
       }
 
-
     }
 
     #endregion
@@ -370,40 +382,8 @@ namespace App.Utils {
     /// [PT-BR]: Classe que auxiliar para trabalhos envolvendo telas
     /// </summary>
     public class XScreen {
-      public static int DesktopWidth => ReturnWidth();
-      public static int DesktopHeight => ReturnHeight();
 
       #region PRIVATE METHODS
-
-      /// <summary>
-      /// [EN]: fetch the screen width of the current display<br></br>
-      /// [PT-BR]: Busca a largura da tela do visor atual
-      /// </summary>
-      /// <returns>
-      /// [EN]: Returns an integer referring to the width of the screen<br></br>
-      /// [PT-BR]: Retorna um inteiro referente a largura da tela
-      /// </returns>
-      private static int ReturnWidth() {
-        StringBuilder sb = new StringBuilder();
-        GetDesktopResolution(sb);
-        int x = Convert.ToInt32(sb.ToString().Split(";")[0]);
-        return x;
-      }
-
-      /// <summary>
-      /// [EN]: fetch the screen height of the current display<br></br>
-      /// [PT-BR]: Busca a altura da tela do monitor atual
-      /// </summary>
-      /// <returns>
-      /// [EN]: Returns an integer referring to the height of the screen<br></br>
-      /// [PT-BR]: Retorna um inteiro referente a altura da tela
-      /// </returns>
-      private static int ReturnHeight() {
-        StringBuilder sb = new StringBuilder();
-        GetDesktopResolution(sb);
-        int y = Convert.ToInt32(sb.ToString().Split(";")[1]);
-        return y;
-      }
 
       #endregion
 

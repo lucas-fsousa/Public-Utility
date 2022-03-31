@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>AppUtils.ByLucasFsousa</id>
+    <version>1.0.0</version>
+    <title>AppUtils</title>
+	<repository type="git" url="https://github.com/lucas-fsousa/Public-Utility.git" branch="master"/>
+    <authors>lucas-fsousa</authors>
+	<language>en</language>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <!-- <icon>icon.png</icon> -->
+    <projectUrl>https://github.com/lucas-fsousa/Public-Utility</projectUrl>
+    <description>
+		[EN]: Public utility package containing several items that can assist in the development of new Apps 
+		[PT-BR]: Pacote de utilidade publica contendo diversos itens que podem auxiliar no desenvolvimento de novos Apps</description>
+    <releaseNotes>Note</releaseNotes>
+    <copyright>$copyright$</copyright>
+    <tags>c#;aspnet;netcore;.net5;.net;csharp;cs</tags>
+  </metadata>
+</package>
