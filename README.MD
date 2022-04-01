@@ -27,13 +27,13 @@ using App.Utils // call Namespace
 
 //creates and runs a script.bat 
 string[] commands = new { "echo Hello", "echo World" };
-int exitCode = All.XSystem.RunCmdScript(commands);
+int exitCode = XSystem.RunCmdScript(commands);
 
 // returns a list of files from the indicated path
-List<FileInfo> files = All.XSystem.GrabFilesFromFolder(@"C:\MyDocs");
+List<FileInfo> files = XSystem.GrabFilesFromFolder(@"C:\MyDocs");
 
 // gets all processes that have "chrome" signature or similar
-List<Process> processes = All.XSystem.GetAllProcessByName("chrome", true);
+List<Process> processes = XSystem.GetAllProcessByName("chrome", true);
 
 // ================= examples of use of the XSql class =================
 
@@ -42,7 +42,7 @@ SqlCommand sqlCommand = new SqlCommand();
 string errorMessage;
 
 sqlCommand.CommandText = "select * from yourTable";
-All.XSql xSql = new All.XSql(@"your connection string here", sqlCommand);
+XSql xSql = new XSql(@"your connection string here", sqlCommand);
 DataTable table = xSql.ReturnData(out errorMessage);
 
 // run a void sql statement using SqlServer
@@ -53,16 +53,30 @@ sqlCommand.CommandText = "insert into yourTable values (@stringExample, @integer
 sqlCommand.Parameters.AddWithValue("@stringExample", "Hello"); // PARAM
 sqlCommand.Parameters.AddWithValue("@integerExample", 1); // PARAM
 sqlCommand.Parameters.AddWithValue("@floatExample", 5.5); // PARAM
-All.XSql xSql = new All.XSql(@"your connection string here", sqlCommand);
+XSql xSql = new XSql(@"your connection string here", sqlCommand);
 xSql.GoExec(out errorMessage);
 
 // ================= examples of use of the XScreen class =================
 
 // Simulates a mouse click in the center of the screen
-All.XScreen.ClickAt(desktopWidth / 2, desktopHeight / 2);
+XScreen.ClickAt(desktopWidth / 2, desktopHeight / 2);
 
 // shows a text box in graphic format
-All.XScreen.ShowMessageBox("INFORMATION", "THIS IS A MESSAGE BOX");
+XScreen.ShowMessageBox("INFORMATION", "THIS IS A MESSAGE BOX");
+
+// ================= examples of use of the XSecurity class =================
+
+// get a hash
+string oneHash = XSecurity.GetHash();
+
+// Get an MD5 encryption standard
+string strHashMd5 = XSecurity.GetHashMD5("KeUabaN!a=a%@15LNBaiQ");
+
+// Encrypting a string with a numeric key 
+string encrypt = XSecurity.Encrypt("string for encrypto", "12345678");
+
+// Decrypting a string encrypted by a numeric key
+string decrypt = XSecurity.Decrypt(encrypt, "12345678");
 ```
 
 ## Contributing

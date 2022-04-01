@@ -1,15 +1,14 @@
-﻿using System;
-using System.IO;
-using App.Utils;
-using System.Linq;
-using System.Configuration;
-using System.Data.SqlClient;
-using System.Data;
-using System.Diagnostics;
+﻿using App.AssistantCompile;
+using App.Utils.CustomExceptions;
+using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Net.Mail;
-using App.AssistantCompile;
+using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using App.Utils;
+using Situation = App.Utils.CustomExceptions.Base.BaseException.Situations;
+using System.Data.SqlClient;
 
 namespace Testes {
   internal class Program {
@@ -48,22 +47,28 @@ namespace Testes {
       //SqlCommand sqlCommand= new SqlCommand();
       //string errorMessage;
 
-      //sqlCommand.CommandText = "insert into yourTable values (@stringExample, @integerExample, @floatExample)";
-      //sqlCommand.Parameters.AddWithValue("@stringExample", "Hello"); // PARAM
-      //sqlCommand.Parameters.AddWithValue("@integerExample", 1); // PARAM
-      //sqlCommand.Parameters.AddWithValue("@floatExample", 5.5); // PARAM
 
       //sqlCommand.CommandText = "select * from _TB"; // RESULT DATA TABLE SELECT
 
-      //All.XSql xSql = new All.XSql(@"your connection string here", sqlCommand);
-      //xSql.GoExec(out errorMessage);
+      //XSql xSql = new XSql(@"Data Source=LUCAS\SQLEXPRESS;Initial Catalog=TEMPDT;Integrated Security=True", sqlCommand);
+      //var tb = xSql.ReturnData(out errorMessage);
       #endregion
 
+      // get a hash
+      string oneHash = XSecurity.GetHash();
 
-      All.XScreen.ShowMessageBox("INFORMATION", "THIS IS A MESSAGE BOX");
+      // Get an MD5 encryption standard
+      string strHashMd5 = XSecurity.GetHashMD5("KeUabaN!a=a%@15LNBaiQ");
 
-      //ExecCompile();
+      // Encrypting a string with a numeric key 
+      string encrypt = XSecurity.Encrypt("string for encrypto", "12345678");
+
+      // Decrypting a string encrypted by a numeric key
+      string decrypt = XSecurity.Decrypt(encrypt, "12345678");
+
     }
+
+
 
     public static void ExecCompile() {
       Build.CompileCpp("shared_lib.cpp", "SHARED_LIB", @"C:\Users\Lucas\source\repos\Testes\App.AssistantCompile\CppDlls\");

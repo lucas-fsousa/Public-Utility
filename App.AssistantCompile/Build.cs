@@ -57,7 +57,7 @@ namespace App.AssistantCompile {
       stringBuilder.Add($"g++ -c -D {__declspec} {cppFileName}.cpp");
       stringBuilder.Add($"g++ -shared -o {cppFileName}.dll {cppFileName}.o -Wl,--out-implib,lib{cppFileName}.a");
 
-      All.XSystem.RunCmdScript(stringBuilder, filePath);
+      XSystem.RunCmdScript(stringBuilder, filePath);
 
     }
   }
