@@ -58,8 +58,8 @@ xSql.GoExec(out errorMessage);
 
 // ================= examples of use of the XScreen class =================
 
-// Simulates a mouse click in the center of the screen
-XScreen.ClickAt(desktopWidth / 2, desktopHeight / 2);
+// Simulates a mouse click in the screen point x, y 
+XScreen.ClickAt(600, 500);
 
 // shows a text box in graphic format
 XScreen.ShowMessageBox("INFORMATION", "THIS IS A MESSAGE BOX");
