@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using static App.Utils.CustomExceptions.Base.BaseException;
 
@@ -125,8 +126,8 @@ namespace App.Utils {
     /// [PT-BR]: Retorna um valor inteiro que representa o status de saida da execução no console
     /// </returns>
     /// <exception cref="OperationCanceledException"></exception>
-    public static int RunCmdScript(IEnumerable<string> commands, string privatePath = @"C:\", bool shellExecute = false) {
-      int exitCode = 1;
+    public static int RunCmdScript(IEnumerable<string> commands, string privatePath = @"", bool shellExecute = false) {
+      int exitCode = 0;
 
       if(commands.Count() <= 0) {
         throw new RequiredParamsException(Situations.LessThanZero, nameof(commands));

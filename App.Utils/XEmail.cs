@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using static App.Utils.CustomExceptions.Base.BaseException;
 
 namespace App.Utils {
-  #region CLASS XEMAIL
 
   /// <summary>
   /// [EN]: Class that assists in notifications through emails<br></br>
@@ -179,7 +178,5 @@ namespace App.Utils {
     }
 
   }
-
-  #endregion
 
 }

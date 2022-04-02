@@ -4,7 +4,7 @@ App Utils is a library that contains utilities for asp.net / .net / c# applicati
 
 ## Installation
 
-Use the package manager [NuGet](https://www.nuget.org/packages) to install this package or:
+Use the package manager [NuGet](https://www.nuget.org/packages/LucasFsousa.PublicUtility) to install this package or:
 
 ```bash
 using PM >
@@ -77,6 +77,24 @@ string encrypt = XSecurity.Encrypt("string for encrypto", "12345678");
 
 // Decrypting a string encrypted by a numeric key
 string decrypt = XSecurity.Decrypt(encrypt, "12345678");
+
+// ================= examples of use of the XExtension class =================
+
+float f = 15.10f;
+bool fb = f.MaxMin(20.41f, 150.50f); // returns a false value
+
+int i = 1000;
+bool ib = i.MaxMin(100, 5000); // return a true value
+
+string str = "a b c d e f";
+string newStr = str.RemoveWhiteSpaces(); // will return the following string: "abcdef"
+
+string anyInvalidNumber = "a 1234,5";
+bool isValid = anyInvalidNumber.IsNumber(); // return false value
+
+string anyValidNumber = "10000.50"; // supports floating-point or non-floating-point checking
+bool isValid = anyValidNumber.IsNumber(); // return true value
+
 ```
 
 ## Contributing

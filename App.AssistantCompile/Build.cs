@@ -48,7 +48,7 @@ namespace App.AssistantCompile {
       if(cppFileName.Contains(Path.PathSeparator))
         throw new FormatException("The file name contains an invalid character.");
 
-      if(cppFileName.Substring(cppFileName.Length - 4).Contains(".cpp"))
+      if(cppFileName[^4..].Contains(".cpp"))
         cppFileName = cppFileName[0..^4];
 
       List<string> stringBuilder = new List<string>();
