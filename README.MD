@@ -93,6 +93,23 @@ bool isValid = anyInvalidNumber.IsNumber(); // return false value
 string anyValidNumber = "10000.50"; // supports floating-point or non-floating-point checking
 bool isValid = anyValidNumber.IsNumber(); // return true value
 
+// ================= examples of use of the XRequest class =================
+
+// Makes a Get on the given URL and returns a content in json format / Can be used asynchronously
+string url = string.Format("http://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1"); // URL of a free API for testing
+Root response = XRequest.HttpGet<Root>(url).GetAwaiter().GetResult();
+
+// Make a Post request by sending an object to the server via URL
+string url = string.Format("http://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1");
+
+Root root = new Root();
+root.success = true;
+root.deck_id = "3p40paa87x90";
+root.remaining = 52;
+root.shuffled = true;
+
+HttpResponseMessage response = XRequest.HttpPost(url, root).GetAwaiter().GetResult();
+
 ```
 
 ## Contributing

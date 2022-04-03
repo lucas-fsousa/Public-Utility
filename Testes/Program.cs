@@ -13,6 +13,9 @@ using System.Diagnostics;
 using System.Threading;
 using System.Net.Mail;
 using System.Drawing;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
 
 namespace Testes {
   internal class Program {
@@ -106,9 +109,26 @@ namespace Testes {
 
       #endregion
 
-      
+      #region TESTE CLASS XREQUEST
 
-      
+      //// Makes a Get on the given URL and returns a content in json format / Can be used asynchronously
+      //string url = string.Format("http://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1"); // URL of a free API for testing
+      //Root response = XRequest.HttpGet<Root>(url).GetAwaiter().GetResult();
+
+      //// Make a Post request by sending an object to the server via URL
+      //string url = string.Format("http://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1");
+
+      //Root root = new Root();
+      //root.success = true;
+      //root.deck_id = "3p40paa87x90";
+      //root.remaining = 52;
+      //root.shuffled = true;
+
+      //HttpResponseMessage response = XRequest.HttpPost(url, root).GetAwaiter().GetResult();
+
+      #endregion
+
+
     }
 
     public static void ExecCompile() {
@@ -118,9 +138,6 @@ namespace Testes {
 
       Build.CompileCpp(appCpp, dclspac, path);
     }
-
-
-
   }
 
 }
