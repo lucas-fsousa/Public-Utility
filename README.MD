@@ -7,14 +7,12 @@ App Utils is a library that contains utilities for asp.net / .net / c# applicati
 Use the package manager [NuGet](https://www.nuget.org/packages/LucasFsousa.PublicUtility) to install this package or:
 
 ```bash
-using PM >
-  Install-Package LucasFsousa.PublicUtility -Version 1.0.0
+EXAMPLE
+PM> Install-Package LucasFsousa.PublicUtility -Version 1.0.1
 
-using .NET CLI >
-  dotnet add package LucasFsousa.PublicUtility --version 1.0.0
+.NET CLI> dotnet add package LucasFsousa.PublicUtility --version 1.0.1
 
-using Package Reference >
-  <PackageReference Include="LucasFsousa.PublicUtility" Version="1.0.0" />
+Package Reference> <PackageReference Include="LucasFsousa.PublicUtility" Version="1.0.1" />
 
 ```
 

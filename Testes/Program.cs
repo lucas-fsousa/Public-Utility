@@ -44,7 +44,7 @@ namespace Testes {
       //XSystem.Exit();
       //string[] comands = { "", "" };
       //int exitCode = XSystem.RunCmdScript(new string[] { $"echo TESTE CARAI {DateTime.Now} >> teste.txt", $"echo nova linha {DateTime.Now} >> teste.txt" });
-      
+
       #endregion
 
       #region TESTE CLASS XSCREEN
@@ -96,12 +96,27 @@ namespace Testes {
       //sbyte b = -20;
       //bool bt = b.MaxMin(-128, 127);
 
+      //int[] ai = new int[] { -10, 410, -5, -11, -12, 20 };
+      //var aineg = ai.GetNegatives();
+      //var aipos = ai.GetPositives();
+
+      //List<int> li = new List<int> { -10, 10, -5, -11, -12, 20 };
+      //var lineg = li.GetNegatives();
+      //var lipos = li.GetPositives();
+
       #endregion
 
+      
+
+      
     }
 
     public static void ExecCompile() {
-      Build.CompileCpp("shared_lib.cpp", "SHARED_LIB", @"C:\Users\Lucas\source\repos\Testes\App.AssistantCompile\CppDlls\");
+      string appCpp = string.Format("shared_lib.cpp");
+      string dclspac = string.Format("SHARED_LIB");
+      string path = string.Format(@"C:\Users\Lucas\source\repos\Testes\App.AssistantCompile\CppDlls\");
+
+      Build.CompileCpp(appCpp, dclspac, path);
     }
 
 

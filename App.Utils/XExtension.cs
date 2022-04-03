@@ -15,6 +15,8 @@ namespace App.Utils {
   /// <exception cref="BadImageFormatException"></exception>
   public static class XExtension {
 
+    #region Others
+
     /// <summary>
     /// [EN]: Remove all whitespace from string <br></br>
     /// [PT-BR]: Remove todos os espaços em branco da string
@@ -69,6 +71,8 @@ namespace App.Utils {
 
       return true;
     }
+
+    #endregion
 
     #region Overload MaxMin
 
@@ -398,6 +402,530 @@ namespace App.Utils {
     }
 
     #endregion
+
+    #region Overload GetNegatives
+
+    /// <summary>
+    /// [EN]: Returns all negative numbers from Array<br></br>
+    /// [PT-BR]: Retorna todos os numeros negativos do Array
+    /// </summary>
+    /// <param name="array">
+    /// [EN]: Array of numbers<br></br>
+    /// [PT-BR]: Array de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new array with only negative numbers<br></br>
+    /// [PT-BR]: Retorna um novo array somente com os numeros negativos
+    /// </returns>
+    public static int[] GetNegatives(this int[] array) {
+      return array.Where(x => x < 0).OrderByDescending(x => x).ToArray();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all nevative numbers from list<br></br>
+    /// [PT-BR]: Retorna todos os numeros nevativos da lista
+    /// </summary>
+    /// <param name="list">
+    /// [EN]: List of numbers<br></br>
+    /// [PT-BR]: Lista de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new list with only nevative numbers<br></br>
+    /// [PT-BR]: Retorna uma nova lista somente com os numeros negativos
+    /// </returns>
+    public static List<int> GetNegatives(this List<int> list) {
+      return list.Where(x => x < 0).OrderByDescending(x => x).ToList();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all negative numbers from Array<br></br>
+    /// [PT-BR]: Retorna todos os numeros negativos do Array
+    /// </summary>
+    /// <param name="array">
+    /// [EN]: Array of numbers<br></br>
+    /// [PT-BR]: Array de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new array with only negative numbers<br></br>
+    /// [PT-BR]: Retorna um novo array somente com os numeros negativos
+    /// </returns>
+    public static decimal[] GetNegatives(this decimal[] array) {
+      return array.Where(x => x < 0).OrderByDescending(x => x).ToArray();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all nevative numbers from list<br></br>
+    /// [PT-BR]: Retorna todos os numeros nevativos da lista
+    /// </summary>
+    /// <param name="list">
+    /// [EN]: List of numbers<br></br>
+    /// [PT-BR]: Lista de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new list with only nevative numbers<br></br>
+    /// [PT-BR]: Retorna uma nova lista somente com os numeros negativos
+    /// </returns>
+    public static List<decimal> GetNegatives(this List<decimal> list) {
+      return list.Where(x => x < 0).OrderByDescending(x => x).ToList();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all negative numbers from Array<br></br>
+    /// [PT-BR]: Retorna todos os numeros negativos do Array
+    /// </summary>
+    /// <param name="array">
+    /// [EN]: Array of numbers<br></br>
+    /// [PT-BR]: Array de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new array with only negative numbers<br></br>
+    /// [PT-BR]: Retorna um novo array somente com os numeros negativos
+    /// </returns>
+    public static float[] GetNegatives(this float[] array) {
+      return array.Where(x => x < 0).OrderByDescending(x => x).ToArray();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all nevative numbers from list<br></br>
+    /// [PT-BR]: Retorna todos os numeros nevativos da lista
+    /// </summary>
+    /// <param name="list">
+    /// [EN]: List of numbers<br></br>
+    /// [PT-BR]: Lista de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new list with only nevative numbers<br></br>
+    /// [PT-BR]: Retorna uma nova lista somente com os numeros negativos
+    /// </returns>
+    public static List<float> GetNegatives(this List<float> list) {
+      return list.Where(x => x < 0).OrderByDescending(x => x).ToList();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all negative numbers from Array<br></br>
+    /// [PT-BR]: Retorna todos os numeros negativos do Array
+    /// </summary>
+    /// <param name="array">
+    /// [EN]: Array of numbers<br></br>
+    /// [PT-BR]: Array de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new array with only negative numbers<br></br>
+    /// [PT-BR]: Retorna um novo array somente com os numeros negativos
+    /// </returns>
+    public static double[] GetNegatives(this double[] array) {
+      return array.Where(x => x < 0).OrderByDescending(x => x).ToArray();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all nevative numbers from list<br></br>
+    /// [PT-BR]: Retorna todos os numeros nevativos da lista
+    /// </summary>
+    /// <param name="list">
+    /// [EN]: List of numbers<br></br>
+    /// [PT-BR]: Lista de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new list with only nevative numbers<br></br>
+    /// [PT-BR]: Retorna uma nova lista somente com os numeros negativos
+    /// </returns>
+    public static List<double> GetNegatives(this List<double> list) {
+      return list.Where(x => x < 0).OrderByDescending(x => x).ToList();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all negative numbers from Array<br></br>
+    /// [PT-BR]: Retorna todos os numeros negativos do Array
+    /// </summary>
+    /// <param name="array">
+    /// [EN]: Array of numbers<br></br>
+    /// [PT-BR]: Array de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new array with only negative numbers<br></br>
+    /// [PT-BR]: Retorna um novo array somente com os numeros negativos
+    /// </returns>
+    public static long[] GetNegatives(this long[] array) {
+      return array.Where(x => x < 0).OrderByDescending(x => x).ToArray();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all nevative numbers from list<br></br>
+    /// [PT-BR]: Retorna todos os numeros nevativos da lista
+    /// </summary>
+    /// <param name="list">
+    /// [EN]: List of numbers<br></br>
+    /// [PT-BR]: Lista de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new list with only nevative numbers<br></br>
+    /// [PT-BR]: Retorna uma nova lista somente com os numeros negativos
+    /// </returns>
+    public static List<long> GetNegatives(this List<long> list) {
+      return list.Where(x => x < 0).OrderByDescending(x => x).ToList();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all negative numbers from Array<br></br>
+    /// [PT-BR]: Retorna todos os numeros negativos do Array
+    /// </summary>
+    /// <param name="array">
+    /// [EN]: Array of numbers<br></br>
+    /// [PT-BR]: Array de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new array with only negative numbers<br></br>
+    /// [PT-BR]: Retorna um novo array somente com os numeros negativos
+    /// </returns>
+    public static nint[] GetNegatives(this nint[] array) {
+      return array.Where(x => x < 0).OrderByDescending(x => x).ToArray();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all nevative numbers from list<br></br>
+    /// [PT-BR]: Retorna todos os numeros nevativos da lista
+    /// </summary>
+    /// <param name="list">
+    /// [EN]: List of numbers<br></br>
+    /// [PT-BR]: Lista de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new list with only nevative numbers<br></br>
+    /// [PT-BR]: Retorna uma nova lista somente com os numeros negativos
+    /// </returns>
+    public static List<nint> GetNegatives(this List<nint> list) {
+      return list.Where(x => x < 0).OrderByDescending(x => x).ToList();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all negative numbers from Array<br></br>
+    /// [PT-BR]: Retorna todos os numeros negativos do Array
+    /// </summary>
+    /// <param name="array">
+    /// [EN]: Array of numbers<br></br>
+    /// [PT-BR]: Array de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new array with only negative numbers<br></br>
+    /// [PT-BR]: Retorna um novo array somente com os numeros negativos
+    /// </returns>
+    public static short[] GetNegatives(this short[] array) {
+      return array.Where(x => x < 0).OrderByDescending(x => x).ToArray();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all nevative numbers from list<br></br>
+    /// [PT-BR]: Retorna todos os numeros nevativos da lista
+    /// </summary>
+    /// <param name="list">
+    /// [EN]: List of numbers<br></br>
+    /// [PT-BR]: Lista de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new list with only nevative numbers<br></br>
+    /// [PT-BR]: Retorna uma nova lista somente com os numeros negativos
+    /// </returns>
+    public static List<short> GetNegatives(this List<short> list) {
+      return list.Where(x => x < 0).OrderByDescending(x => x).ToList();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all negative numbers from Array<br></br>
+    /// [PT-BR]: Retorna todos os numeros negativos do Array
+    /// </summary>
+    /// <param name="array">
+    /// [EN]: Array of numbers<br></br>
+    /// [PT-BR]: Array de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new array with only negative numbers<br></br>
+    /// [PT-BR]: Retorna um novo array somente com os numeros negativos
+    /// </returns>
+    public static sbyte[] GetNegatives(this sbyte[] array) {
+      return array.Where(x => x < 0).OrderByDescending(x => x).ToArray();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all nevative numbers from list<br></br>
+    /// [PT-BR]: Retorna todos os numeros nevativos da lista
+    /// </summary>
+    /// <param name="list">
+    /// [EN]: List of numbers<br></br>
+    /// [PT-BR]: Lista de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new list with only nevative numbers<br></br>
+    /// [PT-BR]: Retorna uma nova lista somente com os numeros negativos
+    /// </returns>
+    public static List<sbyte> GetNegatives(this List<sbyte> list) {
+      return list.Where(x => x < 0).OrderByDescending(x => x).ToList();
+    }
+    
+    #endregion
+
+    #region Overload GetPositives
+
+    /// <summary>
+    /// [EN]: Returns all positive numbers from list<br></br>
+    /// [PT-BR]: Retorna todos os numeros positivos da lista
+    /// </summary>
+    /// <param name="list">
+    /// [EN]: List of numbers<br></br>
+    /// [PT-BR]: Lista de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new list with only positive numbers<br></br>
+    /// [PT-BR]: Retorna uma nova lista somente com os numeros positive
+    /// </returns>
+    public static List<int> GetPositives(this List<int> list) {
+      return list.Where(x => x >= 0).OrderByDescending(x => x).ToList();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all positive numbers from array<br></br>
+    /// [PT-BR]: Retorna todos os numeros positivos do array
+    /// </summary>
+    /// <param name="array">
+    /// [EN]: Array of numbers<br></br>
+    /// [PT-BR]: Array de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new array with only positive numbers<br></br>
+    /// [PT-BR]: Retorna um novo array somente com os numeros positivos
+    /// </returns>
+    public static int[] GetPositives(this int[] array) {
+      return array.Where(x => x >= 0).OrderByDescending(x => x).ToArray();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all positive numbers from array<br></br>
+    /// [PT-BR]: Retorna todos os numeros positivos do array
+    /// </summary>
+    /// <param name="array">
+    /// [EN]: Array of numbers<br></br>
+    /// [PT-BR]: Array de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new array with only positive numbers<br></br>
+    /// [PT-BR]: Retorna um novo array somente com os numeros positivos
+    /// </returns>
+    public static decimal[] GetPositives(this decimal[] array) {
+      return array.Where(x => x >= 0).OrderByDescending(x => x).ToArray();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all positive numbers from list<br></br>
+    /// [PT-BR]: Retorna todos os numeros positivos da lista
+    /// </summary>
+    /// <param name="list">
+    /// [EN]: List of numbers<br></br>
+    /// [PT-BR]: Lista de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new list with only positive numbers<br></br>
+    /// [PT-BR]: Retorna uma nova lista somente com os numeros positive
+    /// </returns>
+    public static List<decimal> GetPositives(this List<decimal> list) {
+      return list.Where(x => x >= 0).OrderByDescending(x => x).ToList();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all positive numbers from array<br></br>
+    /// [PT-BR]: Retorna todos os numeros positivos do array
+    /// </summary>
+    /// <param name="array">
+    /// [EN]: Array of numbers<br></br>
+    /// [PT-BR]: Array de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new array with only positive numbers<br></br>
+    /// [PT-BR]: Retorna um novo array somente com os numeros positivos
+    /// </returns>
+    public static float[] GetPositives(this float[] array) {
+      return array.Where(x => x >= 0).OrderByDescending(x => x).ToArray();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all positive numbers from list<br></br>
+    /// [PT-BR]: Retorna todos os numeros positivos da lista
+    /// </summary>
+    /// <param name="list">
+    /// [EN]: List of numbers<br></br>
+    /// [PT-BR]: Lista de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new list with only positive numbers<br></br>
+    /// [PT-BR]: Retorna uma nova lista somente com os numeros positive
+    /// </returns>
+    public static List<float> GetPositives(this List<float> list) {
+      return list.Where(x => x >= 0).OrderByDescending(x => x).ToList();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all positive numbers from array<br></br>
+    /// [PT-BR]: Retorna todos os numeros positivos do array
+    /// </summary>
+    /// <param name="array">
+    /// [EN]: Array of numbers<br></br>
+    /// [PT-BR]: Array de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new array with only positive numbers<br></br>
+    /// [PT-BR]: Retorna um novo array somente com os numeros positivos
+    /// </returns>
+    public static double[] GetPositives(this double[] array) {
+      return array.Where(x => x >= 0).OrderByDescending(x => x).ToArray();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all positive numbers from list<br></br>
+    /// [PT-BR]: Retorna todos os numeros positivos da lista
+    /// </summary>
+    /// <param name="list">
+    /// [EN]: List of numbers<br></br>
+    /// [PT-BR]: Lista de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new list with only positive numbers<br></br>
+    /// [PT-BR]: Retorna uma nova lista somente com os numeros positive
+    /// </returns>
+    public static List<double> GetPositives(this List<double> list) {
+      return list.Where(x => x >= 0).OrderByDescending(x => x).ToList();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all positive numbers from array<br></br>
+    /// [PT-BR]: Retorna todos os numeros positivos do array
+    /// </summary>
+    /// <param name="array">
+    /// [EN]: Array of numbers<br></br>
+    /// [PT-BR]: Array de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new array with only positive numbers<br></br>
+    /// [PT-BR]: Retorna um novo array somente com os numeros positivos
+    /// </returns>
+    public static long[] GetPositives(this long[] array) {
+      return array.Where(x => x >= 0).OrderByDescending(x => x).ToArray();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all positive numbers from list<br></br>
+    /// [PT-BR]: Retorna todos os numeros positivos da lista
+    /// </summary>
+    /// <param name="list">
+    /// [EN]: List of numbers<br></br>
+    /// [PT-BR]: Lista de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new list with only positive numbers<br></br>
+    /// [PT-BR]: Retorna uma nova lista somente com os numeros positive
+    /// </returns>
+    public static List<long> GetPositives(this List<long> list) {
+      return list.Where(x => x >= 0).OrderByDescending(x => x).ToList();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all positive numbers from array<br></br>
+    /// [PT-BR]: Retorna todos os numeros positivos do array
+    /// </summary>
+    /// <param name="array">
+    /// [EN]: Array of numbers<br></br>
+    /// [PT-BR]: Array de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new array with only positive numbers<br></br>
+    /// [PT-BR]: Retorna um novo array somente com os numeros positivos
+    /// </returns>
+    public static nint[] GetPositives(this nint[] array) {
+      return array.Where(x => x >= 0).OrderByDescending(x => x).ToArray();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all positive numbers from list<br></br>
+    /// [PT-BR]: Retorna todos os numeros positivos da lista
+    /// </summary>
+    /// <param name="list">
+    /// [EN]: List of numbers<br></br>
+    /// [PT-BR]: Lista de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new list with only positive numbers<br></br>
+    /// [PT-BR]: Retorna uma nova lista somente com os numeros positive
+    /// </returns>
+    public static List<nint> GetPositives(this List<nint> list) {
+      return list.Where(x => x >= 0).OrderByDescending(x => x).ToList();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all positive numbers from list<br></br>
+    /// [PT-BR]: Retorna todos os numeros positivos da lista
+    /// </summary>
+    /// <param name="list">
+    /// [EN]: List of numbers<br></br>
+    /// [PT-BR]: Lista de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new list with only positive numbers<br></br>
+    /// [PT-BR]: Retorna uma nova lista somente com os numeros positive
+    /// </returns>
+    public static List<short> GetPositives(this List<short> list) {
+      return list.Where(x => x >= 0).OrderByDescending(x => x).ToList();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all positive numbers from array<br></br>
+    /// [PT-BR]: Retorna todos os numeros positivos do array
+    /// </summary>
+    /// <param name="array">
+    /// [EN]: Array of numbers<br></br>
+    /// [PT-BR]: Array de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new array with only positive numbers<br></br>
+    /// [PT-BR]: Retorna um novo array somente com os numeros positivos
+    /// </returns>
+    public static short[] GetPositives(this short[] array) {
+      return array.Where(x => x >= 0).OrderByDescending(x => x).ToArray();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all positive numbers from list<br></br>
+    /// [PT-BR]: Retorna todos os numeros positivos da lista
+    /// </summary>
+    /// <param name="list">
+    /// [EN]: List of numbers<br></br>
+    /// [PT-BR]: Lista de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new list with only positive numbers<br></br>
+    /// [PT-BR]: Retorna uma nova lista somente com os numeros positive
+    /// </returns>
+    public static List<sbyte> GetPositives(this List<sbyte> list) {
+      return list.Where(x => x >= 0).OrderByDescending(x => x).ToList();
+    }
+
+    /// <summary>
+    /// [EN]: Returns all positive numbers from array<br></br>
+    /// [PT-BR]: Retorna todos os numeros positivos do array
+    /// </summary>
+    /// <param name="array">
+    /// [EN]: Array of numbers<br></br>
+    /// [PT-BR]: Array de numeros
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new array with only positive numbers<br></br>
+    /// [PT-BR]: Retorna um novo array somente com os numeros positivos
+    /// </returns>
+    public static sbyte[] GetPositives(this sbyte[] array) {
+      return array.Where(x => x >= 0).OrderByDescending(x => x).ToArray();
+    }
+
+    #endregion
+
+
+
+
 
 
   }
