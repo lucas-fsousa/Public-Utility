@@ -1,10 +1,6 @@
 ﻿using App.Utils.CustomExceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using static App.Utils.CustomExceptions.Base.BaseException;

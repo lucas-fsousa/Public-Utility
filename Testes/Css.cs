@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Testes {
+﻿namespace Testes {
   public static class Css {
     public static string List { get { return "style='padding-left: 40px;'"; } }
     public static string Corpo { get { return "style='font-size: 19px;'"; } }
