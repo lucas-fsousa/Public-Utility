@@ -85,7 +85,6 @@ namespace Testes {
       //XSql xSql = new XSql(@"Data Source=LUCAS\SQLEXPRESS;Initial Catalog=TEMPDT;Integrated Security=True", sqlCommand);
       //var tb = xSql.ReturnData(out errorMessage);
 
-
       #endregion
 
       #region TESTE CLASS XEXTENSION
@@ -128,7 +127,17 @@ namespace Testes {
 
       #endregion
 
+
+      var i = X.Input<int>("INT: ");
+      var x = X.Input<Root>("ROOT: ");
+
     }
+
+    
+
+
+
+
 
     public static void ExecCompile() {
       string appCpp = string.Format("shared_lib.cpp");

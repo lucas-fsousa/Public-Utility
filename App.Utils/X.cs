@@ -1,6 +1,8 @@
-﻿using System;
+﻿using App.Utils.CustomExceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using static App.Utils.CustomExceptions.Base.BaseException;
 
 namespace App.Utils {
 
@@ -13,9 +15,53 @@ namespace App.Utils {
   /// [PT-BR]: Esta classe pode gerar exceção de Imagem com formato incorreto. Para corrigir, acesse as propriedades do consoleapp e altere o "Destino da plataforma" para [x86] que por padrão está marcada com [Any CPU]
   /// </remarks>
   /// <exception cref="BadImageFormatException"></exception>
-  public static class XExtension {
+  public static class X {
 
-    #region Others
+    #region OTHERS
+
+    public static T Input<T>(string messageToPrint = "") {
+      T input = default;
+
+      #region PRE-VALIDATION OF VALID INPUTS
+
+      Dictionary<string, object> validInputs = new Dictionary<string, object>();
+      validInputs.Add("datetime", typeof(DateTime));
+      validInputs.Add("object", typeof(object));
+      validInputs.Add("ushort", typeof(ushort));
+      validInputs.Add("string", typeof(string));
+      validInputs.Add("ulong", typeof(ulong));
+      validInputs.Add("short", typeof(short));
+      validInputs.Add("nuint", typeof(nuint));
+      validInputs.Add("sbyte", typeof(sbyte));
+      validInputs.Add("uint", typeof(uint));
+      validInputs.Add("long", typeof(long));
+      validInputs.Add("char", typeof(char));
+      validInputs.Add("byte", typeof(byte));
+      validInputs.Add("nint", typeof(nint));
+      validInputs.Add("bool", typeof(bool));
+      validInputs.Add("int", typeof(int));
+      
+      if(!validInputs.ContainsValue(typeof(T)))
+        throw new RequiredParamsException(Situations.InvalidType, nameof(T));
+
+      #endregion
+
+      if(string.IsNullOrEmpty(messageToPrint))
+        messageToPrint = string.Format(">> ");
+
+      Console.Write(messageToPrint);
+
+      try {
+        string reader = Console.ReadLine();
+        input = (T)Convert.ChangeType(reader, typeof(T));
+
+      } catch(Exception) { }
+      return input;
+    }
+
+    #endregion
+
+    #region EXTENSION
 
     /// <summary>
     /// [EN]: Remove all whitespace from string <br></br>
@@ -58,6 +104,9 @@ namespace App.Utils {
       List<char> numbers = new List<char> { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' , '.'};
       int countFloatPoint = 0;
 
+      if(string.IsNullOrEmpty(input))
+        return false;
+
       foreach(char c in input.ToList()) {
         if(c == '.')
           countFloatPoint++;
@@ -72,7 +121,21 @@ namespace App.Utils {
       return true;
     }
 
-    #endregion
+    public static bool IsSomeBool(this string input) {
+      if(string.IsNullOrEmpty(input))
+        return false;
+
+      else if(input == string.Format("false") || input == string.Format("False"))
+        return true;
+
+      else if(input == string.Format("true") || input == string.Format("True"))
+        return true;
+
+      else
+        return false;
+    }
+
+    
 
     #region Overload MaxMin
 
@@ -923,10 +986,7 @@ namespace App.Utils {
 
     #endregion
 
-
-
-
-
+    #endregion
 
   }
 }

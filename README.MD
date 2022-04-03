@@ -8,11 +8,11 @@ Use the package manager [NuGet](https://www.nuget.org/packages/LucasFsousa.Publi
 
 ```bash
 EXAMPLE
-PM> Install-Package LucasFsousa.PublicUtility -Version 1.0.1
+PM> Install-Package LucasFsousa.PublicUtility -Version 1.0.2
 
-.NET CLI> dotnet add package LucasFsousa.PublicUtility --version 1.0.1
+.NET CLI> dotnet add package LucasFsousa.PublicUtility --version 1.0.2
 
-Package Reference> <PackageReference Include="LucasFsousa.PublicUtility" Version="1.0.1" />
+Package Reference> <PackageReference Include="LucasFsousa.PublicUtility" Version="1.0.2" />
 
 ```
 
@@ -76,7 +76,7 @@ string encrypt = XSecurity.Encrypt("string for encrypto", "12345678");
 // Decrypting a string encrypted by a numeric key
 string decrypt = XSecurity.Decrypt(encrypt, "12345678");
 
-// ================= examples of use of the XExtension class =================
+// ================= examples of use of the X class =================
 
 float f = 15.10f;
 bool fb = f.MaxMin(20.41f, 150.50f); // returns a false value
@@ -92,6 +92,18 @@ bool isValid = anyInvalidNumber.IsNumber(); // return false value
 
 string anyValidNumber = "10000.50"; // supports floating-point or non-floating-point checking
 bool isValid = anyValidNumber.IsNumber(); // return true value
+
+
+/* Usage example: Inform the type of object that will be imputed and the conversion will be performed at the time of data entry.
+ * Data entry is valid only for predetermined items. It is not possible to use a Custom Object as input input.
+ * DateTime input Examples: 2022/01/01 | 2022-01-01 | 01/01/2022 | 01-01-2022 will be converted to 01/01/2022 00:00:00 */
+DateTime anyDate = X.Input<DateTime>("Enter a Date: ");
+
+// Returns a long number that was input
+long anyLong = X.Input<long>("Enter a long number: ");
+
+// Returns a char digit that was input
+char anyChar = X.Input<char>("Enter a char digit: ");
 
 // ================= examples of use of the XRequest class =================
 
