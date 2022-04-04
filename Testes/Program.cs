@@ -87,7 +87,7 @@ namespace Testes {
 
       #endregion
 
-      #region TESTE CLASS XEXTENSION
+      #region TESTE CLASS X
 
       //int it = 1145161;
       //bool bi = it.MaxMin(-101031, 90000000); 
@@ -105,6 +105,19 @@ namespace Testes {
       //List<int> li = new List<int> { -10, 10, -5, -11, -12, 20 };
       //var lineg = li.GetNegatives();
       //var lipos = li.GetPositives();
+
+      /* the Input has 2 optional parameters, being the message to be written
+       * in the console, and the hiding of the console to not display the typed
+       * characters.*/
+
+      // Example with 2 parameters
+      //string password = X.Input<string>("Password: ", true);
+
+      // Example with 0 parameter
+      //int anyNumber = X.Input<int>();
+
+      // Example with 1 parameter
+      //char anyChar = X.Input<char>("Enter a new Char: ");
 
       #endregion
 
@@ -128,15 +141,15 @@ namespace Testes {
       #endregion
 
 
-      var i = X.Input<int>("INT: ");
-      var x = X.Input<Root>("ROOT: ");
+
+
+
+
+
+
+
 
     }
-
-    
-
-
-
 
 
     public static void ExecCompile() {

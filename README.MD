@@ -96,14 +96,21 @@ bool isValid = anyValidNumber.IsNumber(); // return true value
 
 /* Usage example: Inform the type of object that will be imputed and the conversion will be performed at the time of data entry.
  * Data entry is valid only for predetermined items. It is not possible to use a Custom Object as input input.
- * DateTime input Examples: 2022/01/01 | 2022-01-01 | 01/01/2022 | 01-01-2022 will be converted to 01/01/2022 00:00:00 */
+ * the Input has 2 optional parameters, being the message to be written in the console, and the hiding of the console
+ * to not display the typed characters.*/
+
+// Example with 2 parameters
+string password = X.Input<string>("Password: ", true);
+
+// Example with 0 parameter
+int anyNumber = X.Input<int>();
+
+// Example with 1 parameter
+char anyChar = X.Input<char>("Enter a new Char: ");
+
+// DateTime input Examples: 2022/01/01 | 2022-01-01 | 01/01/2022 | 01-01-2022 will be converted to 01/01/2022 00:00:00
 DateTime anyDate = X.Input<DateTime>("Enter a Date: ");
 
-// Returns a long number that was input
-long anyLong = X.Input<long>("Enter a long number: ");
-
-// Returns a char digit that was input
-char anyChar = X.Input<char>("Enter a char digit: ");
 
 // ================= examples of use of the XRequest class =================
 

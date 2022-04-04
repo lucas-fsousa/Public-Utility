@@ -19,8 +19,29 @@ namespace App.Utils {
 
     #region OTHERS
 
-    public static T Input<T>(string messageToPrint = "") {
-      T input = default;
+    /// <summary>
+    /// [EN]: Captures keyboard input and converts it to the object type given during the method call <br></br>
+    /// [PT-BR]: Captura a entrada do teclado e converte para o tipo de objeto informado durante a chamada do método
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of object to be input and returned <br></br>
+    /// [PT-BR]: Tipo do objeto a ser inputado e retornado
+    /// </typeparam>
+    /// <param name="messageToPrint">
+    /// [EN]: Informational message to be displayed on the console <br></br>
+    /// [PT-BR]: mensagem informativa a ser exibida no console
+    /// </param>
+    /// <param name="hidden">
+    /// [EN]: Defines if the keyboard input will be written in the console <br></br>
+    /// [PT-BR]: Define se o input do teclado será escrito no console
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns an object of the type that was informed during the method call <br></br>
+    /// [PT-BR]: Retorna um objeto do tipo que foi informado durante a chamada do método
+    /// </returns>
+    /// <exception cref="RequiredParamsException"></exception>
+    public static T Input<T>(string messageToPrint = "", bool hidden=false) {
+      T response = default;
 
       #region PRE-VALIDATION OF VALID INPUTS
 
@@ -52,11 +73,31 @@ namespace App.Utils {
       Console.Write(messageToPrint);
 
       try {
-        string reader = Console.ReadLine();
-        input = (T)Convert.ChangeType(reader, typeof(T));
+        string reader = string.Empty;
 
+        if(hidden) {
+          ConsoleKeyInfo enterKey;
+          do {
+            enterKey = Console.ReadKey(true);
+            
+            if(enterKey.Key == ConsoleKey.Enter) { 
+              Console.Write("\n");
+              break;
+            }
+
+            reader += enterKey.KeyChar;
+            Console.Write('*');
+            GC.Collect();
+          } while(true);
+        } else {
+          reader = Console.ReadLine();
+
+        }
+
+        response = (T)Convert.ChangeType(reader, typeof(T));
       } catch(Exception) { }
-      return input;
+
+      return response;
     }
 
     #endregion
@@ -121,6 +162,18 @@ namespace App.Utils {
       return true;
     }
 
+    /// <summary>
+    /// [EN]: Checks if the string has some boolean format <br></br>
+    /// [PT-BR]: Verifica se a cadeia de caracteres possui algum formato booleano
+    /// </summary>
+    /// <param name="input">
+    /// [EN]: String to be checked <br></br>
+    /// [PT-BR]: Cadeia de caracteres a ser verificada
+    /// </param>
+    /// <returns>
+    /// [EN]: returns a boolean value indicating whether the string has boolean format <br></br>
+    /// [PT-BR]: retorna um valor booleano indicando se a string possui formato boolean
+    /// </returns>
     public static bool IsSomeBool(this string input) {
       if(string.IsNullOrEmpty(input))
         return false;
