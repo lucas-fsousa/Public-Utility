@@ -1,4 +1,5 @@
 ﻿using App.Utils.CustomExceptions;
+using System;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -21,8 +22,8 @@ namespace App.Utils {
     /// [PT-BR]: Retorna um HttpResponseMessage contendo informações da requisição
     /// </returns>
     /// <exception cref="RequiredParamsException"></exception>
-    public static async Task<HttpResponseMessage> HttpDelete(string url) {
-      if(string.IsNullOrEmpty(url))
+    public static async Task<HttpResponseMessage> HttpDelete(Uri url) {
+      if(url == null)
         throw new RequiredParamsException(Situations.IsNullOrEmpty, nameof(url));
 
       using(HttpClient http = new HttpClient()) {
@@ -56,8 +57,8 @@ namespace App.Utils {
     /// [PT-BR]: Retorna um HttpResponseMessage contendo informações da requisição
     /// </returns>
     /// <exception cref="RequiredParamsException"></exception>
-    public static async Task<HttpResponseMessage> HttpPost<Type>(string url, Type value, JsonSerializerOptions jsonOptions = null) {
-      if(string.IsNullOrEmpty(url))
+    public static async Task<HttpResponseMessage> HttpPost<Type>(Uri url, Type value, JsonSerializerOptions jsonOptions = null) {
+      if(url == null)
         throw new RequiredParamsException(Situations.IsNullOrEmpty, nameof(url));
 
       using(HttpClient http = new HttpClient()) {
@@ -83,8 +84,8 @@ namespace App.Utils {
     /// [PT-BR]: Retorna um HttpResponseMessage contendo informações da requisição
     /// </returns>
     /// <exception cref="RequiredParamsException"></exception>
-    public static async Task<HttpResponseMessage> HttpPost(string url, HttpContent value) {
-      if(string.IsNullOrEmpty(url))
+    public static async Task<HttpResponseMessage> HttpPost(Uri url, HttpContent value) {
+      if(url == null)
         throw new RequiredParamsException(Situations.IsNullOrEmpty, nameof(url));
 
       if(value == null)
@@ -148,8 +149,8 @@ namespace App.Utils {
     /// [PT-BR]: Retorna um HttpResponseMessage contendo informações da requisição
     /// </returns>
     /// <exception cref="RequiredParamsException"></exception>
-    public static async Task<HttpResponseMessage> HttpPut(string url, HttpContent value) {
-      if(string.IsNullOrEmpty(url))
+    public static async Task<HttpResponseMessage> HttpPut(Uri url, HttpContent value) {
+      if(url == null)
         throw new RequiredParamsException(Situations.IsNullOrEmpty, nameof(url));
 
       if(value == null)
@@ -174,8 +175,8 @@ namespace App.Utils {
     /// [PT-BR]: Retorna um HttpResponseMessage contendo informações da requisição
     /// </returns>
     /// <exception cref="RequiredParamsException"></exception>
-    public static async Task<HttpResponseMessage> HttpGet(string url) {
-      if(string.IsNullOrEmpty(url))
+    public static async Task<HttpResponseMessage> HttpGet(Uri url) {
+      if(url == null)
         throw new RequiredParamsException(Situations.IsNullOrEmpty, nameof(url));
 
       using(HttpClient http = new HttpClient()) {
@@ -205,8 +206,8 @@ namespace App.Utils {
     /// [PT-BR]: Retorna um json desfeito e convertido para o objeto informado durante a chamada da ação
     /// </returns>
     /// <exception cref="RequiredParamsException"></exception>
-    public static async Task<Type> HttpGet<Type>(string url, JsonSerializerOptions jsonOptions = null) {
-      if(string.IsNullOrEmpty(url))
+    public static async Task<Type> HttpGet<Type>(Uri url, JsonSerializerOptions jsonOptions = null) {
+      if(url == null)
         throw new RequiredParamsException(Situations.IsNullOrEmpty, nameof(url));
 
       using(HttpClient http = new HttpClient()) {
@@ -236,8 +237,8 @@ namespace App.Utils {
     /// [PT-BR]: Retorna um HttpResponseMessage contendo informações da requisição
     /// </returns>
     /// <exception cref="RequiredParamsException"></exception>
-    public static async Task<HttpResponseMessage> HttpPatchAsync<Type>(string url, HttpContent value) {
-      if(string.IsNullOrEmpty(url))
+    public static async Task<HttpResponseMessage> HttpPatchAsync<Type>(Uri url, HttpContent value) {
+      if(url == null)
         throw new RequiredParamsException(Situations.IsNullOrEmpty, nameof(url));
 
       if(value == null)

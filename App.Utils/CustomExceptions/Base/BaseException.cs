@@ -35,7 +35,8 @@ namespace App.Utils.CustomExceptions.Base {
       BelowTheNecessary,
       InvalidFormat,
       NotANumber,
-      InvalidType
+      InvalidType,
+      NotExists
     }
   }
 

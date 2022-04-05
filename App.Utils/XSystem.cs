@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using static App.Utils.CustomExceptions.Base.BaseException;
 
 namespace App.Utils {
@@ -13,6 +14,51 @@ namespace App.Utils {
   /// [PT-BR]: Classe com funcionalidades uteis do sistema
   /// </summary>
   public class XSystem {
+
+    private const int SW_HIDE = 0;
+    private const int SW_SHOW = 5;
+
+    #region INTEROPT DLLS
+
+    [DllImport("kernel32.dll")]
+    private static extern IntPtr GetConsoleWindow();
+
+    [DllImport("user32.dll")]
+    private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+    #endregion
+
+    /// <summary>
+    /// [EN]: Hides the application's console so that it runs unnoticed<br></br>
+    /// [PT-BR]: Ocultar o console do aplicativo para que ele seja executado despercebido
+    /// </summary>
+    public static void HideConsole() => ShowWindow(GetConsoleWindow(), SW_HIDE);
+
+    /// <summary>
+    /// [EN]: Makes the app's console fully visible <br></br>
+    /// [PT-BR]: Torna o console do aplicativo totalmente visível
+    /// </summary>
+    public static void ShowConsole() => ShowWindow(GetConsoleWindow(), SW_SHOW);
+
+    /// <summary>
+    /// [EN]: Uses the app identifier to display it if it is hidden <br></br>
+    /// [PT-BR]: Usa o identificador do aplicativo para exibi-lo se estiver oculto
+    /// </summary>
+    /// <param name="handle">
+    /// [EN]: Handle identifier of the application that will be displayed <br></br>
+    /// [PT-BR]: Identificador handle da aplicação que será exibida
+    /// </param>
+    public static void ShowWindow(IntPtr handle) => ShowWindow(handle, SW_SHOW);
+
+    /// <summary>
+    /// [EN]: Hide an application window using the handle identifier <br></br>
+    /// [PT-BR]: Oculta uma janela de aplicação utilizando o handle identificador
+    /// </summary>
+    /// <param name="handle">
+    /// [EN]: Identifier of the application to be hidden <br></br>
+    /// [PT-BR]: Identificador da aplicação que será ocultada
+    /// </param>
+    public static void HideWindow(IntPtr handle) => ShowWindow(handle, SW_HIDE);
 
     /// <summary>
     /// [EN]: Search for a process running on the current machine<br></br>

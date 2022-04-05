@@ -16,6 +16,8 @@ using System.Drawing;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using System.IO.Compression;
+using System.Text.RegularExpressions;
 
 namespace Testes {
   internal class Program {
@@ -47,6 +49,8 @@ namespace Testes {
       //XSystem.Exit();
       //string[] comands = { "", "" };
       //int exitCode = XSystem.RunCmdScript(new string[] { $"echo TESTE CARAI {DateTime.Now} >> teste.txt", $"echo nova linha {DateTime.Now} >> teste.txt" });
+
+
 
       #endregion
 
@@ -140,17 +144,22 @@ namespace Testes {
 
       #endregion
 
+      // começo texto: Td\r\n(
+      // fim texto: ) Tj
+      string str = File.ReadAllText(@"C:\MyDocs\teste.txt");
 
+      string[] urls = new string[] {
+        "https://www.orimi.com/pdf-test.pdf",
+        "https://www.ets.org/Media/Tests/GRE/pdf/gre_research_validity_data.pdf",
+        "https://s26.q4cdn.com/247131723/files/doc_downloads/test.pdf",
+        "https://gbihr.org/images/docs/test.pdf",
+        "https://www.camara.leg.br/proposicoesWeb/prop_mostrarintegra?codteor=2127030"
+      };
 
-
-
-
-
-
-
-
+      XPdf.GetText(new Uri("http://www.africau.edu/images/default/sample.pdf"));
     }
 
+    
 
     public static void ExecCompile() {
       string appCpp = string.Format("shared_lib.cpp");
