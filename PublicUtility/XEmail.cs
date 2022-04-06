@@ -1,10 +1,10 @@
-﻿using PublicUtility.CustomExceptions;
-using System;
+﻿using static PublicUtility.CustomExceptions.Base.BaseException;
+using System.Text.RegularExpressions;
+using PublicUtility.CustomExceptions;
+using System.Net.Mail;
 using System.Linq;
 using System.Net;
-using System.Net.Mail;
-using System.Text.RegularExpressions;
-using static PublicUtility.CustomExceptions.Base.BaseException;
+using System;
 
 namespace PublicUtility {
 

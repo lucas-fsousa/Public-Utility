@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <UseWPF>True</UseWPF>
@@ -11,6 +11,10 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="6.0.3" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PublicUtility\PublicUtility.csproj" />
   </ItemGroup>
 
 </Project>

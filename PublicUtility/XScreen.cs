@@ -2,8 +2,9 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
-using System.Threading;
 using System.Drawing.Imaging;
+using PublicUtility.CustomExceptions;
+using static PublicUtility.CustomExceptions.Base.BaseException;
 
 namespace PublicUtility {
 
@@ -99,35 +100,6 @@ namespace PublicUtility {
     }
 
     /// <summary>
-    /// [EN]: Take a screenshot of the current screen <br></br>
-    /// [PT-BR]: faz uma captura da tela atual
-    /// </summary>
-    /// <param name="saveasFileName">
-    /// [EN]: Optional parameter that when filled in, the screenshot is saved as a file <br></br>
-    /// [PT-BR]: Parametro opcional que quando preenchido, o screenshot é salvo como arquivo
-    /// </param>
-    /// <returns>
-    /// [EN]: Returns a bitmap with the screenshot <br></br>
-    /// [PT-BR]: Retorna um bitmap com o screenshot
-    /// </returns>
-    public static Bitmap TakeScreenShot(string saveasFileName = "") {
-      using(Bitmap bmp = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height)) {
-        Graphics g = Graphics.FromImage(bmp);
-        g.CopyFromScreen(0, 0, 0, 0, bmp.Size);
-
-        if(!string.IsNullOrEmpty(saveasFileName)) {
-          saveasFileName = saveasFileName.Split('.')[0];
-
-          saveasFileName = string.Concat(saveasFileName, ".png");
-
-          bmp.Save(saveasFileName, ImageFormat.Png);
-        }
-
-        return bmp;
-      }
-    }
-
-    /// <summary>
     /// [EN]: Get the main screen size <br></br>
     /// [PT-BR]: Obtém o tamanho da tela principal
     /// </summary>
@@ -136,6 +108,63 @@ namespace PublicUtility {
     /// [PT-BR]: Retorna uma estrutura contendo largura e altura da tela
     /// </returns>
     public static Size ScreenSize() => new Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+
+    #region Overload TakeScreenShot
+
+    /// <summary>
+    /// [EN]: Take a screenshot of the current screen <br></br>
+    /// [PT-BR]: faz uma captura da tela atual
+    /// </summary>
+    /// <param name="saveasFileName">
+    /// [EN]: Optional parameter that when filled in, the screenshot is saved as a file <br></br>
+    /// [PT-BR]: Parametro opcional que quando preenchido, o screenshot é salvo como arquivo
+    /// </param>
+    /// <param name="imageFormat">
+    /// [EN]: Optional parameter that when filled in, the screenshot is saved as a file <br></br>
+    /// [PT-BR]: Parametro opcional que quando preenchido, o screenshot é salvo como arquivo
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a bitmap with the screenshot <br></br>
+    /// [PT-BR]: Retorna um bitmap com o screenshot
+    /// </returns>
+    /// <exception cref="RequiredParamsException"></exception>
+    public static Bitmap TakeScreenShot(string saveasFileName, ImageFormat imageFormat = null) {
+      using(Bitmap bmp = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height)) {
+        Graphics g = Graphics.FromImage(bmp);
+        g.CopyFromScreen(0, 0, 0, 0, bmp.Size);
+
+        if(string.IsNullOrEmpty(saveasFileName))
+          throw new RequiredParamsException(Situations.IsNullOrEmpty, nameof(saveasFileName));
+        
+        if(imageFormat == null)
+          imageFormat = ImageFormat.Png;
+
+        saveasFileName = saveasFileName.Split('.')[0];
+        saveasFileName = string.Concat(saveasFileName, '.', imageFormat.ToString());
+
+        bmp.Save(saveasFileName, ImageFormat.Png);
+
+        return bmp;
+      }
+    }
+
+    /// <summary>
+    /// [EN]: Take a screenshot of the current screen <br></br>
+    /// [PT-BR]: faz uma captura da tela atual
+    /// </summary>
+    /// <returns>
+    /// [EN]: Returns a bitmap with the screenshot <br></br>
+    /// [PT-BR]: Retorna um bitmap com o screenshot
+    /// </returns>
+    public static Bitmap TakeScreenShot() {
+      using(Bitmap bmp = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height)) {
+        Graphics g = Graphics.FromImage(bmp);
+        g.CopyFromScreen(0, 0, 0, 0, bmp.Size);
+        return bmp;
+      }
+    }
+
+    #endregion
 
   }
 }

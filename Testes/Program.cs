@@ -1,12 +1,12 @@
-﻿using App.Utils.CustomExceptions;
+﻿using PublicUtility.CustomExceptions;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using App.Utils;
-using static App.Utils.CustomExceptions.Base.BaseException;
+using PublicUtility;
+using static PublicUtility.CustomExceptions.Base.BaseException;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Threading;
@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using System.IO.Compression;
 using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
+using System.Drawing.Imaging;
 
 namespace Testes {
   internal class Program {
@@ -61,6 +62,7 @@ namespace Testes {
       //int codigoRetorno = XScreen.ShowMessageBox("INFO", "UMA CAIXA DE TESTE NOVA", 3);
       //Point point = XScreen.GetXyByHandle(handle);
       //Rectangle rectangle = XScreen.GetDemensionByHandle(handle);
+      //XScreen.TakeScreenShot(@"C:\MyDocs\img.png", ImageFormat.Jpeg);
 
       #endregion
 
@@ -121,8 +123,8 @@ namespace Testes {
       //int anyNumber = X.Input<int>();
 
       // Example with 1 parameter
-      //char anyChar = X.Input<char>("Enter a new Char: ");
-
+      //string anyChar = X.Input<string>("password: ", true);
+      
       #endregion
 
       #region TESTE CLASS XREQUEST
@@ -145,16 +147,11 @@ namespace Testes {
       #endregion
 
 
-      XScreen.TakeScreenShot(@"C:\MyDocs\img.png");
+
 
 
     }
 
-
-    public static Size GetSize() {
-      Size size = new(1000, 1000);
-      return size;
-    }
 
   }
 

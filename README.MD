@@ -19,7 +19,7 @@ Package Reference> <PackageReference Include="LucasFsousa.PublicUtility" Version
 ## Usage
 
 ```csharp
-using App.Utils // call Namespace
+using PublicUtility; // call Namespace
 
 // ================= examples of use of the XSystem class =================
 

@@ -1,8 +1,8 @@
-﻿using PublicUtility.CustomExceptions;
-using System;
+﻿using static PublicUtility.CustomExceptions.Base.BaseException;
+using PublicUtility.CustomExceptions;
 using System.Collections.Generic;
 using System.Linq;
-using static PublicUtility.CustomExceptions.Base.BaseException;
+using System;
 
 namespace PublicUtility {
 
@@ -40,7 +40,7 @@ namespace PublicUtility {
     /// [PT-BR]: Retorna um objeto do tipo que foi informado durante a chamada do método
     /// </returns>
     /// <exception cref="RequiredParamsException"></exception>
-    public static T Input<T>(string messageToPrint = "", bool hidden=false) {
+    public static T Input<T>(string messageToPrint = "", bool hidden = false) {
       T response = default;
 
       #region PRE-VALIDATION OF VALID INPUTS
@@ -61,7 +61,7 @@ namespace PublicUtility {
       validInputs.Add("nint", typeof(nint));
       validInputs.Add("bool", typeof(bool));
       validInputs.Add("int", typeof(int));
-      
+
       if(!validInputs.ContainsValue(typeof(T)))
         throw new RequiredParamsException(Situations.InvalidType, nameof(T));
 
@@ -79,8 +79,8 @@ namespace PublicUtility {
           ConsoleKeyInfo enterKey;
           do {
             enterKey = Console.ReadKey(true);
-            
-            if(enterKey.Key == ConsoleKey.Enter) { 
+
+            if(enterKey.Key == ConsoleKey.Enter) {
               Console.Write("\n");
               break;
             }
@@ -142,7 +142,7 @@ namespace PublicUtility {
     /// [PT-BR]: Returns a boolean value
     /// </returns>
     public static bool IsNumber(this string input) {
-      List<char> numbers = new List<char> { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' , '.'};
+      List<char> numbers = new List<char> { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.' };
       int countFloatPoint = 0;
 
       if(string.IsNullOrEmpty(input))
@@ -188,7 +188,7 @@ namespace PublicUtility {
         return false;
     }
 
-    
+
 
     #region Overload MaxMin
 
@@ -776,7 +776,7 @@ namespace PublicUtility {
     public static List<sbyte> GetNegatives(this List<sbyte> list) {
       return list.Where(x => x < 0).OrderByDescending(x => x).ToList();
     }
-    
+
     #endregion
 
     #region Overload GetPositives
