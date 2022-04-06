@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace App.Utils.CustomExceptions.Base {
+namespace PublicUtility.CustomExceptions.Base {
   /// <summary>
   /// [EN]: Base class for custom exceptions <br></br>
   /// [PT-BR]: Classe base para exceções personalizadas

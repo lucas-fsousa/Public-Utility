@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Authors>lucas-fsousa</Authors>
+    <Description>
+[EN]: Public utility package containing several items that can assist in the development of new Apps - [PT-BR]: Pacote de utilidade publica contendo diversos itens que podem auxiliar no desenvolvimento de novos Apps
+	</Description>
+    <PackageReadmeFile>README.MD</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/lucas-fsousa/Public-Utility</RepositoryUrl>
+    <PackageTags>c#;aspnet;netcore;.net5;.net;csharp;cs;dotnet;.net6;netframework</PackageTags>
+    <NeutralLanguage>pt-BR</NeutralLanguage>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <DebugType>embedded</DebugType>
+    <SignAssembly>False</SignAssembly>
+    <PackageProjectUrl>https://github.com/lucas-fsousa/Public-Utility</PackageProjectUrl>
+    <PackageId>LucasFsousa.PublicUtility</PackageId>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <Version>1.0.3</Version>
+    <Copyright>&amp;copy; Lucas F Sousa - All rights reserved</Copyright>
+    <PackageReleaseNotes>[EN]: Reorganization of classes, modification of namespece to maintain syntax and separate contents properly [PT-BR]: Reorganização das classes, modificação de namespece para manter a sintaxe e separar os conteudos adequadamente</PackageReleaseNotes>
+    <OutputType>Library</OutputType>
+    <UseWPF>True</UseWPF>
+    <UseWindowsForms>True</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.MD">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="6.0.3" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
+  </ItemGroup>
+
+</Project>

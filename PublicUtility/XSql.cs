@@ -1,10 +1,11 @@
-﻿using App.Utils.CustomExceptions;
-using System;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using static App.Utils.CustomExceptions.Base.BaseException;
+using PublicUtility.CustomExceptions;
+using static PublicUtility.CustomExceptions.Base.BaseException;
 
-namespace App.Utils {
+namespace PublicUtility {
+
   /// <summary>
   /// [EN]: Helper class to work with data via SqlServer <br></br>
   /// [PT-BR]: Classe auxiliar para trabalhar com dados via SqlServer

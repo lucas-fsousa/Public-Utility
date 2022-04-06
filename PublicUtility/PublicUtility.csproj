@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Authors>lucas-fsousa</Authors>
@@ -10,7 +10,7 @@
 	</Description>
     <PackageReadmeFile>README.MD</PackageReadmeFile>
     <RepositoryUrl>https://github.com/lucas-fsousa/Public-Utility</RepositoryUrl>
-    <PackageTags>c#;aspnet;netcore;.net5;.net;csharp;cs;</PackageTags>
+    <PackageTags>c#;aspnet;netcore;.net5;.net;csharp;cs;dotnet;.net6;netframework</PackageTags>
     <NeutralLanguage>pt-BR</NeutralLanguage>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -19,9 +19,12 @@
     <PackageProjectUrl>https://github.com/lucas-fsousa/Public-Utility</PackageProjectUrl>
     <PackageId>LucasFsousa.PublicUtility</PackageId>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
     <Copyright>&amp;copy; Lucas F Sousa - All rights reserved</Copyright>
-    <PackageReleaseNotes>[EN]: Classroom organization for ease of use. Inclusion of new extension methods [PT-BR]: Organização das classes para facilitar o uso. Inclusão de novos métodos de extensão</PackageReleaseNotes>
+    <PackageReleaseNotes>[EN]: Reorganization of classes, modification of namespece to maintain syntax and separate contents properly [PT-BR]: Reorganização das classes, modificação de namespece para manter a sintaxe e separar os conteudos adequadamente</PackageReleaseNotes>
+    <OutputType>Library</OutputType>
+    <UseWPF>True</UseWPF>
+    <UseWindowsForms>True</UseWindowsForms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,11 +32,6 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="6.0.3" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
 
 </Project>

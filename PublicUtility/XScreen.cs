@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Drawing;
+using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Drawing.Imaging;
 
-namespace App.Utils {
+namespace PublicUtility {
+
   /// <summary>
   /// [EN]: Class that helps for work involving screens <br></br>
   /// [PT-BR]: Classe que auxiliar para trabalhos envolvendo telas
   /// </summary>
-  public class XScreen {
+  public static class XScreen {
 
     #region INTEROPT DLL IMPORTS
 
@@ -93,6 +97,45 @@ namespace App.Utils {
       GetWindowRect(handle, ref rect);
       return rect;
     }
+
+    /// <summary>
+    /// [EN]: Take a screenshot of the current screen <br></br>
+    /// [PT-BR]: faz uma captura da tela atual
+    /// </summary>
+    /// <param name="saveasFileName">
+    /// [EN]: Optional parameter that when filled in, the screenshot is saved as a file <br></br>
+    /// [PT-BR]: Parametro opcional que quando preenchido, o screenshot é salvo como arquivo
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a bitmap with the screenshot <br></br>
+    /// [PT-BR]: Retorna um bitmap com o screenshot
+    /// </returns>
+    public static Bitmap TakeScreenShot(string saveasFileName = "") {
+      using(Bitmap bmp = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height)) {
+        Graphics g = Graphics.FromImage(bmp);
+        g.CopyFromScreen(0, 0, 0, 0, bmp.Size);
+
+        if(!string.IsNullOrEmpty(saveasFileName)) {
+          saveasFileName = saveasFileName.Split('.')[0];
+
+          saveasFileName = string.Concat(saveasFileName, ".png");
+
+          bmp.Save(saveasFileName, ImageFormat.Png);
+        }
+
+        return bmp;
+      }
+    }
+
+    /// <summary>
+    /// [EN]: Get the main screen size <br></br>
+    /// [PT-BR]: Obtém o tamanho da tela principal
+    /// </summary>
+    /// <returns>
+    /// [EN]: Returns a struct containing screen width and height <br></br>
+    /// [PT-BR]: Retorna uma estrutura contendo largura e altura da tela
+    /// </returns>
+    public static Size ScreenSize() => new Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
 
   }
 }

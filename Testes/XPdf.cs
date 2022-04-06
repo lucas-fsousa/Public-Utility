@@ -31,17 +31,20 @@ namespace Testes {
       byte[] cutinput = new byte[input.Length - 2];
       Array.Copy(input, 2, cutinput, 0, cutinput.Length);
 
-      var stream = new MemoryStream();
+      using(MemoryStream stream = new MemoryStream()) {
+        using(MemoryStream compressStream = new MemoryStream(cutinput)) {
+          using(DeflateStream decompressor = new DeflateStream(compressStream, CompressionMode.Decompress)) {
+            decompressor.CopyTo(stream);
+            
+          }
+        }
 
-      using(var compressStream = new MemoryStream(cutinput))
-      using(var decompressor = new DeflateStream(compressStream, CompressionMode.Decompress))
-        decompressor.CopyTo(stream);
-
-      return Encoding.Default.GetString(stream.ToArray());
+        return Encoding.UTF8.GetString(stream.ToArray());
+      }
     }
 
     private static byte[] DecryptPDF(byte[] pdfEncryptBuffer) {
-      return Array.Empty<byte>();
+      return pdfEncryptBuffer;
     }
 
     private static string GetTextBase(Stream stream) {

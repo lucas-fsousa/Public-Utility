@@ -1,5 +1,4 @@
-﻿using App.AssistantCompile;
-using App.Utils.CustomExceptions;
+﻿using App.Utils.CustomExceptions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,6 +17,7 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using System.IO.Compression;
 using System.Text.RegularExpressions;
+using System.Runtime.InteropServices;
 
 namespace Testes {
   internal class Program {
@@ -144,30 +144,18 @@ namespace Testes {
 
       #endregion
 
-      // começo texto: Td\r\n(
-      // fim texto: ) Tj
-      string str = File.ReadAllText(@"C:\MyDocs\teste.txt");
 
-      string[] urls = new string[] {
-        "https://www.orimi.com/pdf-test.pdf",
-        "https://www.ets.org/Media/Tests/GRE/pdf/gre_research_validity_data.pdf",
-        "https://s26.q4cdn.com/247131723/files/doc_downloads/test.pdf",
-        "https://gbihr.org/images/docs/test.pdf",
-        "https://www.camara.leg.br/proposicoesWeb/prop_mostrarintegra?codteor=2127030"
-      };
+      XScreen.TakeScreenShot(@"C:\MyDocs\img.png");
 
-      XPdf.GetText(new Uri("http://www.africau.edu/images/default/sample.pdf"));
+
     }
 
-    
 
-    public static void ExecCompile() {
-      string appCpp = string.Format("shared_lib.cpp");
-      string dclspac = string.Format("SHARED_LIB");
-      string path = string.Format(@"C:\Users\Lucas\source\repos\Testes\App.AssistantCompile\CppDlls\");
-
-      Build.CompileCpp(appCpp, dclspac, path);
+    public static Size GetSize() {
+      Size size = new(1000, 1000);
+      return size;
     }
+
   }
 
 }

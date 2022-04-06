@@ -1,10 +1,10 @@
-﻿using App.Utils.CustomExceptions;
+﻿using PublicUtility.CustomExceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static App.Utils.CustomExceptions.Base.BaseException;
+using static PublicUtility.CustomExceptions.Base.BaseException;
 
-namespace App.Utils {
+namespace PublicUtility {
 
   /// <summary>
   /// [EN]: Public utility class that contains several methods to aid in application development <br></br>

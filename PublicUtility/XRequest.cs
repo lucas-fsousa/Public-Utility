@@ -1,12 +1,12 @@
-﻿using App.Utils.CustomExceptions;
+﻿using PublicUtility.CustomExceptions;
 using System;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
-using static App.Utils.CustomExceptions.Base.BaseException;
+using static PublicUtility.CustomExceptions.Base.BaseException;
 
-namespace App.Utils {
+namespace PublicUtility {
   public static class XRequest {
 
     /// <summary>

@@ -1,13 +1,13 @@
-﻿using App.Utils.CustomExceptions;
-using System;
+﻿using static PublicUtility.CustomExceptions.Base.BaseException;
+using PublicUtility.CustomExceptions;
+using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using static App.Utils.CustomExceptions.Base.BaseException;
+using System.IO;
+using System;
 
-namespace App.Utils {
+namespace PublicUtility {
 
   /// <summary>
   /// [EN]: Class with useful system features<br></br>
@@ -164,21 +164,14 @@ namespace App.Utils {
     /// [EN]: If enabled, execution will happen through powerShell <br></br>
     /// [PT-BR]: Se habilitado, a execução acontecerá através do powerShell
     /// </param>
-    /// <returns>
-    /// [EN]: Returns an integer value representing the exit status of the console execution <br></br>
-    /// [PT-BR]: Retorna um valor inteiro que representa o status de saida da execução no console
-    /// </returns>
     /// <exception cref="OperationCanceledException"></exception>
-    public static int RunCmdScript(IEnumerable<string> commands, string privatePath = @"", bool shellExecute = false) {
-      int exitCode = 0;
-
-      if(commands.Count() <= 0) {
-        throw new RequiredParamsException(Situations.LessThanZero, nameof(commands));
-      }
-
+    public static void RunCmdScript(IEnumerable<string> commands, string privatePath = @"", bool shellExecute = false) {
       ProcessStartInfo psi = new ProcessStartInfo();
 
       privatePath = Path.Combine(privatePath, "NewCommandsForExec.bat");
+
+      if(commands.Count() <= 0)
+        throw new RequiredParamsException(Situations.LessThanZero, nameof(commands));
 
       File.WriteAllLines(privatePath, commands);
 
@@ -187,17 +180,14 @@ namespace App.Utils {
       psi.CreateNoWindow = true;
       psi.WindowStyle = ProcessWindowStyle.Hidden;
 
-      using(Process process = Process.Start(psi)) {
-        process.WaitForExit();
-        exitCode = process.ExitCode;
-      }
+      using Process process = Process.Start(psi);
+      process.WaitForExit();
 
       // Delete the file after finishing the compilation
       if(File.Exists(privatePath)) {
         File.Delete(privatePath);
       }
 
-      return exitCode;
     }
 
   }

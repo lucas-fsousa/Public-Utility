@@ -1,7 +1,7 @@
-﻿using App.Utils.CustomExceptions.Base;
+﻿using PublicUtility.CustomExceptions.Base;
 using System;
 
-namespace App.Utils.CustomExceptions {
+namespace PublicUtility.CustomExceptions {
   [Serializable]
   public class RequiredParamsException: BaseException {
     private static string ErrorMessage => "Required parameters not filled in correctly";

@@ -1,4 +1,4 @@
-﻿using App.Utils.CustomExceptions;
+﻿using PublicUtility.CustomExceptions;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System;
 using System.Collections.Generic;
@@ -7,9 +7,9 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using Situation = App.Utils.CustomExceptions.Base.BaseException.Situations;
+using Situation = PublicUtility.CustomExceptions.Base.BaseException.Situations;
 
-namespace App.Utils {
+namespace PublicUtility {
 
   /// <summary>
   /// [EN]: Security focused class containing encryption and decryption methods <br></br>

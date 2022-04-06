@@ -1,12 +1,12 @@
-﻿using App.Utils.CustomExceptions;
+﻿using PublicUtility.CustomExceptions;
 using System;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
-using static App.Utils.CustomExceptions.Base.BaseException;
+using static PublicUtility.CustomExceptions.Base.BaseException;
 
-namespace App.Utils {
+namespace PublicUtility {
 
   /// <summary>
   /// [EN]: Class that assists in notifications through emails<br></br>
