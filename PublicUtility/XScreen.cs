@@ -9,6 +9,22 @@ namespace PublicUtility {
   /// [PT-BR]: Classe que auxiliar para trabalhos envolvendo telas
   /// </summary>
   public static class XScreen {
+    public struct Box {
+      public Size Size { get; set; }
+      public Point Location { get; set; }
+
+      public Point GetCenterBox() {
+        Point xy = new();
+        xy.X = Location.X + (Size.Width / 2);
+        xy.Y = Location.Y + (Size.Height / 2);
+
+        return xy;
+      }
+
+      public Point GetEndBox() {
+        return new Point(Location.X + Size.Width, Location.Y + Size.Height);
+      }
+    }
 
     #region INTEROPT DLL IMPORTS
 
@@ -28,7 +44,7 @@ namespace PublicUtility {
     private static extern int GetSystemMetrics(int nIndex);
 
     #endregion
-
+    
     /// <summary>
     /// [EN]: Function to display a graphical MessageBox<br></br>
     /// [PT-BR]: Mostra uma janela de mensagem em formato gráfico.
@@ -49,23 +65,6 @@ namespace PublicUtility {
     /// [PT-BR]: Retorna um inteiro representando o botão selecionado na janela
     /// </returns>
     public static int ShowMessageBox(string caption, string text, uint type = 1) => MessageBox(new IntPtr(0), text, caption, type);
-
-    /// <summary>
-    /// [EN]: Capture the start of a window through the Handle and convert it to X,Y coordinates<br></br>
-    /// [PT-BR]: Captura o ponto de origem de uma janela através do handle e converte em coordenadas X, Y
-    /// </summary>
-    /// <param name="handle">
-    /// [EN]: Application Handle Address <br></br>
-    /// [PT-BR]: Endereço handle da aplicação</param>
-    /// <returns>
-    /// [EN]: Returns a pointer with the X,Y coordinates of the handle <br></br>
-    /// [PT-BR]: Retorna um Ponto com coordenadas X, Y obtidas de um handle
-    /// </returns>
-    public static Point GetXyByHandle(IntPtr handle) {
-      Point point = new Point();
-      ClientToScreen(handle, ref point);
-      return point;
-    }
 
     /// <summary>
     /// [EN]: Invokes an action to make a mouse click at the indicated X,Y position. <br></br>
@@ -89,13 +88,21 @@ namespace PublicUtility {
     /// [EN]: Application handle identifier <br></br>
     /// [PT-BR]: Identificador handle da aplicação</param>
     /// <returns>
-    /// [EN]: Returns a rectangle with the application screen dimensions <br></br>
-    /// [PT-BR]: Retorna um retangulo com as dimensões da tela da aplicação
+    /// [EN]: Returns a box with the application screen dimensions <br></br>
+    /// [PT-BR]: Retorna uma caixa com as dimensões da tela da aplicação
     /// </returns>
-    public static Rectangle GetDemensionByHandle(IntPtr handle) {
-      var rect = new Rectangle();
+    public static Box GetDemensionByHandle(IntPtr handle) {
+      Rectangle rect = new();
+      Box box = new();
+
       GetWindowRect(handle, ref rect);
-      return rect;
+
+      Size size = new Size((rect.Width - rect.Location.X), (rect.Height - rect.Location.Y));
+      Point point = new Point(rect.Location.X, rect.Location.Y);
+
+      box.Location = point;
+      box.Size = size;
+      return box;
     }
 
     /// <summary>
@@ -138,5 +145,63 @@ namespace PublicUtility {
     /// </returns>
     public static Size GetSize() => new Size(GetSystemMetrics(0), GetSystemMetrics(1));
     
+    #region Overload GetXY
+
+    /// <summary>
+    /// [EN]: Capture the start of a window through the Handle and convert it to X,Y coordinates<br></br>
+    /// [PT-BR]: Captura o ponto de origem de uma janela através do handle e converte em coordenadas X, Y
+    /// </summary>
+    /// <param name="handle">
+    /// [EN]: Application Handle Address <br></br>
+    /// [PT-BR]: Endereço handle da aplicação</param>
+    /// <returns>
+    /// [EN]: Returns a pointer with the X,Y coordinates of the handle <br></br>
+    /// [PT-BR]: Retorna um Ponto com coordenadas X, Y obtidas de um handle
+    /// </returns>
+    public static Point GetXY(IntPtr handle) {
+      Point point = new Point();
+      ClientToScreen(handle, ref point);
+      return point;
+    }
+
+    /// <summary>
+    /// [EN]: Get X,Y location using RGB color<br></br>
+    /// [PT-BR]: Obtém a localização X, Y utilizando cor RGB
+    /// </summary>
+    /// <param name="color">
+    /// [EN]: Object containing the information of the color to be located on the screen<br></br>
+    /// [PT-BR]: Objecto contendo as informações da cor a ser localizada na tela
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns an XY point with RGB color coordinates<br></br>
+    /// [PT-BR]: Retorna um ponto XY com as coordenadas da cor RGB
+    /// </returns>
+    /// <remarks>
+    /// [USE EXAMPLE - EXEMPLO DE USO]:
+    /// <code>
+    ///   Color rgb = Color.FromArgb(255, 170, 35); // ORANGE COLOR
+    ///   Point xy = XScreen.GetXY(rgb);
+    /// </code>
+    /// </remarks>
+    public static Point GetXY(Color color) {
+      if(OperatingSystem.IsWindows()) {
+        Bitmap screen = (Bitmap)PrintScreen();
+
+        for(int x = 0; x < screen.Width; x++) {
+          for(int y = 0; y < screen.Height; y++) {
+
+            Color pixel = screen.GetPixel(x, y);
+            if(pixel.R == color.R && pixel.G == color.G && pixel.B == color.B) {
+              return new Point(x, y);
+            }
+
+          }
+        }
+      }
+
+      return new Point(0, 0);
+    }
+
+    #endregion
   }
 }

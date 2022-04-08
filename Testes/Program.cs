@@ -146,14 +146,17 @@ namespace Testes {
 
       #endregion
 
-     
+      Color rgb = Color.FromArgb(255, 170, 35); // ORANGE COLOR
+      Point xy = XScreen.GetXY(rgb);
 
     }
 
     
-    
 
-    
+
+
+
+
 
   }
 
