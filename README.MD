@@ -62,6 +62,13 @@ XScreen.ClickAt(600, 500);
 // shows a text box in graphic format
 XScreen.ShowMessageBox("INFORMATION", "THIS IS A MESSAGE BOX");
 
+// Get a printscreen / currently only available for windows / Available for other platforms soon
+object response = XScreen.PrintScreen();
+if(response.GetType().Name == "Bitmap") {
+	Bitmap printScreen = (Bitmap)response; // cast the object
+	printScreen.Save(@"C:\MyDocs\printscreen.png", ImageFormat.Png); // save the image in the desired folder
+}
+
 // ================= examples of use of the XSecurity class =================
 
 // get a hash
@@ -111,6 +118,14 @@ char anyChar = X.Input<char>("Enter a new Char: ");
 // DateTime input Examples: 2022/01/01 | 2022-01-01 | 01/01/2022 | 01-01-2022 will be converted to 01/01/2022 00:00:00
 DateTime anyDate = X.Input<DateTime>("Enter a Date: ");
 
+// Examples of using Custom Print
+long a = 13193141; // object to print
+a.Print(); // 1st way to use
+X.Print(a); // 2nd way to use
+
+string message = "Hello World!"; // string message to print
+message.Print(); // 1st way to use
+X.Print(message); // 2nd way to use
 
 // ================= examples of use of the XRequest class =================
 

@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Drawing;
-using System.Windows.Forms;
 using System.Runtime.InteropServices;
-using System.Drawing.Imaging;
-using PublicUtility.CustomExceptions;
-using static PublicUtility.CustomExceptions.Base.BaseException;
 
 namespace PublicUtility {
 
@@ -27,6 +23,9 @@ namespace PublicUtility {
 
     [DllImport("user32.dll")]
     private static extern bool GetWindowRect(IntPtr hwnd, ref Rectangle rectangle);
+
+    [DllImport("User32.dll", ExactSpelling = true, CharSet = CharSet.Auto)]
+    private static extern int GetSystemMetrics(int nIndex);
 
     #endregion
 
@@ -100,71 +99,44 @@ namespace PublicUtility {
     }
 
     /// <summary>
-    /// [EN]: Get the main screen size <br></br>
-    /// [PT-BR]: Obtém o tamanho da tela principal
+    /// [EN]: Take a screenshot (currently working for Windows only) <br></br>
+    /// [PT-BR]: Faça uma captura de tela (atualmente trabalhando apenas para Windows)
     /// </summary>
     /// <returns>
-    /// [EN]: Returns a struct containing screen width and height <br></br>
-    /// [PT-BR]: Retorna uma estrutura contendo largura e altura da tela
+    /// [EN]: Returns a low-level object that can be converted to the object type needed to render the image <br></br>
+    /// [PT-BR]: Retorna um objeto de baixo nivel que pode ser convertido para o tipo de objeto necessário para renderizar a imagem
     /// </returns>
-    public static Size ScreenSize() => new Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
-
-    #region Overload TakeScreenShot
-
-    /// <summary>
-    /// [EN]: Take a screenshot of the current screen <br></br>
-    /// [PT-BR]: faz uma captura da tela atual
-    /// </summary>
-    /// <param name="saveasFileName">
-    /// [EN]: Optional parameter that when filled in, the screenshot is saved as a file <br></br>
-    /// [PT-BR]: Parametro opcional que quando preenchido, o screenshot é salvo como arquivo
-    /// </param>
-    /// <param name="imageFormat">
-    /// [EN]: Optional parameter that when filled in, the screenshot is saved as a file <br></br>
-    /// [PT-BR]: Parametro opcional que quando preenchido, o screenshot é salvo como arquivo
-    /// </param>
-    /// <returns>
-    /// [EN]: Returns a bitmap with the screenshot <br></br>
-    /// [PT-BR]: Retorna um bitmap com o screenshot
-    /// </returns>
-    /// <exception cref="RequiredParamsException"></exception>
-    public static Bitmap TakeScreenShot(string saveasFileName, ImageFormat imageFormat = null) {
-      using(Bitmap bmp = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height)) {
-        Graphics g = Graphics.FromImage(bmp);
-        g.CopyFromScreen(0, 0, 0, 0, bmp.Size);
-
-        if(string.IsNullOrEmpty(saveasFileName))
-          throw new RequiredParamsException(Situations.IsNullOrEmpty, nameof(saveasFileName));
-        
-        if(imageFormat == null)
-          imageFormat = ImageFormat.Png;
-
-        saveasFileName = saveasFileName.Split('.')[0];
-        saveasFileName = string.Concat(saveasFileName, '.', imageFormat.ToString());
-
-        bmp.Save(saveasFileName, ImageFormat.Png);
-
+    /// <remarks>
+    /// [Use example for Windows - Exemplo de uso para Windows]:<br></br>
+    /// <code><br></br>
+    ///   object response = XScreen.PrintScreen();
+    ///   if(response.GetType().Name == "Bitmap") {
+    ///    Bitmap printScreen = (Bitmap)response; // cast the object
+    ///    printScreen.Save(@"C:\MyDocs\printscreen.png", ImageFormat.Png); // save the image in the desired folder
+    ///   }
+    /// </code>
+    /// </remarks>
+    public static object PrintScreen() {
+      Size size = GetSize();
+      if(OperatingSystem.IsWindows()) {
+        Bitmap bmp = new(size.Width, size.Height);
+        Graphics graphics = Graphics.FromImage(bmp);
+        graphics.CopyFromScreen(0, 0, 0, 0, bmp.Size);
         return bmp;
       }
+
+      return null;
     }
 
     /// <summary>
-    /// [EN]: Take a screenshot of the current screen <br></br>
-    /// [PT-BR]: faz uma captura da tela atual
+    /// [EN]: Get the current size of the main screen <br></br>
+    /// [PT-BR]: Obtém o tamanho atual da tela principal
     /// </summary>
     /// <returns>
-    /// [EN]: Returns a bitmap with the screenshot <br></br>
-    /// [PT-BR]: Retorna um bitmap com o screenshot
+    /// [EN]: Returns a structure containing the screen resolution<br></br>
+    /// [PT-BR]: Retorna uma estrutura contendo a resolução da tela
     /// </returns>
-    public static Bitmap TakeScreenShot() {
-      using(Bitmap bmp = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height)) {
-        Graphics g = Graphics.FromImage(bmp);
-        g.CopyFromScreen(0, 0, 0, 0, bmp.Size);
-        return bmp;
-      }
-    }
-
-    #endregion
-
+    public static Size GetSize() => new Size(GetSystemMetrics(0), GetSystemMetrics(1));
+    
   }
 }

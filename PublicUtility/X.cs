@@ -3,6 +3,7 @@ using PublicUtility.CustomExceptions;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using zip = System.IO.Compression;
 
 namespace PublicUtility {
 
@@ -18,7 +19,7 @@ namespace PublicUtility {
   public static class X {
 
     #region OTHERS
-
+    
     /// <summary>
     /// [EN]: Captures keyboard input and converts it to the object type given during the method call <br></br>
     /// [PT-BR]: Captura a entrada do teclado e converte para o tipo de objeto informado durante a chamada do método
@@ -99,7 +100,87 @@ namespace PublicUtility {
 
       return response;
     }
+    
+    /// <summary>
+    /// [EN]: Unzip a .zip file in the destination folder<br></br>
+    /// [PT-BR]: Descompacta um arquivo .zip na pasta de destino
+    /// </summary>
+    /// <param name="zipFilePath">
+    /// [EN]: caminho de onde o arquivo zip está localizado.<br></br>
+    /// [PT-BR]: Caminho de onde o arquivo zip está localizado.
+    /// </param>
+    /// <param name="destinationDir">
+    /// [EN]: Destination folder address<br></br>
+    /// [PT-BR]: Endereço da pasta de destino
+    /// </param>
+    public static void UnzipFile(string zipFilePath, string destinationDir) => zip.ZipFile.ExtractToDirectory(zipFilePath, destinationDir);
+    
+    /// <summary>
+    /// [EN]: Compress a file to .zip<br></br>
+    /// [PT-BR]: Compacta um arquivo para .zip
+    /// </summary>
+    /// <param name="fileToZipPath">
+    /// [EN]: Path of the file to be compressed<br></br>
+    /// [PT-BR]: Caminho do arquivo a ser compactado
+    /// </param>
+    /// <param name="fileZipDir">
+    /// [EN]: Path of the folder where the file will be saved<br></br>
+    /// [PT-BR]: Caminho da pasta onde o arquivo será salvo
+    /// </param>
+    public static void ZipFile(string fileToZipPath, string fileZipDir) => zip.ZipFile.CreateFromDirectory(fileToZipPath, fileZipDir);
 
+    #region Overload Print
+
+    /// <summary>
+    /// [EN]: Console.WriteLine() simplification / Write to console <br></br>
+    /// [PT-BR]: Simplificação do Console.WriteLine() / Escreve no console
+    /// </summary>
+    /// <param name="message">
+    /// [EN]: Message to be written to console <br></br>
+    /// [PT-BR]: Mensagem a ser escrita no console
+    /// </param>
+    public static void Print(this string message) => Console.WriteLine(message);
+
+    /// <summary>
+    /// [EN]: Console.WriteLine() simplification / Write to console <br></br>
+    /// [PT-BR]: Simplificação do Console.WriteLine() / Escreve no console
+    /// </summary>
+    /// <param name="message">
+    /// [EN]: Message to be written to console <br></br>
+    /// [PT-BR]: Mensagem a ser escrita no console
+    /// </param>
+    /// <param name="args">
+    /// [EN]: Array of additional arguments to be written to the console <br></br>
+    /// [PT-BR]: Array de argumentos adicionais para ser escrito no console
+    /// </param>
+    public static void Print(this string message, params object[] args) => Console.WriteLine(message, args);
+
+    /// <summary>
+    /// [EN]: Console.WriteLine() simplification / Write to console <br></br>
+    /// [PT-BR]: Simplificação do Console.WriteLine() / Escreve no console
+    /// </summary>
+    /// <param name="message">
+    /// [EN]: Message to be written to console <br></br>
+    /// [PT-BR]: Mensagem a ser escrita no console
+    /// </param>
+    /// <param name="obj">
+    /// [EN]: Object to be written to the console along with the message <br></br>
+    /// [PT-BR]: Objeto a ser escrito no console juntamente com a mensagem
+    /// </param>
+    public static void Print(this string message, object obj) => Console.WriteLine(message, obj);
+
+    /// <summary>
+    /// [EN]: Console.WriteLine() simplification / Write to console <br></br>
+    /// [PT-BR]: Simplificação do Console.WriteLine() / Escreve no console
+    /// </summary>
+    /// <param name="obj">
+    /// [EN]: Object to be written to the console<br></br>
+    /// [PT-BR]: Objeto a ser escrito no console
+    /// </param>
+    public static void Print(this object obj) => Console.WriteLine(obj);
+    
+    #endregion
+    
     #endregion
 
     #region EXTENSION

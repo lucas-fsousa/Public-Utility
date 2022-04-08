@@ -1,24 +1,24 @@
-﻿using PublicUtility.CustomExceptions;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using PublicUtility;
-using static PublicUtility.CustomExceptions.Base.BaseException;
-using System.Data.SqlClient;
-using System.Diagnostics;
-using System.Threading;
-using System.Net.Mail;
-using System.Drawing;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
-using System.IO.Compression;
+﻿using static PublicUtility.CustomExceptions.Base.BaseException;
 using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
+using PublicUtility.CustomExceptions;
+using System.Security.Cryptography;
+using System.Collections.Generic;
 using System.Drawing.Imaging;
+using System.Threading.Tasks;
+using System.Data.SqlClient;
+using System.IO.Compression;
+using System.Net.Http.Json;
+using System.Diagnostics;
+using System.Threading;
+using System.Net.Http;
+using System.Net.Mail;
+using System.Drawing;
+using PublicUtility;
+using System.Linq;
+using System.Text;
+using System.IO;
+using System;
 
 namespace Testes {
   internal class Program {
@@ -124,7 +124,7 @@ namespace Testes {
 
       // Example with 1 parameter
       //string anyChar = X.Input<string>("password: ", true);
-      
+
       #endregion
 
       #region TESTE CLASS XREQUEST
@@ -146,12 +146,14 @@ namespace Testes {
 
       #endregion
 
-
-
-
+     
 
     }
 
+    
+    
+
+    
 
   }
 
