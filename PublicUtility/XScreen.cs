@@ -13,6 +13,10 @@ namespace PublicUtility {
   /// </summary>
   public static class XScreen {
     public struct Box {
+      public Box(int w, int h, int x, int y) {
+        Size = new Size(w, h);
+        Location = new Point(x, y);
+      }
       public Size Size { get; set; }
       public Point Location { get; set; }
 
@@ -48,19 +52,70 @@ namespace PublicUtility {
 
     #endregion
 
+    /// <summary>
+    /// [EN]: Converts a color image to black and white (grayscale)<br></br>
+    /// [PT-BR]: Converte uma imagem colorida para preto e branco (escalas de cinza)
+    /// </summary>
+    /// <param name="image">
+    /// [EN]: Image to be converted (in Windows it can be Bitmap) <br></br>
+    /// [PT-BR]: Imagem a ser convertida (em Windows pode ser Bitmap)
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns the image converted to grayscale <br></br>
+    /// [PT-BR]: Returns the image converted to grayscale
+    /// </returns>
+    public static object SetImageToGrayScale(object image) {
+      object response = null;
+      if(OperatingSystem.IsWindows()) {
+        Bitmap bitmp = (Bitmap)image;
+        Bitmap returnMap = new Bitmap(bitmp.Size.Width, bitmp.Size.Height, PixelFormat.Format32bppArgb);
+
+        BitmapData bitmapData1 = bitmp.LockBits(new Rectangle(0, 0, bitmp.Width, bitmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+        BitmapData bitmapData2 = returnMap.LockBits(new Rectangle(0, 0, returnMap.Width, returnMap.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+        int a = 0;
+        unsafe {
+          byte* imagePointer1 = (byte*)bitmapData1.Scan0;
+          byte* imagePointer2 = (byte*)bitmapData2.Scan0;
+          for(int i = 0; i < bitmapData1.Height; i++) {
+            for(int j = 0; j < bitmapData1.Width; j++) {
+              // write the logic implementation here
+              a = (imagePointer1[0] + imagePointer1[1] + imagePointer1[2]) / 3;
+              imagePointer2[0] = (byte)a;
+              imagePointer2[1] = (byte)a;
+              imagePointer2[2] = (byte)a;
+              imagePointer2[3] = imagePointer1[3];
+              //4 bytes per pixel
+              imagePointer1 += 4;
+              imagePointer2 += 4;
+            }//end for j
+            //4 bytes per pixel
+            imagePointer1 += bitmapData1.Stride - (bitmapData1.Width * 4);
+            imagePointer2 += bitmapData1.Stride - (bitmapData1.Width * 4);
+          }//end for i
+        }//end unsafe
+
+        returnMap.UnlockBits(bitmapData2);
+        bitmp.UnlockBits(bitmapData1);
+        response = returnMap;
+      }
+
+      return response;
+    }
+
     public static Box LocateOnScreen(string imagePath, float confidence = 0.5f) {
       Box response = new();
+      float prop = 0.0f;
+      float maxProp = 0.0f;
+      long match = 0;
+      long maxMatch = 0;
       try {
         if(OperatingSystem.IsWindows()) {
-
-          Bitmap imBase = (Bitmap)PrintScreen();
-          imBase.Save(@"C:\MyDocs\printscreen.png", ImageFormat.Png);
-          Bitmap imToLocate = new Bitmap(imagePath);
-
+          Size resolution = GetSize();
           List<string> screenMap = new List<string>();
+          Bitmap imBase = (Bitmap)SetImageToGrayScale(PrintScreen());
+          Bitmap imToLocate = (Bitmap)SetImageToGrayScale(new Bitmap(imagePath));
 
           int countx = 0, county = 0;
-          long match = 0;
           while(countx < imBase.Width && county < imBase.Height) {
             for(int x = 0; x < imToLocate.Width; x++, countx++) {
 
@@ -91,16 +146,18 @@ namespace PublicUtility {
 
               }
             }
+
+            if(match > maxMatch)
+              maxMatch = match;
+
+            if(prop > maxProp)
+              maxProp = prop;
           } // while end
 
-          float prop = 0.0f;
-
           // tries to calculate percentage to handle division by zero attempts
-          try { prop = ((imToLocate.Height * imToLocate.Width)/ match) * 0.01f; } catch(Exception) { }
+          try { prop = (match / (imToLocate.Height * imToLocate.Width)) * 0.01f; } catch(Exception) { }
 
-          if(prop < confidence) {
-            return response;
-          }
+
 
           screenMap.ForEach(coord => {
             int x = Convert.ToInt32(coord.Split(';')[0]);
@@ -114,22 +171,13 @@ namespace PublicUtility {
           });
 
 
-
-
-
         }
       } catch(Exception) {
         throw;
       }
-       
 
       return response;
     }
-
-
-
-
-
 
     /// <summary>
     /// [EN]: Function to display a graphical MessageBox<br></br>
@@ -215,6 +263,30 @@ namespace PublicUtility {
         Bitmap bmp = new(size.Width, size.Height);
         Graphics graphics = Graphics.FromImage(bmp);
         graphics.CopyFromScreen(0, 0, 0, 0, bmp.Size);
+        return bmp;
+      }
+
+      return null;
+    }
+
+    /// <summary>
+    /// [EN]: Take a screenshot (currently working for Windows only) <br></br>
+    /// [PT-BR]: Faça uma captura de tela (atualmente trabalhando apenas para Windows)
+    /// </summary>
+    /// <param name="box">
+    /// [EN]: Box containing the dimensions of the image<br></br>
+    /// [PT-BR]: Caixa contendo as dimensões da imagem
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a low-level object that can be converted to the object type needed to render the image <br></br>
+    /// [PT-BR]: Retorna um objeto de baixo nivel que pode ser convertido para o tipo de objeto necessário para renderizar a imagem
+    /// </returns>
+    public static object PrintScreen(Box box) {
+
+      if(OperatingSystem.IsWindows()) {
+        Bitmap bmp = new(box.Size.Width, box.Size.Height);
+        Graphics graphics = Graphics.FromImage(bmp);
+        graphics.CopyFromScreen(box.Location.X, box.Location.Y, 0, 0, bmp.Size);
         return bmp;
       }
 

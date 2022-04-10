@@ -25,6 +25,7 @@
     <OutputType>Library</OutputType>
     <UseWPF>False</UseWPF>
     <UseWindowsForms>False</UseWindowsForms>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>

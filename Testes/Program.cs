@@ -146,12 +146,14 @@ namespace Testes {
 
       #endregion
 
-      Thread.Sleep(10000);
       long init = DateTime.Now.Ticks;
       string captura = string.Format(@"C:\MyDocs\captura.png");
+      //string testeCapPerso = string.Format(@"C:\MyDocs\teste.png");
       XScreen.LocateOnScreen(captura);
-
+      //var bp = (Bitmap)XScreen.SetImageToGrayScale(captura);
+      //bp.Save(@"C:\MyDocs\convertidoParaCinza.png", ImageFormat.Png);
       X.Print($"END: {new DateTime(DateTime.Now.Ticks - init)}");
+      
     }
 
 
