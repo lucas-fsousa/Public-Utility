@@ -129,57 +129,6 @@ namespace PublicUtility {
     /// </param>
     public static void ZipFile(string fileToZipPath, string fileZipDir) => zip.ZipFile.CreateFromDirectory(fileToZipPath, fileZipDir);
 
-    #region Overload Print
-
-    /// <summary>
-    /// [EN]: Console.WriteLine() simplification / Write to console <br></br>
-    /// [PT-BR]: Simplificação do Console.WriteLine() / Escreve no console
-    /// </summary>
-    /// <param name="message">
-    /// [EN]: Message to be written to console <br></br>
-    /// [PT-BR]: Mensagem a ser escrita no console
-    /// </param>
-    public static void Print(this string message) => Console.WriteLine(message);
-
-    /// <summary>
-    /// [EN]: Console.WriteLine() simplification / Write to console <br></br>
-    /// [PT-BR]: Simplificação do Console.WriteLine() / Escreve no console
-    /// </summary>
-    /// <param name="message">
-    /// [EN]: Message to be written to console <br></br>
-    /// [PT-BR]: Mensagem a ser escrita no console
-    /// </param>
-    /// <param name="args">
-    /// [EN]: Array of additional arguments to be written to the console <br></br>
-    /// [PT-BR]: Array de argumentos adicionais para ser escrito no console
-    /// </param>
-    public static void Print(this string message, params object[] args) => Console.WriteLine(message, args);
-
-    /// <summary>
-    /// [EN]: Console.WriteLine() simplification / Write to console <br></br>
-    /// [PT-BR]: Simplificação do Console.WriteLine() / Escreve no console
-    /// </summary>
-    /// <param name="message">
-    /// [EN]: Message to be written to console <br></br>
-    /// [PT-BR]: Mensagem a ser escrita no console
-    /// </param>
-    /// <param name="obj">
-    /// [EN]: Object to be written to the console along with the message <br></br>
-    /// [PT-BR]: Objeto a ser escrito no console juntamente com a mensagem
-    /// </param>
-    public static void Print(this string message, object obj) => Console.WriteLine(message, obj);
-
-    /// <summary>
-    /// [EN]: Console.WriteLine() simplification / Write to console <br></br>
-    /// [PT-BR]: Simplificação do Console.WriteLine() / Escreve no console
-    /// </summary>
-    /// <param name="obj">
-    /// [EN]: Object to be written to the console<br></br>
-    /// [PT-BR]: Objeto a ser escrito no console
-    /// </param>
-    public static void Print(this object obj) => Console.WriteLine(obj);
-    
-    #endregion
     
     #endregion
 
@@ -269,7 +218,62 @@ namespace PublicUtility {
         return false;
     }
 
+    #region Overload Print
 
+    /// <summary>
+    /// [EN]: Console.WriteLine() simplification / Write to console <br></br>
+    /// [PT-BR]: Simplificação do Console.WriteLine() / Escreve no console
+    /// </summary>
+    /// <param name="message">
+    /// [EN]: Message to be written to console <br></br>
+    /// [PT-BR]: Mensagem a ser escrita no console
+    /// </param>
+    public static void Print(this string message) => Console.WriteLine(message);
+
+    /// <summary>
+    /// [EN]: Console.WriteLine() simplification / Write to console <br></br>
+    /// [PT-BR]: Simplificação do Console.WriteLine() / Escreve no console
+    /// </summary>
+    /// <param name="message">
+    /// [EN]: Message to be written to console <br></br>
+    /// [PT-BR]: Mensagem a ser escrita no console
+    /// </param>
+    /// <param name="args">
+    /// [EN]: Array of additional arguments to be written to the console <br></br>
+    /// [PT-BR]: Array de argumentos adicionais para ser escrito no console
+    /// </param>
+    public static void Print(this string message, params object[] args) => Console.WriteLine(message, args);
+
+    /// <summary>
+    /// [EN]: Console.WriteLine() simplification / Write to console <br></br>
+    /// [PT-BR]: Simplificação do Console.WriteLine() / Escreve no console
+    /// </summary>
+    /// <param name="message">
+    /// [EN]: Message to be written to console <br></br>
+    /// [PT-BR]: Mensagem a ser escrita no console
+    /// </param>
+    /// <param name="arg">
+    /// [EN]: Object to be written to the console along with the message <br></br>
+    /// [PT-BR]: Objeto a ser escrito no console juntamente com a mensagem
+    /// </param>
+    public static void Print(this string message, object? arg) => Console.WriteLine(message, arg);
+
+    /// <summary>
+    /// [EN]: Console.WriteLine() simplification / Write to console <br></br>
+    /// [PT-BR]: Simplificação do Console.WriteLine() / Escreve no console
+    /// </summary>
+    /// <param name="obj">
+    /// [EN]: Object to be written to the console<br></br>
+    /// [PT-BR]: Objeto a ser escrito no console
+    /// </param>
+    public static void Print(this object obj) => Console.WriteLine(obj);
+
+    /// <summary>
+    /// [EN]: Console.WriteLine() simplification / Write to console <br></br>
+    /// [PT-BR]: Simplificação do Console.WriteLine() / Escreve no console
+    /// </summary>
+    public static void Print() => Console.WriteLine();
+    #endregion
 
     #region Overload MaxMin
 

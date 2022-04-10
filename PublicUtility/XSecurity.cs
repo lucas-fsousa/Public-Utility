@@ -193,6 +193,31 @@ namespace PublicUtility {
 
       return result;
     }
+
+    /// <summary>
+    /// [EN]: Gets a user-defined length random string<br></br>
+    /// [PT-BR]: Obtém uma cadeia de caracteres aleatória com tamanho definido pelo usuário
+    /// </summary>
+    /// <param name="length">
+    /// [EN]: string length <br></br>
+    /// [PT-BR]: Tamanho da cadeia de caracteres
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a random string<br></br>
+    /// [PT-BR]: Retorna uma cadeia de caracteres aleatória
+    /// </returns>
+    public static string GetRandomString(int length) { 
+      string randomString = string.Empty;
+      string character = string.Format("0123456789QWERTYUIOPASDFGHJKLZXCVBNM!@#$&*()-=+qwertyuipolaksjdhfgzmxncbv");
+      for(int i = 0; i < length; i++) {
+        Random random = new Random();
+        int pos = random.Next(0, character.Length);
+        randomString += character[pos];
+      }
+
+      return randomString;
+    }
+  
   }
 
 }

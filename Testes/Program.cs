@@ -146,12 +146,15 @@ namespace Testes {
 
       #endregion
 
-      Color rgb = Color.FromArgb(255, 170, 35); // ORANGE COLOR
-      Point xy = XScreen.GetXY(rgb);
+      Thread.Sleep(10000);
+      long init = DateTime.Now.Ticks;
+      string captura = string.Format(@"C:\MyDocs\captura.png");
+      XScreen.LocateOnScreen(captura);
 
+      X.Print($"END: {new DateTime(DateTime.Now.Ticks - init)}");
     }
 
-    
+
 
 
 

@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace PublicUtility {
 
@@ -44,7 +47,90 @@ namespace PublicUtility {
     private static extern int GetSystemMetrics(int nIndex);
 
     #endregion
-    
+
+    public static Box LocateOnScreen(string imagePath, float confidence = 0.5f) {
+      Box response = new();
+      try {
+        if(OperatingSystem.IsWindows()) {
+
+          Bitmap imBase = (Bitmap)PrintScreen();
+          imBase.Save(@"C:\MyDocs\printscreen.png", ImageFormat.Png);
+          Bitmap imToLocate = new Bitmap(imagePath);
+
+          List<string> screenMap = new List<string>();
+
+          int countx = 0, county = 0;
+          long match = 0;
+          while(countx < imBase.Width && county < imBase.Height) {
+            for(int x = 0; x < imToLocate.Width; x++, countx++) {
+
+              if(countx >= imBase.Width) {
+                break;
+              }
+
+              for(int y = 0; y < imToLocate.Height; y++, county++) {
+
+                if(county >= imBase.Height) {
+                  county = 0;
+                }
+
+                // ARGB TO LOCATE
+                byte r = imToLocate.GetPixel(x, y).R;
+                byte g = imToLocate.GetPixel(x, y).G;
+                byte b = imToLocate.GetPixel(x, y).B;
+
+                // ARGB SCREENSHOT BASE
+                byte rr = imBase.GetPixel(countx, county).R;
+                byte gg = imBase.GetPixel(countx, county).G;
+                byte bb = imBase.GetPixel(countx, county).B;
+
+                if(rr == r && gg == g && bb == b) {
+                  screenMap.Add($"{countx};{county}"); // concatenates X coordinate and Y coordinate separating by ';'
+                  match++;
+                }
+
+              }
+            }
+          } // while end
+
+          float prop = 0.0f;
+
+          // tries to calculate percentage to handle division by zero attempts
+          try { prop = ((imToLocate.Height * imToLocate.Width)/ match) * 0.01f; } catch(Exception) { }
+
+          if(prop < confidence) {
+            return response;
+          }
+
+          screenMap.ForEach(coord => {
+            int x = Convert.ToInt32(coord.Split(';')[0]);
+            int y = Convert.ToInt32(coord.Split(';')[1]);
+
+            int i = ShowMessageBox("", $"x: {x}, y: {y}");
+            if(i != 2) {
+              ClickAt(x, y);
+            }
+
+          });
+
+
+
+
+
+        }
+      } catch(Exception) {
+        throw;
+      }
+       
+
+      return response;
+    }
+
+
+
+
+
+
     /// <summary>
     /// [EN]: Function to display a graphical MessageBox<br></br>
     /// [PT-BR]: Mostra uma janela de mensagem em formato gráfico.
@@ -144,7 +230,7 @@ namespace PublicUtility {
     /// [PT-BR]: Retorna uma estrutura contendo a resolução da tela
     /// </returns>
     public static Size GetSize() => new Size(GetSystemMetrics(0), GetSystemMetrics(1));
-    
+
     #region Overload GetXY
 
     /// <summary>
@@ -203,5 +289,6 @@ namespace PublicUtility {
     }
 
     #endregion
+
   }
 }
