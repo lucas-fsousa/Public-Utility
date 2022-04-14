@@ -1,10 +1,10 @@
 ﻿using PublicUtility.CustomExceptions;
+using PublicUtility.Xnm;
 using System;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
-using static PublicUtility.CustomExceptions.Base.BaseException;
 
 namespace PublicUtility {
   public static class XRequest {
@@ -24,7 +24,7 @@ namespace PublicUtility {
     /// <exception cref="RequiredParamsException"></exception>
     public static async Task<HttpResponseMessage> HttpDelete(Uri url) {
       if(url == null)
-        throw new RequiredParamsException(Situations.IsNullOrEmpty, nameof(url));
+        throw new RequiredParamsException(Situation.IsNullOrEmpty, nameof(url));
 
       using(HttpClient http = new HttpClient()) {
         HttpResponseMessage message = await http.DeleteAsync(url);
@@ -59,7 +59,7 @@ namespace PublicUtility {
     /// <exception cref="RequiredParamsException"></exception>
     public static async Task<HttpResponseMessage> HttpPost<Type>(Uri url, Type value, JsonSerializerOptions jsonOptions = null) {
       if(url == null)
-        throw new RequiredParamsException(Situations.IsNullOrEmpty, nameof(url));
+        throw new RequiredParamsException(Situation.IsNullOrEmpty, nameof(url));
 
       using(HttpClient http = new HttpClient()) {
         HttpResponseMessage message = await http.PostAsJsonAsync(url, value, jsonOptions);
@@ -86,10 +86,10 @@ namespace PublicUtility {
     /// <exception cref="RequiredParamsException"></exception>
     public static async Task<HttpResponseMessage> HttpPost(Uri url, HttpContent value) {
       if(url == null)
-        throw new RequiredParamsException(Situations.IsNullOrEmpty, nameof(url));
+        throw new RequiredParamsException(Situation.IsNullOrEmpty, nameof(url));
 
       if(value == null)
-        throw new RequiredParamsException(Situations.IsNullOrEmpty, nameof(value));
+        throw new RequiredParamsException(Situation.IsNullOrEmpty, nameof(value));
 
       using(HttpClient http = new HttpClient()) {
         HttpResponseMessage message = await http.PostAsync(url, value);
@@ -124,7 +124,7 @@ namespace PublicUtility {
     /// <exception cref="RequiredParamsException"></exception>
     public static async Task<HttpResponseMessage> HttpPut<Type>(string url, Type value, JsonSerializerOptions jsonOptions = null) {
       if(string.IsNullOrEmpty(url))
-        throw new RequiredParamsException(Situations.IsNullOrEmpty, nameof(url));
+        throw new RequiredParamsException(Situation.IsNullOrEmpty, nameof(url));
 
       using(HttpClient http = new HttpClient()) {
         HttpResponseMessage message = await http.PutAsJsonAsync(url, value, jsonOptions);
@@ -151,10 +151,10 @@ namespace PublicUtility {
     /// <exception cref="RequiredParamsException"></exception>
     public static async Task<HttpResponseMessage> HttpPut(Uri url, HttpContent value) {
       if(url == null)
-        throw new RequiredParamsException(Situations.IsNullOrEmpty, nameof(url));
+        throw new RequiredParamsException(Situation.IsNullOrEmpty, nameof(url));
 
       if(value == null)
-        throw new RequiredParamsException(Situations.IsNullOrEmpty, nameof(value));
+        throw new RequiredParamsException(Situation.IsNullOrEmpty, nameof(value));
 
       using(HttpClient http = new HttpClient()) {
         HttpResponseMessage message = await http.PutAsync(url, value);
@@ -177,7 +177,7 @@ namespace PublicUtility {
     /// <exception cref="RequiredParamsException"></exception>
     public static async Task<HttpResponseMessage> HttpGet(Uri url) {
       if(url == null)
-        throw new RequiredParamsException(Situations.IsNullOrEmpty, nameof(url));
+        throw new RequiredParamsException(Situation.IsNullOrEmpty, nameof(url));
 
       using(HttpClient http = new HttpClient()) {
         HttpResponseMessage message = await http.GetAsync(url);
@@ -208,7 +208,7 @@ namespace PublicUtility {
     /// <exception cref="RequiredParamsException"></exception>
     public static async Task<Type> HttpGet<Type>(Uri url, JsonSerializerOptions jsonOptions = null) {
       if(url == null)
-        throw new RequiredParamsException(Situations.IsNullOrEmpty, nameof(url));
+        throw new RequiredParamsException(Situation.IsNullOrEmpty, nameof(url));
 
       using(HttpClient http = new HttpClient()) {
         Type objectDeserealized = await http.GetFromJsonAsync<Type>(url, jsonOptions);
@@ -239,10 +239,10 @@ namespace PublicUtility {
     /// <exception cref="RequiredParamsException"></exception>
     public static async Task<HttpResponseMessage> HttpPatchAsync<Type>(Uri url, HttpContent value) {
       if(url == null)
-        throw new RequiredParamsException(Situations.IsNullOrEmpty, nameof(url));
+        throw new RequiredParamsException(Situation.IsNullOrEmpty, nameof(url));
 
       if(value == null)
-        throw new RequiredParamsException(Situations.IsNullOrEmpty, nameof(value));
+        throw new RequiredParamsException(Situation.IsNullOrEmpty, nameof(value));
 
       using(HttpClient http = new HttpClient()) {
         HttpResponseMessage message = await http.PatchAsync(url, value);
@@ -265,7 +265,7 @@ namespace PublicUtility {
     /// <exception cref="RequiredParamsException"></exception>
     public static async Task<HttpResponseMessage> Custom(HttpRequestMessage request) {
       if(request == null)
-        throw new RequiredParamsException(Situations.IsNullOrEmpty, nameof(request));
+        throw new RequiredParamsException(Situation.IsNullOrEmpty, nameof(request));
 
       using(HttpClient http = new HttpClient()) {
         HttpResponseMessage message = await http.SendAsync(request);

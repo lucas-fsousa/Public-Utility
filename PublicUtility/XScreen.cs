@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using PublicUtility.Xnm;
+using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
-using System.Threading;
 
 namespace PublicUtility {
 
@@ -12,28 +10,16 @@ namespace PublicUtility {
   /// [PT-BR]: Classe que auxiliar para trabalhos envolvendo telas
   /// </summary>
   public static class XScreen {
-    public struct Box {
-      public Box(int w, int h, int x, int y) {
-        Size = new Size(w, h);
-        Location = new Point(x, y);
-      }
-      public Size Size { get; set; }
-      public Point Location { get; set; }
 
-      public Point GetCenterBox() {
-        Point xy = new();
-        xy.X = Location.X + (Size.Width / 2);
-        xy.Y = Location.Y + (Size.Height / 2);
-
-        return xy;
-      }
-
-      public Point GetEndBox() {
-        return new Point(Location.X + Size.Width, Location.Y + Size.Height);
-      }
-    }
+    private const int LEFTDOWN = 0x02;
+    private const int RIGHTDOWN = 0x08;
+    private const int LEFTUP = 0x04;
+    private const int RIGHTUP = 0x10;
 
     #region INTEROPT DLL IMPORTS
+
+    [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
+    private static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint data, uint dwExtraInfo);
 
     [DllImport("User32.Dll")]
     private static extern bool ClientToScreen(IntPtr hWnd, ref Point point);
@@ -42,7 +28,7 @@ namespace PublicUtility {
     private static extern long SetCursorPos(int x, int y);
 
     [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-    private static extern int MessageBox(IntPtr hWnd, String text, String caption, uint type = 3);
+    private static extern int MessageBox(IntPtr hWnd, string text, string caption, uint type = 3);
 
     [DllImport("user32.dll")]
     private static extern bool GetWindowRect(IntPtr hwnd, ref Rectangle rectangle);
@@ -53,8 +39,45 @@ namespace PublicUtility {
     #endregion
 
     /// <summary>
-    /// [EN]: Converts a color image to black and white (grayscale)<br></br>
-    /// [PT-BR]: Converte uma imagem colorida para preto e branco (escalas de cinza)
+    /// [EN]: Simulates a left mouse button click on the current X,Y position on the screen <br></br>
+    /// [PT-BR]: Simula um click com o botão esquerdo do mouse na posição atual X, Y da tela
+    /// </summary>
+    public static void LeftClick() => mouse_event(LEFTDOWN | LEFTUP, 0, 0, 0, 0);
+
+    /// <summary>
+    /// [EN]: Simulates a right mouse click at the current X,Y position on the screen<br></br>
+    /// [PT-BR]: Simula um click com o botão direito do mouse na posição atual X, Y da tela
+    /// </summary>
+    public static void RightClick() => mouse_event(RIGHTDOWN | RIGHTUP, 0, 0, 0, 0);
+
+    /// <summary>
+    /// [EN]: Make a combination of MouseMove() and LeftClick() or RightClick() to move the mouse to a certain position and trigger the click<br></br>
+    /// [PT-BR]: Faz uma combinação de MouseMove() e LeftClick() ou RightClick() para movimentar o mouse a uma determinada posição e acionar o click
+    /// </summary>
+    /// <param name="x">
+    /// [EN]: X position relative to the current screen<br></br>
+    /// [PT-BR]: Posição X em relação a tela atual
+    /// </param>
+    /// <param name="y">
+    /// [EN]: Y position relative to the current screen<br></br>
+    /// [PT-BR]: Posição Y em relação a tela atual
+    /// </param>
+    /// <param name="leftbtn">
+    /// [EN]: Indicates which mouse button will be used to click. Default is true for left, if marked as false, right button will be triggered<br></br>
+    /// [PT-BR]: Indica qual botão do mouse será utilizado para efetur o click. O padrão é true para esquerdo, se marcado como false, o botão direito será acionado
+    /// </param>
+    public static void MoveToAndClick(int x, int y, bool leftbtn = true) {
+      MouseMoveTo(x, y);
+      if(leftbtn)
+        LeftClick();
+
+      else
+        RightClick();
+    }
+
+    /// <summary>
+    /// [EN]: Converts a color image to grayscale<br></br>
+    /// [PT-BR]: Converte uma imagem colorida para escalas de cinza
     /// </summary>
     /// <param name="image">
     /// [EN]: Image to be converted (in Windows it can be Bitmap) <br></br>
@@ -68,112 +91,25 @@ namespace PublicUtility {
       object response = null;
       if(OperatingSystem.IsWindows()) {
         Bitmap bitmp = (Bitmap)image;
-        Bitmap returnMap = new Bitmap(bitmp.Size.Width, bitmp.Size.Height, PixelFormat.Format32bppArgb);
+        for(int x = 0; x < bitmp.Width; x++) {
+          for(int y = 0; y < bitmp.Height; y++) { 
 
-        BitmapData bitmapData1 = bitmp.LockBits(new Rectangle(0, 0, bitmp.Width, bitmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-        BitmapData bitmapData2 = returnMap.LockBits(new Rectangle(0, 0, returnMap.Width, returnMap.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-        int a = 0;
-        unsafe {
-          byte* imagePointer1 = (byte*)bitmapData1.Scan0;
-          byte* imagePointer2 = (byte*)bitmapData2.Scan0;
-          for(int i = 0; i < bitmapData1.Height; i++) {
-            for(int j = 0; j < bitmapData1.Width; j++) {
-              // write the logic implementation here
-              a = (imagePointer1[0] + imagePointer1[1] + imagePointer1[2]) / 3;
-              imagePointer2[0] = (byte)a;
-              imagePointer2[1] = (byte)a;
-              imagePointer2[2] = (byte)a;
-              imagePointer2[3] = imagePointer1[3];
-              //4 bytes per pixel
-              imagePointer1 += 4;
-              imagePointer2 += 4;
-            }//end for j
-            //4 bytes per pixel
-            imagePointer1 += bitmapData1.Stride - (bitmapData1.Width * 4);
-            imagePointer2 += bitmapData1.Stride - (bitmapData1.Width * 4);
-          }//end for i
-        }//end unsafe
+            Color color  = bitmp.GetPixel(x, y);
+            byte r = color.R;
+            byte g = color.G;
+            byte b = color.B;
+            
+            byte grayScale = (byte)(.299 * r + .587 * g + .144 * b);
 
-        returnMap.UnlockBits(bitmapData2);
-        bitmp.UnlockBits(bitmapData1);
-        response = returnMap;
-      }
+            r = grayScale;
+            b = grayScale;
+            g = grayScale;
 
-      return response;
-    }
-
-    public static Box LocateOnScreen(string imagePath, float confidence = 0.5f) {
-      Box response = new();
-      float prop = 0.0f;
-      float maxProp = 0.0f;
-      long match = 0;
-      long maxMatch = 0;
-      try {
-        if(OperatingSystem.IsWindows()) {
-          Size resolution = GetSize();
-          List<string> screenMap = new List<string>();
-          Bitmap imBase = (Bitmap)SetImageToGrayScale(PrintScreen());
-          Bitmap imToLocate = (Bitmap)SetImageToGrayScale(new Bitmap(imagePath));
-
-          int countx = 0, county = 0;
-          while(countx < imBase.Width && county < imBase.Height) {
-            for(int x = 0; x < imToLocate.Width; x++, countx++) {
-
-              if(countx >= imBase.Width) {
-                break;
-              }
-
-              for(int y = 0; y < imToLocate.Height; y++, county++) {
-
-                if(county >= imBase.Height) {
-                  county = 0;
-                }
-
-                // ARGB TO LOCATE
-                byte r = imToLocate.GetPixel(x, y).R;
-                byte g = imToLocate.GetPixel(x, y).G;
-                byte b = imToLocate.GetPixel(x, y).B;
-
-                // ARGB SCREENSHOT BASE
-                byte rr = imBase.GetPixel(countx, county).R;
-                byte gg = imBase.GetPixel(countx, county).G;
-                byte bb = imBase.GetPixel(countx, county).B;
-
-                if(rr == r && gg == g && bb == b) {
-                  screenMap.Add($"{countx};{county}"); // concatenates X coordinate and Y coordinate separating by ';'
-                  match++;
-                }
-
-              }
-            }
-
-            if(match > maxMatch)
-              maxMatch = match;
-
-            if(prop > maxProp)
-              maxProp = prop;
-          } // while end
-
-          // tries to calculate percentage to handle division by zero attempts
-          try { prop = (match / (imToLocate.Height * imToLocate.Width)) * 0.01f; } catch(Exception) { }
-
-
-
-          screenMap.ForEach(coord => {
-            int x = Convert.ToInt32(coord.Split(';')[0]);
-            int y = Convert.ToInt32(coord.Split(';')[1]);
-
-            int i = ShowMessageBox("", $"x: {x}, y: {y}");
-            if(i != 2) {
-              ClickAt(x, y);
-            }
-
-          });
-
-
+            bitmp.SetPixel(x, y, Color.FromArgb(r, g, b));
+          }
         }
-      } catch(Exception) {
-        throw;
+
+        response = bitmp;
       }
 
       return response;
@@ -201,8 +137,8 @@ namespace PublicUtility {
     public static int ShowMessageBox(string caption, string text, uint type = 1) => MessageBox(new IntPtr(0), text, caption, type);
 
     /// <summary>
-    /// [EN]: Invokes an action to make a mouse click at the indicated X,Y position. <br></br>
-    /// [PT-BR]: Invoca a ação que realiza o click do mouse nas coordenadas X, Y
+    /// [EN]: Invokes an action to make a mouse move at the indicated X,Y position. <br></br>
+    /// [PT-BR]: Invoca a ação que realiza o movimento do mouse para as coordenadas X, Y
     /// </summary>
     /// <param name="x">
     /// [EN]: Location of X on screen <br></br>
@@ -212,7 +148,7 @@ namespace PublicUtility {
     /// [EN]: Location of Y on screen <br></br>
     /// [PT-BR]: Localização de Y na tela
     /// </param>
-    public static void ClickAt(int x, int y) => SetCursorPos(x, y);
+    public static void MouseMoveTo(int x, int y) => SetCursorPos(x, y);
 
     /// <summary>
     /// [EN]: Capture the screen dimensions of an application <br></br>

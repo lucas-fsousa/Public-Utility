@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using PublicUtility.CustomExceptions;
+using PublicUtility.Xnm;
 using static PublicUtility.CustomExceptions.Base.BaseException;
 
 namespace PublicUtility {
@@ -31,7 +32,7 @@ namespace PublicUtility {
     public XSql(string connectionString, SqlCommand sqlCommand) {
       string invalidParamName = IsValid(connectionString, sqlCommand);
       if(!string.IsNullOrEmpty(invalidParamName)) {
-        throw new RequiredParamsException(Situations.IsNullOrEmpty, invalidParamName);
+        throw new RequiredParamsException(Situation.IsNullOrEmpty, invalidParamName);
       }
 
       this.con = new SqlConnection(connectionString);

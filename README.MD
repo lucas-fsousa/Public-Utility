@@ -25,7 +25,7 @@ using PublicUtility; // call Namespace
 
 //creates and runs a script.bat 
 string[] commands = new { "echo Hello", "echo World" };
-int exitCode = XSystem.RunCmdScript(commands);
+XSystem.RunCmdScript(commands);
 
 // returns a list of files from the indicated path
 List<FileInfo> files = XSystem.GrabFilesFromFolder(@"C:\MyDocs");
@@ -55,9 +55,6 @@ XSql xSql = new XSql(@"your connection string here", sqlCommand);
 xSql.GoExec(out errorMessage);
 
 // ================= examples of use of the XScreen class =================
-
-// Simulates a mouse click in the screen point x, y 
-XScreen.ClickAt(600, 500);
 
 // shows a text box in graphic format
 XScreen.ShowMessageBox("INFORMATION", "THIS IS A MESSAGE BOX");

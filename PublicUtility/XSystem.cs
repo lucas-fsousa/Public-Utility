@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.IO;
 using System;
+using PublicUtility.Xnm;
 
 namespace PublicUtility {
 
@@ -170,8 +171,8 @@ namespace PublicUtility {
 
       privatePath = Path.Combine(privatePath, "NewCommandsForExec.bat");
 
-      if(commands.Count() <= 0)
-        throw new RequiredParamsException(Situations.LessThanZero, nameof(commands));
+      if(!commands.Any())
+        throw new RequiredParamsException(Situation.LessThanZero, nameof(commands));
 
       File.WriteAllLines(privatePath, commands);
 

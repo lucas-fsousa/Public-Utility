@@ -1,8 +1,8 @@
-﻿using static PublicUtility.CustomExceptions.Base.BaseException;
-using PublicUtility.CustomExceptions;
+﻿using PublicUtility.CustomExceptions;
+using PublicUtility.Xnm;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
 using zip = System.IO.Compression;
 
 namespace PublicUtility {
@@ -64,7 +64,7 @@ namespace PublicUtility {
       validInputs.Add("int", typeof(int));
 
       if(!validInputs.ContainsValue(typeof(T)))
-        throw new RequiredParamsException(Situations.InvalidType, nameof(T));
+        throw new RequiredParamsException(Situation.InvalidType, nameof(T));
 
       #endregion
 

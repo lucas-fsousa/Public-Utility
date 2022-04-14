@@ -1,10 +1,10 @@
-﻿using static PublicUtility.CustomExceptions.Base.BaseException;
-using System.Text.RegularExpressions;
-using PublicUtility.CustomExceptions;
-using System.Net.Mail;
+﻿using PublicUtility.CustomExceptions;
+using PublicUtility.Xnm;
+using System;
 using System.Linq;
 using System.Net;
-using System;
+using System.Net.Mail;
+using System.Text.RegularExpressions;
 
 namespace PublicUtility {
 
@@ -52,13 +52,13 @@ namespace PublicUtility {
       this.Priority = MailPriority.Normal;
 
       if(!IsValid(credentialEmail)) {
-        throw new RequiredParamsException(Situations.InvalidFormat, "credentialEmail");
+        throw new RequiredParamsException(Situation.InvalidFormat, "credentialEmail");
 
       } else if(string.IsNullOrEmpty(credentialPassword)) {
-        throw new RequiredParamsException(Situations.IsNullOrEmpty, "credentialPassword");
+        throw new RequiredParamsException(Situation.IsNullOrEmpty, "credentialPassword");
 
       } else if(string.IsNullOrEmpty(presentationName)) {
-        throw new RequiredParamsException(Situations.IsNullOrEmpty, "PresentationName");
+        throw new RequiredParamsException(Situation.IsNullOrEmpty, "PresentationName");
 
       }
     }
@@ -97,13 +97,13 @@ namespace PublicUtility {
 
       this.To = this.To.RemoveWhiteSpaces();
       if(string.IsNullOrEmpty(this.To)) {
-        throw new RequiredParamsException(Situations.IsNullOrEmpty, "Destination Emails");
+        throw new RequiredParamsException(Situation.IsNullOrEmpty, "Destination Emails");
       }
 
       // CONFIG TO RECEPT
       foreach(string email in this.To.Split(MailsSeparator)) {
         if(!IsValid(email)) {
-          throw new RequiredParamsException(Situations.InvalidFormat, "Destination Email");
+          throw new RequiredParamsException(Situation.InvalidFormat, "Destination Email");
         }
 
         mail.To.Add(new MailAddress(email));
