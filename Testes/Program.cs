@@ -1,5 +1,4 @@
-﻿using static PublicUtility.CustomExceptions.Base.BaseException;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
 using PublicUtility.CustomExceptions;
 using System.Security.Cryptography;
@@ -10,19 +9,22 @@ using System.Data.SqlClient;
 using System.IO.Compression;
 using System.Net.Http.Json;
 using System.Diagnostics;
+using Emgu.CV.Structure;
+using PublicUtility.Xnm;
 using System.Threading;
 using System.Net.Http;
 using System.Net.Mail;
 using System.Drawing;
 using PublicUtility;
+using Emgu.CV.Dnn;
 using System.Linq;
 using System.Text;
 using System.IO;
 using Emgu.CV;
 using System;
-using Emgu.CV.Structure;
-using Emgu.CV.Dnn;
-using PublicUtility.Xnm;
+using Emgu.CV.CvEnum;
+using Emgu.CV.Util;
+using Emgu.CV.Features2D;
 
 namespace Testes {
   internal class Program {
@@ -151,106 +153,18 @@ namespace Testes {
 
       #endregion
 
-      TTTT();
-
+      Thread.Sleep(5000);
+      string path = string.Format(@"C:\MyDocs\Captura.png");
 
     }
 
-    public static void TTTT() {
-      if(OperatingSystem.IsWindows()) {
-        Net model;
-        string path = string.Format(@"C:\MyDocs\captura2.png");
-        var img = new Image<Bgr, byte>(path);
-        var input = DnnInvoke.BlobFromImage(img, 1 / 255.0);
-        
 
-
-      }
+    public static void showImage() {
+      string path = string.Format(@"C:\MyDocs\printscreen.png");
+      var im1 = new Image<Bgr, byte>(path);
+      CvInvoke.Imshow("Image", im1);
+      CvInvoke.WaitKey(0);
     }
-
-
-    public static Box LocateOnScreen(string imagePath, float confidence = 0.5f) {
-      Box response = new();
-      try {
-        if(OperatingSystem.IsWindows()) {
-
-
-
-
-        }
-      } catch(Exception) {
-        throw;
-      }
-
-      return response;
-    }
-
-
-    //public static XScreen.Box LocateOnScreen(string imagePath, float confidence = 0.5f) {
-    //  XScreen.Box response = new();
-    //  float prop = 0.0f;
-    //  float maxProp = 0.0f;
-    //  long match = 0;
-    //  long maxMatch = 0;
-    //  try {
-    //    if(OperatingSystem.IsWindows()) {
-    //      Size resolution = XScreen.GetSize();
-    //      List<string> screenMap = new List<string>();
-    //      Bitmap imBase = (Bitmap)XScreen.SetImageToGrayScale(XScreen.PrintScreen());
-    //      Bitmap imToLocate = (Bitmap)XScreen.SetImageToGrayScale(new Bitmap(imagePath));
-
-    //      int countx = 0, county = 0;
-    //      while(countx < imBase.Width && county < imBase.Height) {
-    //        for(int x = 0; x < imToLocate.Width; x++, countx++) {
-
-    //          if(countx >= imBase.Width) {
-    //            break;
-    //          }
-
-    //          for(int y = 0; y < imToLocate.Height; y++, county++) {
-
-    //            if(county >= imBase.Height) {
-    //              county = 0;
-    //            }
-
-    //            // ARGB TO LOCATE
-    //            byte r = imToLocate.GetPixel(x, y).R;
-    //            byte g = imToLocate.GetPixel(x, y).G;
-    //            byte b = imToLocate.GetPixel(x, y).B;
-
-    //            // ARGB SCREENSHOT BASE
-    //            byte rr = imBase.GetPixel(countx, county).R;
-    //            byte gg = imBase.GetPixel(countx, county).G;
-    //            byte bb = imBase.GetPixel(countx, county).B;
-
-    //            if(rr == r && gg == g && bb == b) {
-    //              screenMap.Add($"{countx};{county}"); // concatenates X coordinate and Y coordinate separating by ';'
-    //              match++;
-    //            }
-
-    //          }
-    //        }
-
-    //        if(match > maxMatch)
-    //          maxMatch = match;
-
-    //        if(prop > maxProp)
-    //          maxProp = prop;
-    //      } // while end
-
-    //      // tries to calculate percentage to handle division by zero attempts
-    //      try { prop = (match / (imToLocate.Height * imToLocate.Width)) * 0.01f; } catch(Exception) { }
-
-    //    }
-    //  } catch(Exception) {
-    //    throw;
-    //  }
-
-    //  return response;
-    //}
-
-
-
 
 
 

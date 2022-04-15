@@ -19,8 +19,8 @@
     <PackageProjectUrl>https://github.com/lucas-fsousa/Public-Utility</PackageProjectUrl>
     <PackageId>LucasFsousa.PublicUtility</PackageId>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <Version>1.0.3</Version>
-    <Copyright>&amp;copy; Lucas F Sousa - All rights reserved</Copyright>
+    <Version>1.0.4</Version>
+    <Copyright>Lucas F Sousa - All rights reserved</Copyright>
     <PackageReleaseNotes>[EN]: Reorganization of classes, modification of namespece to maintain syntax and separate contents properly [PT-BR]: Reorganização das classes, modificação de namespece para manter a sintaxe e separar os conteudos adequadamente</PackageReleaseNotes>
     <OutputType>Library</OutputType>
     <UseWPF>False</UseWPF>
@@ -36,6 +36,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Emgu.CV" Version="4.5.5.4823" />
+    <PackageReference Include="Emgu.CV.Bitmap" Version="4.5.5.4823" />
+    <PackageReference Include="Emgu.CV.runtime.windows" Version="4.5.5.4823" />
     <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="5.0.16" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />

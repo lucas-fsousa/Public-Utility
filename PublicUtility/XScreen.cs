@@ -1,4 +1,7 @@
-﻿using PublicUtility.Xnm;
+﻿using Emgu.CV;
+using Emgu.CV.CvEnum;
+using Emgu.CV.Structure;
+using PublicUtility.Xnm;
 using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
@@ -79,40 +82,37 @@ namespace PublicUtility {
     /// [EN]: Converts a color image to grayscale<br></br>
     /// [PT-BR]: Converte uma imagem colorida para escalas de cinza
     /// </summary>
-    /// <param name="image">
-    /// [EN]: Image to be converted (in Windows it can be Bitmap) <br></br>
-    /// [PT-BR]: Imagem a ser convertida (em Windows pode ser Bitmap)
+    /// <param name="filePath">
+    /// [EN]: Image to be converted <br></br>
+    /// [PT-BR]: Imagem a ser convertida
     /// </param>
     /// <returns>
     /// [EN]: Returns the image converted to grayscale <br></br>
     /// [PT-BR]: Returns the image converted to grayscale
     /// </returns>
-    public static object SetImageToGrayScale(object image) {
-      object response = null;
-      if(OperatingSystem.IsWindows()) {
-        Bitmap bitmp = (Bitmap)image;
-        for(int x = 0; x < bitmp.Width; x++) {
-          for(int y = 0; y < bitmp.Height; y++) { 
+    public static Image<Gray, byte> ToGrayImage(string filePath) {
+      string path = string.Format(@"C:\MyDocs\printscreen.png");
+      Emgu.CV.Image<Gray, byte> _GrayImage;
+      Emgu.CV.Image<Bgr, byte> _input = new Emgu.CV.Image<Bgr, byte>(filePath);
 
-            Color color  = bitmp.GetPixel(x, y);
-            byte r = color.R;
-            byte g = color.G;
-            byte b = color.B;
-            
-            byte grayScale = (byte)(.299 * r + .587 * g + .144 * b);
+      _GrayImage = _input.Convert<Gray, byte>();
+      return _GrayImage;
+    }
 
-            r = grayScale;
-            b = grayScale;
-            g = grayScale;
-
-            bitmp.SetPixel(x, y, Color.FromArgb(r, g, b));
-          }
-        }
-
-        response = bitmp;
-      }
-
-      return response;
+    /// <summary>
+    /// [EN]: Converts a color image to grayscale<br></br>
+    /// [PT-BR]: Converte uma imagem colorida para escalas de cinza
+    /// </summary>
+    /// <param name="image">
+    /// [EN]: Image to be converted <br></br>
+    /// [PT-BR]: Imagem a ser convertida
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns the image converted to grayscale <br></br>
+    /// [PT-BR]: Returns the image converted to grayscale
+    /// </returns>
+    public static Image<Gray, byte> ToGrayImage(this Image<Bgr, byte> image) {
+      return image.Convert<Gray, byte>();
     }
 
     /// <summary>
@@ -238,6 +238,51 @@ namespace PublicUtility {
     /// [PT-BR]: Retorna uma estrutura contendo a resolução da tela
     /// </returns>
     public static Size GetSize() => new Size(GetSystemMetrics(0), GetSystemMetrics(1));
+
+    /// <summary>
+    /// [EN]: Finds an image that is on the screen at the time of the call to action<br></br>
+    /// [PT-BR]: Localiza uma imagem que está na tela no momento da chamada da ação
+    /// </summary>
+    /// <param name="imagePath">
+    /// [EN]: Image location path<br></br>
+    /// [PT-BR]: Caminho de localização da imagem
+    /// </param>
+    /// <param name="confidence">
+    /// [EN]: How confident should you be to indicate whether the image is on screen or not<br></br>
+    /// [PT-BR]: O quão confiante deve estar para indicar se a imagem está na tela ou não
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a box with width, height, X point and Y point of the image on the screen<br></br>
+    /// [PT-BR]: Retorna uma caixa com largura, altura, ponto X e ponto Y da imagem na tela
+    /// </returns>
+    public static Box LocateOnScreen(string imagePath, double confidence = 0.90) {
+      Box response = new();
+      try {
+        Bitmap screenshot = (Bitmap)PrintScreen();
+        var template = screenshot.ToImage<Gray, byte>();
+        var source = new Image<Gray, byte>(imagePath);
+
+        Image<Gray, float> imgMatch = template.MatchTemplate(source, TemplateMatchingType.CcoeffNormed);
+
+        float[,,] matches = imgMatch.Data;
+        for(int y = 0; y < matches.GetLength(0); y++) {
+          for(int x = 0; x < matches.GetLength(1); x++) {
+            double matchScore = matches[y, x, 0];
+
+            if(matchScore >= confidence) {
+              response = new(source.Width, source.Height, x, y);
+              break;
+            }
+
+          }
+
+          if(!response.Size.IsEmpty && !response.Location.IsEmpty)
+            break;
+        }
+      } catch(Exception) { }
+
+      return response;
+    }
 
     #region Overload GetXY
 
