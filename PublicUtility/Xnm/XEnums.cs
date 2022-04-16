@@ -12,6 +12,15 @@
     InvalidFormat,
     NotANumber,
     InvalidType,
-    NotExists
+    NotExists,
+    OutOfBounds
   }
+
+  public enum Speed {
+    X1 = 1,
+    X2 = 2,
+    X3 = 3,
+    X4 = 4
+  }
+
 }

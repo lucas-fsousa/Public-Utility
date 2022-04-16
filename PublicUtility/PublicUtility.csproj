@@ -21,7 +21,7 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <Version>1.0.4</Version>
     <Copyright>Lucas F Sousa - All rights reserved</Copyright>
-    <PackageReleaseNotes>[EN]: Reorganization of classes, modification of namespece to maintain syntax and separate contents properly [PT-BR]: Reorganização das classes, modificação de namespece para manter a sintaxe e separar os conteudos adequadamente</PackageReleaseNotes>
+    <PackageReleaseNotes>[EN]: Inclusion of new tools for image manipulation, screen reading and others [PT-BR]: Inclusão de novas ferramentas para manipulação de imagens, leitura de tela e outros</PackageReleaseNotes>
     <OutputType>Library</OutputType>
     <UseWPF>False</UseWPF>
     <UseWindowsForms>False</UseWindowsForms>

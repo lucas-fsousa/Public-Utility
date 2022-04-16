@@ -1,10 +1,14 @@
 ﻿using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
+using PublicUtility.CustomExceptions;
 using PublicUtility.Xnm;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace PublicUtility {
 
@@ -13,11 +17,6 @@ namespace PublicUtility {
   /// [PT-BR]: Classe que auxiliar para trabalhos envolvendo telas
   /// </summary>
   public static class XScreen {
-
-    private const int LEFTDOWN = 0x02;
-    private const int RIGHTDOWN = 0x08;
-    private const int LEFTUP = 0x04;
-    private const int RIGHTUP = 0x10;
 
     #region INTEROPT DLL IMPORTS
 
@@ -39,80 +38,145 @@ namespace PublicUtility {
     [DllImport("User32.dll", ExactSpelling = true, CharSet = CharSet.Auto)]
     private static extern int GetSystemMetrics(int nIndex);
 
+    [DllImport("user32.dll")]
+    private static extern bool GetCursorPos(out Point lpPoint);
+
     #endregion
+
+    #region PRIVATE METHODS
+    private static bool CheckCorner(Point point) {
+      Size size = GetSize();
+      bool response = false;
+
+      if(point.X < 0)
+        throw new RequiredParamsException(Situation.OutOfBounds, nameof(point.X));
+
+      else if(point.Y < 0)
+        throw new RequiredParamsException(Situation.OutOfBounds, nameof(point.Y));
+
+      else if(point.X > size.Width)
+        throw new RequiredParamsException(Situation.OutOfBounds, nameof(point.X));
+
+      else if(point.Y > size.Height)
+        throw new RequiredParamsException(Situation.OutOfBounds, nameof(point.Y));
+
+      else
+        response = true;
+
+      return response;
+    }
+
+    private static void MouseMoveControl(Point start, Point end, Speed speed) {
+      int x = start.X, y = start.Y, cc = 0;
+      bool endx = false, endy = false;
+      while(!endx || !endy) {
+
+        /*Uses the Speed Variable value as an increment/decrement that changes the velocity at which drag occurs
+         controls X to change the value of the looping stop variable
+         */
+        if(start.X > end.X) {
+          if(x >= end.X)
+            x -= (int)speed;
+          else
+            endx = true;
+
+        } else {
+          if(x < end.X)
+            x += (int)speed;
+          else
+            endx = true;
+
+        }
+
+        /*Uses the Speed Variable value as an increment/decrement that changes the velocity at which drag occurs
+         controls Y to change the value of the looping stop variable
+         */
+        if(start.Y > end.Y) {
+          if(y >= end.Y)
+            y -= (int)speed;
+          else
+            endy = true;
+
+        } else {
+          if(y < end.Y)
+            y += (int)speed;
+          else
+            endy = true;
+
+        }
+
+        // Adds a delay so that the drag is not too fast and ends up crashing the application or not working properly
+        if(cc % 4 == 0)
+          Thread.Sleep(10);
+
+        SetCursorPos(x, y);
+        cc++;
+      }
+    }
+    
+    #endregion
+
+    /// <summary>
+    /// [EN]: Perform mouse drag and drop motion<br></br>
+    /// [PT-BR] Executa o movimento de arrastar e soltar do mouse
+    /// </summary>
+    /// <param name="start">
+    /// [EN]: Start position X, Y to drag from<br></br>
+    /// [PT-BR] Posição inicial X, Y de onde arrastar
+    /// </param>
+    /// <param name="end">
+    /// [EN]: End position to drop<br></br>
+    /// [PT-BR] Posição final para soltar
+    /// </param>
+    /// <param name="speed">
+    /// [EN]: Mouse movement execution speed<br></br>
+    /// [PT-BR]: velocidade da execução de movimentação do mouse
+    /// </param>
+    public static void MouseDrag(Point start, Point end, Speed speed = Speed.X1) {
+      // checks if the coordinates are valid, otherwise it will throw an exception
+      CheckCorner(start);
+      CheckCorner(end);
+      mouse_event(XConst.MOUSE_LEFTDOWN, 0, 0, 0, 0);
+      MouseMoveControl(start, end, speed);
+      mouse_event(XConst.MOUSE_LEFTUP, 0, 0, 0, 0);
+    }
 
     /// <summary>
     /// [EN]: Simulates a left mouse button click on the current X,Y position on the screen <br></br>
     /// [PT-BR]: Simula um click com o botão esquerdo do mouse na posição atual X, Y da tela
     /// </summary>
-    public static void LeftClick() => mouse_event(LEFTDOWN | LEFTUP, 0, 0, 0, 0);
+    /// <param name="doubleClick">
+    /// [EN]: If marked true, double-click the location<br></br>
+    /// [PT-BR]: Se marcado como verdadeiro, executa um click duplo no local
+    /// </param>
+    public static void LeftClick(bool doubleClick = false) {
+      if(doubleClick) {
+        mouse_event(XConst.MOUSE_LEFTDOWN | XConst.MOUSE_LEFTUP, 0, 0, 0, 0);
+        Thread.Sleep(100);
+        mouse_event(XConst.MOUSE_LEFTDOWN | XConst.MOUSE_LEFTUP, 0, 0, 0, 0);
+        return;
+      }
+      mouse_event(XConst.MOUSE_LEFTDOWN | XConst.MOUSE_LEFTUP, 0, 0, 0, 0);
+
+    }
 
     /// <summary>
     /// [EN]: Simulates a right mouse click at the current X,Y position on the screen<br></br>
     /// [PT-BR]: Simula um click com o botão direito do mouse na posição atual X, Y da tela
     /// </summary>
-    public static void RightClick() => mouse_event(RIGHTDOWN | RIGHTUP, 0, 0, 0, 0);
-
-    /// <summary>
-    /// [EN]: Make a combination of MouseMove() and LeftClick() or RightClick() to move the mouse to a certain position and trigger the click<br></br>
-    /// [PT-BR]: Faz uma combinação de MouseMove() e LeftClick() ou RightClick() para movimentar o mouse a uma determinada posição e acionar o click
-    /// </summary>
-    /// <param name="x">
-    /// [EN]: X position relative to the current screen<br></br>
-    /// [PT-BR]: Posição X em relação a tela atual
+    /// <param name="doubleClick">
+    /// [EN]: If marked true, double-click the location<br></br>
+    /// [PT-BR]: Se marcado como verdadeiro, executa um click duplo no local
     /// </param>
-    /// <param name="y">
-    /// [EN]: Y position relative to the current screen<br></br>
-    /// [PT-BR]: Posição Y em relação a tela atual
-    /// </param>
-    /// <param name="leftbtn">
-    /// [EN]: Indicates which mouse button will be used to click. Default is true for left, if marked as false, right button will be triggered<br></br>
-    /// [PT-BR]: Indica qual botão do mouse será utilizado para efetur o click. O padrão é true para esquerdo, se marcado como false, o botão direito será acionado
-    /// </param>
-    public static void MoveToAndClick(int x, int y, bool leftbtn = true) {
-      MouseMoveTo(x, y);
-      if(leftbtn)
-        LeftClick();
+    public static void RightClick(bool doubleClick = false) {
+      if(doubleClick) {
+        mouse_event(XConst.MOUSE_RIGHTDOWN | XConst.MOUSE_RIGHTUP, 0, 0, 0, 0);
+        Thread.Sleep(100);
+        mouse_event(XConst.MOUSE_RIGHTDOWN | XConst.MOUSE_RIGHTUP, 0, 0, 0, 0);
+        return;
+      }
+      mouse_event(XConst.MOUSE_RIGHTDOWN | XConst.MOUSE_RIGHTUP, 0, 0, 0, 0);
 
-      else
-        RightClick();
-    }
-
-    /// <summary>
-    /// [EN]: Converts a color image to grayscale<br></br>
-    /// [PT-BR]: Converte uma imagem colorida para escalas de cinza
-    /// </summary>
-    /// <param name="filePath">
-    /// [EN]: Image to be converted <br></br>
-    /// [PT-BR]: Imagem a ser convertida
-    /// </param>
-    /// <returns>
-    /// [EN]: Returns the image converted to grayscale <br></br>
-    /// [PT-BR]: Returns the image converted to grayscale
-    /// </returns>
-    public static Image<Gray, byte> ToGrayImage(string filePath) {
-      string path = string.Format(@"C:\MyDocs\printscreen.png");
-      Emgu.CV.Image<Gray, byte> _GrayImage;
-      Emgu.CV.Image<Bgr, byte> _input = new Emgu.CV.Image<Bgr, byte>(filePath);
-
-      _GrayImage = _input.Convert<Gray, byte>();
-      return _GrayImage;
-    }
-
-    /// <summary>
-    /// [EN]: Converts a color image to grayscale<br></br>
-    /// [PT-BR]: Converte uma imagem colorida para escalas de cinza
-    /// </summary>
-    /// <param name="image">
-    /// [EN]: Image to be converted <br></br>
-    /// [PT-BR]: Imagem a ser convertida
-    /// </param>
-    /// <returns>
-    /// [EN]: Returns the image converted to grayscale <br></br>
-    /// [PT-BR]: Returns the image converted to grayscale
-    /// </returns>
-    public static Image<Gray, byte> ToGrayImage(this Image<Bgr, byte> image) {
-      return image.Convert<Gray, byte>();
     }
 
     /// <summary>
@@ -137,20 +201,6 @@ namespace PublicUtility {
     public static int ShowMessageBox(string caption, string text, uint type = 1) => MessageBox(new IntPtr(0), text, caption, type);
 
     /// <summary>
-    /// [EN]: Invokes an action to make a mouse move at the indicated X,Y position. <br></br>
-    /// [PT-BR]: Invoca a ação que realiza o movimento do mouse para as coordenadas X, Y
-    /// </summary>
-    /// <param name="x">
-    /// [EN]: Location of X on screen <br></br>
-    /// [PT-BR]: Localização de X na tela
-    /// </param>
-    /// <param name="y">
-    /// [EN]: Location of Y on screen <br></br>
-    /// [PT-BR]: Localização de Y na tela
-    /// </param>
-    public static void MouseMoveTo(int x, int y) => SetCursorPos(x, y);
-
-    /// <summary>
     /// [EN]: Capture the screen dimensions of an application <br></br>
     /// [PT-BR]: Captura as dimensões da tele de uma aplicação
     /// </summary>
@@ -173,60 +223,6 @@ namespace PublicUtility {
       box.Location = point;
       box.Size = size;
       return box;
-    }
-
-    /// <summary>
-    /// [EN]: Take a screenshot (currently working for Windows only) <br></br>
-    /// [PT-BR]: Faça uma captura de tela (atualmente trabalhando apenas para Windows)
-    /// </summary>
-    /// <returns>
-    /// [EN]: Returns a low-level object that can be converted to the object type needed to render the image <br></br>
-    /// [PT-BR]: Retorna um objeto de baixo nivel que pode ser convertido para o tipo de objeto necessário para renderizar a imagem
-    /// </returns>
-    /// <remarks>
-    /// [Use example for Windows - Exemplo de uso para Windows]:<br></br>
-    /// <code><br></br>
-    ///   object response = XScreen.PrintScreen();
-    ///   if(response.GetType().Name == "Bitmap") {
-    ///    Bitmap printScreen = (Bitmap)response; // cast the object
-    ///    printScreen.Save(@"C:\MyDocs\printscreen.png", ImageFormat.Png); // save the image in the desired folder
-    ///   }
-    /// </code>
-    /// </remarks>
-    public static object PrintScreen() {
-      Size size = GetSize();
-      if(OperatingSystem.IsWindows()) {
-        Bitmap bmp = new(size.Width, size.Height);
-        Graphics graphics = Graphics.FromImage(bmp);
-        graphics.CopyFromScreen(0, 0, 0, 0, bmp.Size);
-        return bmp;
-      }
-
-      return null;
-    }
-
-    /// <summary>
-    /// [EN]: Take a screenshot (currently working for Windows only) <br></br>
-    /// [PT-BR]: Faça uma captura de tela (atualmente trabalhando apenas para Windows)
-    /// </summary>
-    /// <param name="box">
-    /// [EN]: Box containing the dimensions of the image<br></br>
-    /// [PT-BR]: Caixa contendo as dimensões da imagem
-    /// </param>
-    /// <returns>
-    /// [EN]: Returns a low-level object that can be converted to the object type needed to render the image <br></br>
-    /// [PT-BR]: Retorna um objeto de baixo nivel que pode ser convertido para o tipo de objeto necessário para renderizar a imagem
-    /// </returns>
-    public static object PrintScreen(Box box) {
-
-      if(OperatingSystem.IsWindows()) {
-        Bitmap bmp = new(box.Size.Width, box.Size.Height);
-        Graphics graphics = Graphics.FromImage(bmp);
-        graphics.CopyFromScreen(box.Location.X, box.Location.Y, 0, 0, bmp.Size);
-        return bmp;
-      }
-
-      return null;
     }
 
     /// <summary>
@@ -256,7 +252,32 @@ namespace PublicUtility {
     /// [PT-BR]: Retorna uma caixa com largura, altura, ponto X e ponto Y da imagem na tela
     /// </returns>
     public static Box LocateOnScreen(string imagePath, double confidence = 0.90) {
-      Box response = new();
+      try {
+        return LocateAllOnScreen(imagePath, confidence).FirstOrDefault();
+      } catch(Exception) {
+        return new();
+      }
+
+    }
+
+    /// <summary>
+    /// [EN]: Finds on the current screen all images that match the entered image clip.<br></br>
+    /// [PT-BR]: Localiza na tela atual todas as imagens que corresponderem ao recorte de imagem informado.
+    /// </summary>
+    /// <param name="imagePath">
+    /// [EN]: Image location path<br></br>
+    /// [PT-BR]: Caminho de localização da imagem
+    /// </param>
+    /// <param name="confidence">
+    /// [EN]: How confident should you be to indicate whether the image is on screen or not<br></br>
+    /// [PT-BR]: O quão confiante deve estar para indicar se a imagem está na tela ou não
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a box with width, height, X point and Y point of the image on the screen<br></br>
+    /// [PT-BR]: Retorna uma caixa com largura, altura, ponto X e ponto Y da imagem na tela
+    /// </returns>
+    public static List<Box> LocateAllOnScreen(string imagePath, double confidence = 0.90) {
+      List<Box> response = new List<Box>();
       try {
         Bitmap screenshot = (Bitmap)PrintScreen();
         var template = screenshot.ToImage<Gray, byte>();
@@ -270,21 +291,33 @@ namespace PublicUtility {
             double matchScore = matches[y, x, 0];
 
             if(matchScore >= confidence) {
-              response = new(source.Width, source.Height, x, y);
-              break;
+              response.Add(new(source.Width, source.Height, x, y));
             }
 
           }
-
-          if(!response.Size.IsEmpty && !response.Location.IsEmpty)
-            break;
         }
       } catch(Exception) { }
 
       return response;
     }
 
-    #region Overload GetXY
+    /// <summary>
+    /// [EN]: Capture current mouse position <br></br>
+    /// [PT-BR]: Captura a posição atual do mouse
+    /// </summary>
+    /// <returns>
+    /// [EN]: Returns a point with the current mouse XY coordinates <br></br>
+    /// [PT-BR]: Retorna um ponto com as coordenadas XY atuais do mouse 
+    /// </returns>
+    public static Point GetMousePosition() {
+      Point current = new Point();
+      try {
+        GetCursorPos(out current);
+      } catch(Exception) { }
+      return current;
+    }
+
+    #region OVERLOAD GETXY
 
     /// <summary>
     /// [EN]: Capture the start of a window through the Handle and convert it to X,Y coordinates<br></br>
@@ -343,5 +376,208 @@ namespace PublicUtility {
 
     #endregion
 
+    #region OVERLOAD PRINTSCREEN
+
+    /// <summary>
+    /// [EN]: Take a screenshot (currently working for Windows only) <br></br>
+    /// [PT-BR]: Faça uma captura de tela (atualmente trabalhando apenas para Windows)
+    /// </summary>
+    /// <returns>
+    /// [EN]: Returns a low-level object that can be converted to the object type needed to render the image <br></br>
+    /// [PT-BR]: Retorna um objeto de baixo nivel que pode ser convertido para o tipo de objeto necessário para renderizar a imagem
+    /// </returns>
+    /// <remarks>
+    /// [Use example for Windows - Exemplo de uso para Windows]:<br></br>
+    /// <code><br></br>
+    ///   object response = XScreen.PrintScreen();
+    ///   if(response.GetType().Name == "Bitmap") {
+    ///    Bitmap printScreen = (Bitmap)response; // cast the object
+    ///    printScreen.Save(@"C:\MyDocs\printscreen.png", ImageFormat.Png); // save the image in the desired folder
+    ///   }
+    /// </code>
+    /// </remarks>
+    public static object PrintScreen() {
+      Size size = GetSize();
+      if(OperatingSystem.IsWindows()) {
+        Bitmap bmp = new(size.Width, size.Height);
+        Graphics graphics = Graphics.FromImage(bmp);
+        graphics.CopyFromScreen(0, 0, 0, 0, bmp.Size);
+        return bmp;
+      }
+
+      return null;
+    }
+
+    /// <summary>
+    /// [EN]: Takes a screenshot of a certain region (currently working for Windows only) <br></br>
+    /// [PT-BR]: Faz a captura de tela de uma determinada região (atualmente trabalhando apenas para Windows)
+    /// </summary>
+    /// <param name="box">
+    /// [EN]: Box containing the dimensions of the image<br></br>
+    /// [PT-BR]: Caixa contendo as dimensões da imagem
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a low-level object that can be converted to the object type needed to render the image <br></br>
+    /// [PT-BR]: Retorna um objeto de baixo nivel que pode ser convertido para o tipo de objeto necessário para renderizar a imagem
+    /// </returns>
+    public static object PrintScreen(Box box) {
+
+      if(OperatingSystem.IsWindows()) {
+        Bitmap bmp = new(box.Size.Width, box.Size.Height);
+        Graphics graphics = Graphics.FromImage(bmp);
+        graphics.CopyFromScreen(box.Location.X, box.Location.Y, 0, 0, bmp.Size);
+        return bmp;
+      }
+
+      return null;
+    }
+
+    #endregion
+
+    #region OVERLOAD MOUSEMOVETO
+
+    /// <summary>
+    /// [EN]: Invokes an action to make a mouse move at the indicated Point position. <br></br>
+    /// [PT-BR]: Invoca a ação que realiza o movimento do mouse para as coordenadas do ponto indicado
+    /// </summary>
+    /// <param name="point">
+    /// [EN]: Point with X Y coordinates to move<br></br>
+    /// [PT-BR]: Ponto com corrdenadas X Y para mover
+    /// </param>
+    /// <param name="speed">
+    /// [EN]: Mouse movement execution speed<br></br>
+    /// [PT-BR]: velocidade da execução de movimentação do mouse
+    /// </param>
+    public static void MouseMoveTo(Point point, Speed speed = Speed.X2) {
+      Point start = GetMousePosition();
+      MouseMoveControl(start, point, speed);
+    }
+
+    /// <summary>
+    /// [EN]: Invokes an action to make a mouse move at the indicated X,Y position. <br></br>
+    /// [PT-BR]: Invoca a ação que realiza o movimento do mouse para as coordenadas X, Y
+    /// </summary>
+    /// <param name="x">
+    /// [EN]: Location of X on screen <br></br>
+    /// [PT-BR]: Localização de X na tela
+    /// </param>
+    /// <param name="y">
+    /// [EN]: Location of Y on screen <br></br>
+    /// [PT-BR]: Localização de Y na tela
+    /// </param>
+    /// <param name="speed">
+    /// [EN]: Mouse movement execution speed<br></br>
+    /// [PT-BR]: velocidade da execução de movimentação do mouse
+    /// </param>
+    public static void MouseMoveTo(int x, int y, Speed speed = Speed.X2) {
+      Point start = GetMousePosition();
+      MouseMoveControl(start, new(x, y), speed);
+    }
+
+    #endregion
+
+    #region OVERLOAD TOGRAYIMAGE
+
+    /// <summary>
+    /// [EN]: Converts a color image to grayscale<br></br>
+    /// [PT-BR]: Converte uma imagem colorida para escalas de cinza
+    /// </summary>
+    /// <param name="filePath">
+    /// [EN]: Image to be converted <br></br>
+    /// [PT-BR]: Imagem a ser convertida
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns the image converted to grayscale <br></br>
+    /// [PT-BR]: Returns the image converted to grayscale
+    /// </returns>
+    public static Image<Gray, byte> ToGrayImage(string filePath) {
+      Image<Gray, byte> _GrayImage;
+      Image<Bgr, byte> _input = new Image<Bgr, byte>(filePath);
+
+      _GrayImage = _input.Convert<Gray, byte>();
+      return _GrayImage;
+    }
+
+    /// <summary>
+    /// [EN]: Converts a color image to grayscale<br></br>
+    /// [PT-BR]: Converte uma imagem colorida para escalas de cinza
+    /// </summary>
+    /// <param name="image">
+    /// [EN]: Image to be converted <br></br>
+    /// [PT-BR]: Imagem a ser convertida
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns the image converted to grayscale <br></br>
+    /// [PT-BR]: Returns the image converted to grayscale
+    /// </returns>
+    public static Image<Gray, byte> ToGrayImage(this Image<Bgr, byte> image) => image.Convert<Gray, byte>();
+
+    #endregion
+
+    #region OVERLOAD MOVETOANDCLICK
+
+    /// <summary>
+    /// [EN]: Make a combination of MouseMove() and LeftClick() or RightClick() to move the mouse to a certain position and trigger the click<br></br>
+    /// [PT-BR]: Faz uma combinação de MouseMove() e LeftClick() ou RightClick() para movimentar o mouse a uma determinada posição e acionar o click
+    /// </summary>
+    /// <param name="x">
+    /// [EN]: X position relative to the current screen<br></br>
+    /// [PT-BR]: Posição X em relação a tela atual
+    /// </param>
+    /// <param name="y">
+    /// [EN]: Y position relative to the current screen<br></br>
+    /// [PT-BR]: Posição Y em relação a tela atual
+    /// </param>
+    /// <param name="leftbtn">
+    /// [EN]: Indicates which mouse button will be used to click. Default is true for left, if marked as false, right button will be triggered<br></br>
+    /// [PT-BR]: Indica qual botão do mouse será utilizado para efetur o click. O padrão é true para esquerdo, se marcado como false, o botão direito será acionado
+    /// </param>
+    /// <param name="speed">
+    /// [EN]: Mouse movement execution speed<br></br>
+    /// [PT-BR]: velocidade da execução de movimentação do mouse
+    /// </param>
+    /// /// <param name="doubleClick">
+    /// [EN]: If marked true, double-click the location<br></br>
+    /// [PT-BR]: Se marcado como verdadeiro, executa um click duplo no local
+    /// </param>
+    public static void MoveToAndClick(int x, int y, Speed speed = Speed.X2, bool leftbtn = true, bool doubleClick = false) {
+      MouseMoveTo(x, y, speed);
+      if(leftbtn)
+        LeftClick(doubleClick);
+      else
+        RightClick(doubleClick);
+
+    }
+
+    /// <summary>
+    /// [EN]: Make a combination of MouseMove() and LeftClick() or RightClick() to move the mouse to a certain position and trigger the click<br></br>
+    /// [PT-BR]: Faz uma combinação de MouseMove() e LeftClick() ou RightClick() para movimentar o mouse a uma determinada posição e acionar o click
+    /// </summary>
+    /// <param name="point">
+    /// [EN]: Point with X Y coordinates to move<br></br>
+    /// [PT-BR]: Ponto com corrdenadas X Y para mover
+    /// </param>
+    /// <param name="leftbtn">
+    /// [EN]: Indicates which mouse button will be used to click. Default is true for left, if marked as false, right button will be triggered<br></br>
+    /// [PT-BR]: Indica qual botão do mouse será utilizado para efetur o click. O padrão é true para esquerdo, se marcado como false, o botão direito será acionado
+    /// </param>
+    /// <param name="speed">
+    /// [EN]: Mouse movement execution speed<br></br>
+    /// [PT-BR]: velocidade da execução de movimentação do mouse
+    /// </param>
+    /// /// <param name="doubleClick">
+    /// [EN]: If marked true, double-click the location<br></br>
+    /// [PT-BR]: Se marcado como verdadeiro, executa um click duplo no local
+    /// </param>
+    public static void MoveToAndClick(Point point, Speed speed = Speed.X2, bool leftbtn = true, bool doubleClick = false) {
+      MouseMoveTo(point, speed);
+      if(leftbtn)
+        LeftClick(doubleClick);
+      else
+        RightClick(doubleClick);
+
+    }
+    
+    #endregion
   }
 }
