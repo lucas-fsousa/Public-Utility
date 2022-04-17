@@ -28,12 +28,8 @@ using Emgu.CV.Features2D;
 
 namespace Testes {
   internal class Program {
-
-
     [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-    private static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint data, uint dwExtraInfo);
-
-
+    private static extern void keybd_event(uint bVk, uint bScan, uint dwFlags, uint dwExtraInfo);
 
     static void Main(string[] args) {
 
@@ -159,16 +155,10 @@ namespace Testes {
 
       #endregion
 
-      Thread.Sleep(5000);
-      DateTime.Now.Print();
-      MouseDrag(new(597, 312), new(187, 400), Speed.X4);
-      DateTime.Now.Print();
-    }
-
     
-
-    public static void MouseUP(uint clicks) => mouse_event(XConst.MOUSE_WHEEL, 0, 0, clicks, 0);
-
+    
+    
+    }
 
     public static void showImage() {
       string path = string.Format(@"C:\MyDocs\printscreen.png");

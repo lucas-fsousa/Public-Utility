@@ -14,7 +14,7 @@ namespace PublicUtility {
 
   /// <summary>
   /// [EN]: Class that helps for work involving screens <br></br>
-  /// [PT-BR]: Classe que auxiliar para trabalhos envolvendo telas
+  /// [PT-BR]: Classe auxiliar para trabalhos envolvendo manipulação de tela, imagens e ações do mouse
   /// </summary>
   public static class XScreen {
 
@@ -113,71 +113,10 @@ namespace PublicUtility {
         cc++;
       }
     }
-    
+
     #endregion
 
-    /// <summary>
-    /// [EN]: Perform mouse drag and drop motion<br></br>
-    /// [PT-BR] Executa o movimento de arrastar e soltar do mouse
-    /// </summary>
-    /// <param name="start">
-    /// [EN]: Start position X, Y to drag from<br></br>
-    /// [PT-BR] Posição inicial X, Y de onde arrastar
-    /// </param>
-    /// <param name="end">
-    /// [EN]: End position to drop<br></br>
-    /// [PT-BR] Posição final para soltar
-    /// </param>
-    /// <param name="speed">
-    /// [EN]: Mouse movement execution speed<br></br>
-    /// [PT-BR]: velocidade da execução de movimentação do mouse
-    /// </param>
-    public static void MouseDrag(Point start, Point end, Speed speed = Speed.X1) {
-      // checks if the coordinates are valid, otherwise it will throw an exception
-      CheckCorner(start);
-      CheckCorner(end);
-      mouse_event(XConst.MOUSE_LEFTDOWN, 0, 0, 0, 0);
-      MouseMoveControl(start, end, speed);
-      mouse_event(XConst.MOUSE_LEFTUP, 0, 0, 0, 0);
-    }
-
-    /// <summary>
-    /// [EN]: Simulates a left mouse button click on the current X,Y position on the screen <br></br>
-    /// [PT-BR]: Simula um click com o botão esquerdo do mouse na posição atual X, Y da tela
-    /// </summary>
-    /// <param name="doubleClick">
-    /// [EN]: If marked true, double-click the location<br></br>
-    /// [PT-BR]: Se marcado como verdadeiro, executa um click duplo no local
-    /// </param>
-    public static void LeftClick(bool doubleClick = false) {
-      if(doubleClick) {
-        mouse_event(XConst.MOUSE_LEFTDOWN | XConst.MOUSE_LEFTUP, 0, 0, 0, 0);
-        Thread.Sleep(100);
-        mouse_event(XConst.MOUSE_LEFTDOWN | XConst.MOUSE_LEFTUP, 0, 0, 0, 0);
-        return;
-      }
-      mouse_event(XConst.MOUSE_LEFTDOWN | XConst.MOUSE_LEFTUP, 0, 0, 0, 0);
-
-    }
-
-    /// <summary>
-    /// [EN]: Simulates a right mouse click at the current X,Y position on the screen<br></br>
-    /// [PT-BR]: Simula um click com o botão direito do mouse na posição atual X, Y da tela
-    /// </summary>
-    /// <param name="doubleClick">
-    /// [EN]: If marked true, double-click the location<br></br>
-    /// [PT-BR]: Se marcado como verdadeiro, executa um click duplo no local
-    /// </param>
-    public static void RightClick(bool doubleClick = false) {
-      if(doubleClick) {
-        mouse_event(XConst.MOUSE_RIGHTDOWN | XConst.MOUSE_RIGHTUP, 0, 0, 0, 0);
-        Thread.Sleep(100);
-        mouse_event(XConst.MOUSE_RIGHTDOWN | XConst.MOUSE_RIGHTUP, 0, 0, 0, 0);
-        return;
-      }
-      mouse_event(XConst.MOUSE_RIGHTDOWN | XConst.MOUSE_RIGHTUP, 0, 0, 0, 0);
-
-    }
+    #region IMAGES / SCREEN 
 
     /// <summary>
     /// [EN]: Function to display a graphical MessageBox<br></br>
@@ -301,22 +240,6 @@ namespace PublicUtility {
       return response;
     }
 
-    /// <summary>
-    /// [EN]: Capture current mouse position <br></br>
-    /// [PT-BR]: Captura a posição atual do mouse
-    /// </summary>
-    /// <returns>
-    /// [EN]: Returns a point with the current mouse XY coordinates <br></br>
-    /// [PT-BR]: Retorna um ponto com as coordenadas XY atuais do mouse 
-    /// </returns>
-    public static Point GetMousePosition() {
-      Point current = new Point();
-      try {
-        GetCursorPos(out current);
-      } catch(Exception) { }
-      return current;
-    }
-
     #region OVERLOAD GETXY
 
     /// <summary>
@@ -434,48 +357,6 @@ namespace PublicUtility {
 
     #endregion
 
-    #region OVERLOAD MOUSEMOVETO
-
-    /// <summary>
-    /// [EN]: Invokes an action to make a mouse move at the indicated Point position. <br></br>
-    /// [PT-BR]: Invoca a ação que realiza o movimento do mouse para as coordenadas do ponto indicado
-    /// </summary>
-    /// <param name="point">
-    /// [EN]: Point with X Y coordinates to move<br></br>
-    /// [PT-BR]: Ponto com corrdenadas X Y para mover
-    /// </param>
-    /// <param name="speed">
-    /// [EN]: Mouse movement execution speed<br></br>
-    /// [PT-BR]: velocidade da execução de movimentação do mouse
-    /// </param>
-    public static void MouseMoveTo(Point point, Speed speed = Speed.X2) {
-      Point start = GetMousePosition();
-      MouseMoveControl(start, point, speed);
-    }
-
-    /// <summary>
-    /// [EN]: Invokes an action to make a mouse move at the indicated X,Y position. <br></br>
-    /// [PT-BR]: Invoca a ação que realiza o movimento do mouse para as coordenadas X, Y
-    /// </summary>
-    /// <param name="x">
-    /// [EN]: Location of X on screen <br></br>
-    /// [PT-BR]: Localização de X na tela
-    /// </param>
-    /// <param name="y">
-    /// [EN]: Location of Y on screen <br></br>
-    /// [PT-BR]: Localização de Y na tela
-    /// </param>
-    /// <param name="speed">
-    /// [EN]: Mouse movement execution speed<br></br>
-    /// [PT-BR]: velocidade da execução de movimentação do mouse
-    /// </param>
-    public static void MouseMoveTo(int x, int y, Speed speed = Speed.X2) {
-      Point start = GetMousePosition();
-      MouseMoveControl(start, new(x, y), speed);
-    }
-
-    #endregion
-
     #region OVERLOAD TOGRAYIMAGE
 
     /// <summary>
@@ -514,11 +395,124 @@ namespace PublicUtility {
 
     #endregion
 
+    #endregion
+
+    #region MOUSE
+
+    /// <summary>
+    /// [EN]: Performs the action of scrolling the mouse scroll down<br></br>
+    /// [PT-BR]: Executa a ação de rolar o scroll do mouse para baixo
+    /// </summary>
+    /// <param name="clicks">
+    /// [EN]: Number of "clicks" to be executed.<br></br>
+    /// [PT-BR]: Quantidade de "clicks" a serem executados.
+    /// </param>
+    public static void MouseRollDown(uint clicks) {
+      if(clicks < 0)
+        throw new RequiredParamsException(Situation.LessThanZero, nameof(clicks));
+
+      mouse_event(XConst.MOUSE_ABSOLUTE | XConst.MOUSE_WHEEL, 0, 0, (uint)-clicks, 0);
+    }
+
+    /// <summary>
+    /// [EN]: Performs the action of scrolling the mouse scroll up<br></br>
+    /// [PT-BR]: Executa a ação de rolar o scroll do mouse para cima
+    /// </summary>
+    /// <param name="clicks">
+    /// [EN]: Number of "clicks" to be executed.<br></br>
+    /// [PT-BR]: Quantidade de "clicks" a serem executados.
+    /// </param>
+    public static void MouseRollUp(uint clicks) {
+      if(clicks < 0)
+        throw new RequiredParamsException(Situation.LessThanZero, nameof(clicks));
+
+      mouse_event(XConst.MOUSE_WHEEL, 0, 0, clicks, 0);
+    }
+
+    /// <summary>
+    /// [EN]: Capture current mouse position <br></br>
+    /// [PT-BR]: Captura a posição atual do mouse
+    /// </summary>
+    /// <returns>
+    /// [EN]: Returns a point with the current mouse XY coordinates <br></br>
+    /// [PT-BR]: Retorna um ponto com as coordenadas XY atuais do mouse 
+    /// </returns>
+    public static Point GetMousePosition() {
+      Point current = new Point();
+      try {
+        GetCursorPos(out current);
+      } catch(Exception) { }
+      return current;
+    }
+
+    /// <summary>
+    /// [EN]: Perform mouse drag and drop motion<br></br>
+    /// [PT-BR] Executa o movimento de arrastar e soltar do mouse
+    /// </summary>
+    /// <param name="start">
+    /// [EN]: Start position X, Y to drag from<br></br>
+    /// [PT-BR] Posição inicial X, Y de onde arrastar
+    /// </param>
+    /// <param name="end">
+    /// [EN]: End position to drop<br></br>
+    /// [PT-BR] Posição final para soltar
+    /// </param>
+    /// <param name="speed">
+    /// [EN]: Mouse movement execution speed<br></br>
+    /// [PT-BR]: velocidade da execução de movimentação do mouse
+    /// </param>
+    public static void MouseDrag(Point start, Point end, Speed speed = Speed.X1) {
+      // checks if the coordinates are valid, otherwise it will throw an exception
+      CheckCorner(start);
+      CheckCorner(end);
+      mouse_event(XConst.MOUSE_LEFTDOWN, 0, 0, 0, 0);
+      MouseMoveControl(start, end, speed);
+      mouse_event(XConst.MOUSE_LEFTUP, 0, 0, 0, 0);
+    }
+
+    /// <summary>
+    /// [EN]: Simulates a left mouse button click on the current X,Y position on the screen <br></br>
+    /// [PT-BR]: Simula um click com o botão esquerdo do mouse na posição atual X, Y da tela
+    /// </summary>
+    /// <param name="doubleClick">
+    /// [EN]: If marked true, double-click the location<br></br>
+    /// [PT-BR]: Se marcado como verdadeiro, executa um click duplo no local
+    /// </param>
+    public static void LeftClick(bool doubleClick = false) {
+      if(doubleClick) {
+        mouse_event(XConst.MOUSE_LEFTDOWN | XConst.MOUSE_LEFTUP, 0, 0, 0, 0);
+        Thread.Sleep(100);
+        mouse_event(XConst.MOUSE_LEFTDOWN | XConst.MOUSE_LEFTUP, 0, 0, 0, 0);
+        return;
+      }
+      mouse_event(XConst.MOUSE_LEFTDOWN | XConst.MOUSE_LEFTUP, 0, 0, 0, 0);
+
+    }
+
+    /// <summary>
+    /// [EN]: Simulates a right mouse click at the current X,Y position on the screen<br></br>
+    /// [PT-BR]: Simula um click com o botão direito do mouse na posição atual X, Y da tela
+    /// </summary>
+    /// <param name="doubleClick">
+    /// [EN]: If marked true, double-click the location<br></br>
+    /// [PT-BR]: Se marcado como verdadeiro, executa um click duplo no local
+    /// </param>
+    public static void RightClick(bool doubleClick = false) {
+      if(doubleClick) {
+        mouse_event(XConst.MOUSE_RIGHTDOWN | XConst.MOUSE_RIGHTUP, 0, 0, 0, 0);
+        Thread.Sleep(100);
+        mouse_event(XConst.MOUSE_RIGHTDOWN | XConst.MOUSE_RIGHTUP, 0, 0, 0, 0);
+        return;
+      }
+      mouse_event(XConst.MOUSE_RIGHTDOWN | XConst.MOUSE_RIGHTUP, 0, 0, 0, 0);
+
+    }
+
     #region OVERLOAD MOVETOANDCLICK
 
     /// <summary>
-    /// [EN]: Make a combination of MouseMove() and LeftClick() or RightClick() to move the mouse to a certain position and trigger the click<br></br>
-    /// [PT-BR]: Faz uma combinação de MouseMove() e LeftClick() ou RightClick() para movimentar o mouse a uma determinada posição e acionar o click
+    /// [EN]: Make a combination of MouseMoveTo() and LeftClick() or RightClick() to move the mouse to a certain position and trigger the click<br></br>
+    /// [PT-BR]: Faz uma combinação de MouseMoveTo() e LeftClick() ou RightClick() para movimentar o mouse a uma determinada posição e acionar o click
     /// </summary>
     /// <param name="x">
     /// [EN]: X position relative to the current screen<br></br>
@@ -540,8 +534,8 @@ namespace PublicUtility {
     /// [EN]: If marked true, double-click the location<br></br>
     /// [PT-BR]: Se marcado como verdadeiro, executa um click duplo no local
     /// </param>
-    public static void MoveToAndClick(int x, int y, Speed speed = Speed.X2, bool leftbtn = true, bool doubleClick = false) {
-      MouseMoveTo(x, y, speed);
+    public static void MoveToAndClick(int x, int y, Speed speed = Speed.X2, bool doubleClick = false, bool leftbtn = true) {
+      MouseMoveTo(x, y, Speed.X1);
       if(leftbtn)
         LeftClick(doubleClick);
       else
@@ -550,8 +544,8 @@ namespace PublicUtility {
     }
 
     /// <summary>
-    /// [EN]: Make a combination of MouseMove() and LeftClick() or RightClick() to move the mouse to a certain position and trigger the click<br></br>
-    /// [PT-BR]: Faz uma combinação de MouseMove() e LeftClick() ou RightClick() para movimentar o mouse a uma determinada posição e acionar o click
+    /// [EN]: Make a combination of MouseMoveTo() and LeftClick() or RightClick() to move the mouse to a certain position and trigger the click<br></br>
+    /// [PT-BR]: Faz uma combinação de MouseMoveTo() e LeftClick() ou RightClick() para movimentar o mouse a uma determinada posição e acionar o click
     /// </summary>
     /// <param name="point">
     /// [EN]: Point with X Y coordinates to move<br></br>
@@ -569,15 +563,63 @@ namespace PublicUtility {
     /// [EN]: If marked true, double-click the location<br></br>
     /// [PT-BR]: Se marcado como verdadeiro, executa um click duplo no local
     /// </param>
-    public static void MoveToAndClick(Point point, Speed speed = Speed.X2, bool leftbtn = true, bool doubleClick = false) {
-      MouseMoveTo(point, speed);
+    public static void MoveToAndClick(Point point, Speed speed = Speed.X2, bool doubleClick = false, bool leftbtn = true) {
+      MouseMoveTo(point, Speed.X1);
       if(leftbtn)
         LeftClick(doubleClick);
       else
         RightClick(doubleClick);
 
     }
-    
+
     #endregion
+
+    #region OVERLOAD MOUSEMOVETO
+
+    /// <summary>
+    /// [EN]: Invokes an action to make a mouse move at the indicated Point position. <br></br>
+    /// [PT-BR]: Invoca a ação que realiza o movimento do mouse para as coordenadas do ponto indicado
+    /// </summary>
+    /// <param name="point">
+    /// [EN]: Point with X Y coordinates to move<br></br>
+    /// [PT-BR]: Ponto com corrdenadas X Y para mover
+    /// </param>
+    /// <param name="speed">
+    /// [EN]: Mouse movement execution speed<br></br>
+    /// [PT-BR]: velocidade da execução de movimentação do mouse
+    /// </param>
+    public static void MouseMoveTo(Point point, Speed speed = Speed.X1) {
+      Point start = GetMousePosition();
+      MouseMoveControl(start, point, speed);
+    }
+
+    /// <summary>
+    /// [EN]: Invokes an action to make a mouse move at the indicated X,Y position. <br></br>
+    /// [PT-BR]: Invoca a ação que realiza o movimento do mouse para as coordenadas X, Y
+    /// </summary>
+    /// <param name="x">
+    /// [EN]: Location of X on screen <br></br>
+    /// [PT-BR]: Localização de X na tela
+    /// </param>
+    /// <param name="y">
+    /// [EN]: Location of Y on screen <br></br>
+    /// [PT-BR]: Localização de Y na tela
+    /// </param>
+    /// <param name="speed">
+    /// [EN]: Mouse movement execution speed<br></br>
+    /// [PT-BR]: velocidade da execução de movimentação do mouse
+    /// </param>
+    public static void MouseMoveTo(int x, int y, Speed speed = Speed.X1) {
+      Point start = GetMousePosition();
+      MouseMoveControl(start, new(x, y), speed);
+    }
+
+    #endregion
+
+    #endregion
+
+
+
+
   }
 }

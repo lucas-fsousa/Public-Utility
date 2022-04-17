@@ -8,11 +8,11 @@ Use the package manager [NuGet](https://www.nuget.org/packages/LucasFsousa.Publi
 
 ```bash
 EXAMPLE
-PM> Install-Package LucasFsousa.PublicUtility -Version 1.0.4
+PM> Install-Package LucasFsousa.PublicUtility -Version 1.0.5
 
-.NET CLI> dotnet add package LucasFsousa.PublicUtility --version 1.0.4
+.NET CLI> dotnet add package LucasFsousa.PublicUtility --version 1.0.5
 
-Package Reference> <PackageReference Include="LucasFsousa.PublicUtility" Version="1.0.4" />
+Package Reference> <PackageReference Include="LucasFsousa.PublicUtility" Version="1.0.5" />
 
 ```
 
@@ -20,6 +20,7 @@ Package Reference> <PackageReference Include="LucasFsousa.PublicUtility" Version
 
 ```csharp
 using PublicUtility; // call Namespace
+using PublicUtility.Xnm; //  call aux Namespace
 
 // ================= examples of use of the XSystem class =================
 

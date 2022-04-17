@@ -21,7 +21,7 @@ namespace PublicUtility {
     #region OTHERS
     
     /// <summary>
-    /// [EN]: Captures keyboard input and converts it to the object type given during the method call <br></br>
+    /// [EN]: Captures Keyboard input and converts it to the object type given during the method call <br></br>
     /// [PT-BR]: Captura a entrada do teclado e converte para o tipo de objeto informado durante a chamada do método
     /// </summary>
     /// <typeparam name="T">
@@ -33,7 +33,7 @@ namespace PublicUtility {
     /// [PT-BR]: mensagem informativa a ser exibida no console
     /// </param>
     /// <param name="hidden">
-    /// [EN]: Defines if the keyboard input will be written in the console <br></br>
+    /// [EN]: Defines if the Keyboard input will be written in the console <br></br>
     /// [PT-BR]: Define se o input do teclado será escrito no console
     /// </param>
     /// <returns>
