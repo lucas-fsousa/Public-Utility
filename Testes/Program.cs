@@ -155,8 +155,9 @@ namespace Testes {
 
       #endregion
 
-    
-    
+      string path = @"C:\MyDocs\Captura.png";
+      Thread.Sleep(2000);
+      var teste = XScreen.LocateOnScreen(path);
     
     }
 

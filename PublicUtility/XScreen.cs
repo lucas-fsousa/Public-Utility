@@ -44,6 +44,7 @@ namespace PublicUtility {
     #endregion
 
     #region PRIVATE METHODS
+
     private static bool CheckCorner(Point point) {
       Size size = GetSize();
       bool response = false;
@@ -62,6 +63,42 @@ namespace PublicUtility {
 
       else
         response = true;
+
+      return response;
+    }
+
+    private static List<Box> LocateAllOnScreenForWindows(string imagePath, double confidence = 0.90, Box region = default) {
+      List<Box> response = new List<Box>();
+
+      if(OperatingSystem.IsWindows()) {
+        Bitmap screenshot;
+        var source = new Image<Gray, byte>(imagePath);
+
+        if(region.IsFilled()) {
+          screenshot = (Bitmap)PrintScreen(region);
+
+          if(region.Size.Width > screenshot.Width || region.Size.Height > screenshot.Height)
+            throw new RequiredParamsException(Situation.OutOfBounds, nameof(imagePath));
+
+        } else {
+          screenshot = (Bitmap)PrintScreen();
+        }
+
+        var template = screenshot.ToImage<Gray, byte>();
+        Image<Gray, float> imgMatch = template.MatchTemplate(source, TemplateMatchingType.CcoeffNormed);
+
+        float[,,] matches = imgMatch.Data;
+        for(int y = 0; y < matches.GetLength(0); y++) {
+          for(int x = 0; x < matches.GetLength(1); x++) {
+            double matchScore = matches[y, x, 0];
+
+            if(matchScore >= confidence) {
+              response.Add(new(source.Width, source.Height, x, y));
+            }
+
+          }
+        }
+      }
 
       return response;
     }
@@ -186,18 +223,15 @@ namespace PublicUtility {
     /// [EN]: How confident should you be to indicate whether the image is on screen or not<br></br>
     /// [PT-BR]: O quão confiante deve estar para indicar se a imagem está na tela ou não
     /// </param>
+    /// <param name="region">
+    /// [EN]: Determines only a specific part of the screen to search<br></br>
+    /// [PT-BR]: Determina apenas uma parte especifica da tela para fazer a busca
+    /// </param>  
     /// <returns>
     /// [EN]: Returns a box with width, height, X point and Y point of the image on the screen<br></br>
     /// [PT-BR]: Retorna uma caixa com largura, altura, ponto X e ponto Y da imagem na tela
     /// </returns>
-    public static Box LocateOnScreen(string imagePath, double confidence = 0.90) {
-      try {
-        return LocateAllOnScreen(imagePath, confidence).FirstOrDefault();
-      } catch(Exception) {
-        return new();
-      }
-
-    }
+    public static Box LocateOnScreen(string imagePath, double confidence = 0.90, Box region = default) => LocateAllOnScreen(imagePath, confidence, region).FirstOrDefault();
 
     /// <summary>
     /// [EN]: Finds on the current screen all images that match the entered image clip.<br></br>
@@ -211,35 +245,21 @@ namespace PublicUtility {
     /// [EN]: How confident should you be to indicate whether the image is on screen or not<br></br>
     /// [PT-BR]: O quão confiante deve estar para indicar se a imagem está na tela ou não
     /// </param>
+    /// <param name="region">
+    /// [EN]: Determines only a specific part of the screen to search<br></br>
+    /// [PT-BR]: Determina apenas uma parte especifica da tela para fazer a busca
+    /// </param> 
     /// <returns>
     /// [EN]: Returns a box with width, height, X point and Y point of the image on the screen<br></br>
     /// [PT-BR]: Retorna uma caixa com largura, altura, ponto X e ponto Y da imagem na tela
     /// </returns>
-    public static List<Box> LocateAllOnScreen(string imagePath, double confidence = 0.90) {
-      List<Box> response = new List<Box>();
-      try {
-        Bitmap screenshot = (Bitmap)PrintScreen();
-        var template = screenshot.ToImage<Gray, byte>();
-        var source = new Image<Gray, byte>(imagePath);
+    public static List<Box> LocateAllOnScreen(string imagePath, double confidence = 0.90, Box region = default) {
+      if(OperatingSystem.IsWindows())
+        return LocateAllOnScreenForWindows(imagePath, confidence, region);
 
-        Image<Gray, float> imgMatch = template.MatchTemplate(source, TemplateMatchingType.CcoeffNormed);
-
-        float[,,] matches = imgMatch.Data;
-        for(int y = 0; y < matches.GetLength(0); y++) {
-          for(int x = 0; x < matches.GetLength(1); x++) {
-            double matchScore = matches[y, x, 0];
-
-            if(matchScore >= confidence) {
-              response.Add(new(source.Width, source.Height, x, y));
-            }
-
-          }
-        }
-      } catch(Exception) { }
-
-      return response;
+      return null;
     }
-
+    
     #region OVERLOAD GETXY
 
     /// <summary>
@@ -617,9 +637,6 @@ namespace PublicUtility {
     #endregion
 
     #endregion
-
-
-
 
   }
 }
