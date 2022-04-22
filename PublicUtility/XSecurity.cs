@@ -16,6 +16,34 @@ namespace PublicUtility {
   /// </summary>
   public static class XSecurity {
 
+    #region PRIVATE METHODS
+
+    private static Dictionary<string, Situation> CheckCryptInput(string input, string privateKeyNumber) {
+      Dictionary<string, Situation> result = new Dictionary<string, Situation>();
+
+      if(string.IsNullOrEmpty(input))
+        result.Add(nameof(input), Situation.IsNullOrEmpty);
+
+      else if(string.IsNullOrEmpty(privateKeyNumber))
+        result.Add(nameof(privateKeyNumber), Situation.IsNullOrEmpty);
+
+      else if(!privateKeyNumber.IsNumber())
+        result.Add(nameof(privateKeyNumber), Situation.NotANumber);
+
+      else if(privateKeyNumber.Length > 8)
+        result.Add(nameof(privateKeyNumber), Situation.AboveTheAllowed);
+
+      else if(privateKeyNumber.Length < 8)
+        result.Add(nameof(privateKeyNumber), Situation.BelowTheNecessary);
+
+      else
+        result = null;
+
+      return result;
+    }
+
+    #endregion
+
     /// <summary>
     /// [EN]: Encrypt a string with MD5 algorithm that cannot be reversed <br></br>
     /// [PT-BR]: Criptografa uma string com algoritmo MD5 que não pode ser revertido
@@ -168,30 +196,6 @@ namespace PublicUtility {
 
       } catch(Exception) { }
       return response;
-    }
-
-    private static Dictionary<string, Situation> CheckCryptInput(string input, string privateKeyNumber) {
-      Dictionary<string, Situation> result = new Dictionary<string, Situation>();
-
-      if(string.IsNullOrEmpty(input))
-        result.Add(nameof(input), Situation.IsNullOrEmpty);
-
-      else if(string.IsNullOrEmpty(privateKeyNumber))
-        result.Add(nameof(privateKeyNumber), Situation.IsNullOrEmpty);
-
-      else if(!privateKeyNumber.IsNumber())
-        result.Add(nameof(privateKeyNumber), Situation.NotANumber);
-
-      else if(privateKeyNumber.Length > 8)
-        result.Add(nameof(privateKeyNumber), Situation.AboveTheAllowed);
-
-      else if(privateKeyNumber.Length < 8)
-        result.Add(nameof(privateKeyNumber), Situation.BelowTheNecessary);
-
-      else
-        result = null;
-
-      return result;
     }
 
     /// <summary>

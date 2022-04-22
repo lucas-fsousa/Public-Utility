@@ -3,6 +3,11 @@ using System.Drawing;
 using System.Text;
 
 namespace PublicUtility.Xnm {
+
+  /// <summary>
+  /// [EN]: A box containing the dimensions and coordinates<br></br>
+  /// [PT-BR]: Uma caixa contendo as dimensões e coordenadas 
+  /// </summary>
   public struct Box {
     public Size Size { get; set; }
     public Point Location { get; set; }
@@ -34,6 +39,10 @@ namespace PublicUtility.Xnm {
     }
   }
 
+  /// <summary>
+  /// [EN]: Displays the breakdown of a virtual keyboard key<br></br>
+  /// [PT-BR]: Apresenta o detalhamento de uma tecla do teclado virtual
+  /// </summary>
   public struct KeyDetails {
     public bool IsPressed { get; }
     public bool IsToggled { get; }
@@ -43,6 +52,5 @@ namespace PublicUtility.Xnm {
       IsToggled = isToggled;
     }
   }
-
 
 }
