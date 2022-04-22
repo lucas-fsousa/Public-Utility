@@ -218,7 +218,7 @@ namespace PublicUtility {
         return false;
     }
 
-    #region Overload Print
+    #region OVERLOAD PRINT
 
     /// <summary>
     /// [EN]: Console.WriteLine() simplification / Write to console <br></br>
@@ -273,9 +273,10 @@ namespace PublicUtility {
     /// [PT-BR]: Simplificação do Console.WriteLine() / Escreve no console
     /// </summary>
     public static void Print() => Console.WriteLine();
+
     #endregion
 
-    #region Overload MaxMin
+    #region OVERLOAD MAXMIN
 
     /// <summary>
     /// [EN]: Checks if the value entered is between the maximum and the minimum<br></br>
@@ -604,7 +605,7 @@ namespace PublicUtility {
 
     #endregion
 
-    #region Overload GetNegatives
+    #region OVERLOAD GETNEGATIVES
 
     /// <summary>
     /// [EN]: Returns all negative numbers from Array<br></br>
@@ -864,7 +865,7 @@ namespace PublicUtility {
 
     #endregion
 
-    #region Overload GetPositives
+    #region OVERLOAD GETPOSITIVES
 
     /// <summary>
     /// [EN]: Returns all positive numbers from list<br></br>

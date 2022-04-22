@@ -45,7 +45,7 @@ namespace PublicUtility {
       return response;
     }
 
-    private static void MouseMoveControl(Point start, Point end, Speed speed) {
+    private static void MouseMoveControl(Point start, Point end, MouseSpeed speed) {
       bool startOk = CheckCorner(start);
       bool endOk = CheckCorner(end);
 
@@ -59,7 +59,7 @@ namespace PublicUtility {
       bool endx = false, endy = false;
 
       // Sets instantaneous movement to the end position of the cursor.
-      if(speed == Speed.Full) {
+      if(speed == MouseSpeed.Full) {
         SetCursorPos(end.X, end.Y);
         return;
       }
@@ -123,7 +123,7 @@ namespace PublicUtility {
       if(clicks < 0)
         throw new RequiredParamsException(Situation.LessThanZero, nameof(clicks));
 
-      mouse_event(XConst.MOUSE_ABSOLUTE | XConst.MOUSE_WHEEL, 0, 0, (uint)-clicks, 0);
+      mouse_event((uint)MouseAction.Absolute | (uint)MouseAction.Wheel, 0, 0, (uint)-clicks, 0);
     }
 
     /// <summary>
@@ -138,7 +138,7 @@ namespace PublicUtility {
       if(clicks < 0)
         throw new RequiredParamsException(Situation.LessThanZero, nameof(clicks));
 
-      mouse_event(XConst.MOUSE_WHEEL, 0, 0, clicks, 0);
+      mouse_event((uint)MouseAction.Wheel, 0, 0, clicks, 0);
     }
 
     /// <summary>
@@ -173,13 +173,13 @@ namespace PublicUtility {
     /// [EN]: Mouse movement execution speed<br></br>
     /// [PT-BR]: velocidade da execução de movimentação do mouse
     /// </param>
-    public static void Drag(Point start, Point end, Speed speed = Speed.X1) {
+    public static void Drag(Point start, Point end, MouseSpeed speed = MouseSpeed.X1) {
       MoveTo(start, speed);
       Thread.Sleep(300);
-      mouse_event(XConst.MOUSE_LEFTDOWN, 0, 0, 0, 0);
+      mouse_event((uint)MouseAction.LeftDown, 0, 0, 0, 0);
       MoveTo(end, speed);
       Thread.Sleep(300);
-      mouse_event(XConst.MOUSE_LEFTUP, 0, 0, 0, 0);
+      mouse_event((uint)MouseAction.LeftUp, 0, 0, 0, 0);
     }
 
     /// <summary>
@@ -192,12 +192,12 @@ namespace PublicUtility {
     /// </param>
     public static void LeftClick(bool doubleClick = false) {
       if(doubleClick) {
-        mouse_event(XConst.MOUSE_LEFTDOWN | XConst.MOUSE_LEFTUP, 0, 0, 0, 0);
+        mouse_event((uint)MouseAction.LeftDown | (uint)MouseAction.LeftUp, 0, 0, 0, 0);
         Thread.Sleep(100);
-        mouse_event(XConst.MOUSE_LEFTDOWN | XConst.MOUSE_LEFTUP, 0, 0, 0, 0);
+        mouse_event((uint)MouseAction.LeftDown | (uint)MouseAction.LeftUp, 0, 0, 0, 0);
         return;
       }
-      mouse_event(XConst.MOUSE_LEFTDOWN | XConst.MOUSE_LEFTUP, 0, 0, 0, 0);
+      mouse_event((uint)MouseAction.LeftDown | (uint)MouseAction.LeftUp, 0, 0, 0, 0);
 
     }
 
@@ -211,12 +211,12 @@ namespace PublicUtility {
     /// </param>
     public static void RightClick(bool doubleClick = false) {
       if(doubleClick) {
-        mouse_event(XConst.MOUSE_RIGHTDOWN | XConst.MOUSE_RIGHTUP, 0, 0, 0, 0);
+        mouse_event((uint)MouseAction.RightDown | (uint)MouseAction.RightUp, 0, 0, 0, 0);
         Thread.Sleep(100);
-        mouse_event(XConst.MOUSE_RIGHTDOWN | XConst.MOUSE_RIGHTUP, 0, 0, 0, 0);
+        mouse_event((uint)MouseAction.RightDown | (uint)MouseAction.RightUp, 0, 0, 0, 0);
         return;
       }
-      mouse_event(XConst.MOUSE_RIGHTDOWN | XConst.MOUSE_RIGHTUP, 0, 0, 0, 0);
+      mouse_event((uint)MouseAction.RightDown | (uint)MouseAction.RightUp, 0, 0, 0, 0);
 
     }
 
@@ -246,7 +246,7 @@ namespace PublicUtility {
     /// [EN]: If marked true, double-click the location<br></br>
     /// [PT-BR]: Se marcado como verdadeiro, executa um click duplo no local
     /// </param>
-    public static void MoveToAndClick(int x, int y, Speed speed = Speed.X2, bool doubleClick = false, bool leftbtn = true) {
+    public static void MoveToAndClick(int x, int y, MouseSpeed speed = MouseSpeed.X2, bool doubleClick = false, bool leftbtn = true) {
       MoveTo(x, y, speed);
       if(leftbtn)
         LeftClick(doubleClick);
@@ -275,7 +275,7 @@ namespace PublicUtility {
     /// [EN]: If marked true, double-click the location<br></br>
     /// [PT-BR]: Se marcado como verdadeiro, executa um click duplo no local
     /// </param>
-    public static void MoveToAndClick(Point point, Speed speed = Speed.X2, bool doubleClick = false, bool leftbtn = true) {
+    public static void MoveToAndClick(Point point, MouseSpeed speed = MouseSpeed.X2, bool doubleClick = false, bool leftbtn = true) {
       MoveTo(point, speed);
       if(leftbtn)
         LeftClick(doubleClick);
@@ -300,7 +300,7 @@ namespace PublicUtility {
     /// [EN]: Mouse movement execution speed<br></br>
     /// [PT-BR]: velocidade da execução de movimentação do mouse
     /// </param>
-    public static void MoveTo(Point point, Speed speed = Speed.X1) {
+    public static void MoveTo(Point point, MouseSpeed speed = MouseSpeed.X1) {
       Point start = GetPosition();
       MouseMoveControl(start, point, speed);
     }
@@ -321,7 +321,7 @@ namespace PublicUtility {
     /// [EN]: Mouse movement execution speed<br></br>
     /// [PT-BR]: velocidade da execução de movimentação do mouse
     /// </param>
-    public static void MoveTo(int x, int y, Speed speed = Speed.X1) {
+    public static void MoveTo(int x, int y, MouseSpeed speed = MouseSpeed.X1) {
       Point start = GetPosition();
       MouseMoveControl(start, new(x, y), speed);
     }

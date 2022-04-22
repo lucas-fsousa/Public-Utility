@@ -21,7 +21,7 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <Version>1.0.7</Version>
     <Copyright>Lucas F Sousa - All rights reserved</Copyright>
-    <PackageReleaseNotes>[EN]: Inclusion of new tools for image manipulation, screen reading and others [PT-BR]: Inclusão de novas ferramentas para manipulação de imagens, leitura de tela e outros</PackageReleaseNotes>
+    <PackageReleaseNotes>[EN]: Fragmented the screen class that contained the mouse manipulation information. Added XMouse class for mouse related events. Correction of existing items. Inclusion of the XKeyboard class for keyboard-related events (item in testing phase) [PT-BR]: Fragmentada a classe da tela que continha as informações de manipulação do mouse. Adicionada a classe XMouse para eventos relacionados ao mouse. Correção de itens existentes. Inclusão da classe XKeyboard para eventos relacionados ao teclado(item em fase de testes)</PackageReleaseNotes>
     <OutputType>Library</OutputType>
     <UseWPF>False</UseWPF>
     <UseWindowsForms>False</UseWindowsForms>

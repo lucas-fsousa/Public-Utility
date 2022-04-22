@@ -146,7 +146,7 @@ HttpResponseMessage response = XRequest.HttpPost(url, root).GetAwaiter().GetResu
 // ================= examples of use of the XMouse class =================
 
 // quickly moves to the indicated location and performs a click
-XMouse.MoveToAndClick(10, 10, Speed.X4);
+XMouse.MoveToAndClick(10, 10, MouseSpeed.X4);
 
 // performs a click on the current mouse position (left button)
 XMouse.LeftClick();
@@ -158,12 +158,12 @@ XMouse.LeftClick(true);
 XMouse.RightClick();
 
 // Moves the mouse to the specified screen coordinate instantly, without motion animation.
-XMouse.MoveTo(150, 200, Speed.Full);
+XMouse.MoveTo(150, 200, MouseSpeed.Full);
 
 Point start = new(10, 15); // start x y coordinate point
 Point end = new(220, 500); // end x y coordinate point
 // Performs drag from start point and drop to end point with x2 move animation
-XMouse.Drag(start, end, Speed.X2);
+XMouse.Drag(start, end, MouseSpeed.X2);
 
 // get the current cursor position
 Point currentPos = XMouse.GetPosition();

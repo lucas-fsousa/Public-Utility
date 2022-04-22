@@ -16,9 +16,6 @@ namespace PublicUtility {
   /// </summary>
   public static class XSystem {
 
-    private const int SW_HIDE = 0;
-    private const int SW_SHOW = 5;
-
     #region INTEROPT DLLS
 
     [DllImport("kernel32.dll")]
@@ -33,13 +30,13 @@ namespace PublicUtility {
     /// [EN]: Hides the application's console so that it runs unnoticed<br></br>
     /// [PT-BR]: Ocultar o console do aplicativo para que ele seja executado despercebido
     /// </summary>
-    public static void HideConsole() => ShowWindow(GetConsoleWindow(), SW_HIDE);
+    public static void HideConsole() => ShowWindow(GetConsoleWindow(), (int)WidowMode.Hide);
 
     /// <summary>
     /// [EN]: Makes the app's console fully visible <br></br>
     /// [PT-BR]: Torna o console do aplicativo totalmente visível
     /// </summary>
-    public static void ShowConsole() => ShowWindow(GetConsoleWindow(), SW_SHOW);
+    public static void ShowConsole() => ShowWindow(GetConsoleWindow(), (int)WidowMode.Show);
 
     /// <summary>
     /// [EN]: Uses the app identifier to display it if it is hidden <br></br>
@@ -49,7 +46,7 @@ namespace PublicUtility {
     /// [EN]: Handle identifier of the application that will be displayed <br></br>
     /// [PT-BR]: Identificador handle da aplicação que será exibida
     /// </param>
-    public static void ShowWindow(IntPtr handle) => ShowWindow(handle, SW_SHOW);
+    public static void ShowWindow(IntPtr handle) => ShowWindow(handle, (int)WidowMode.Show);
 
     /// <summary>
     /// [EN]: Hide an application window using the handle identifier <br></br>
@@ -59,7 +56,7 @@ namespace PublicUtility {
     /// [EN]: Identifier of the application to be hidden <br></br>
     /// [PT-BR]: Identificador da aplicação que será ocultada
     /// </param>
-    public static void HideWindow(IntPtr handle) => ShowWindow(handle, SW_HIDE);
+    public static void HideWindow(IntPtr handle) => ShowWindow(handle, (int)WidowMode.Hide);
 
     /// <summary>
     /// [EN]: Search for a process running on the current machine<br></br>

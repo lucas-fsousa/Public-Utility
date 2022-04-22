@@ -16,28 +16,7 @@ namespace PublicUtility {
     private readonly SqlCommand cmd = null;
     private SqlTransaction tran = null;
 
-    /// <summary>
-    /// [EN]: Constructor method with required parameters<br></br>
-    /// [PT-BR]: Método construtor com parametros obrigatórios
-    /// </summary>
-    /// <param name="connectionString">
-    /// [EN]: String referring to database connection<br></br>
-    /// [PT-BR]: Cadeia de caracteres referente a conexão com o banco de dados
-    /// </param>
-    /// <param name="sqlCommand">
-    /// [EN]: Transaction object containing the basic information of the activity.<br></br>
-    /// [PT-BR]: Objeto de transação contendo as informações básicas da atividade.
-    /// </param>
-    /// <exception cref="RequiredParamsException"></exception>
-    public XSql(string connectionString, SqlCommand sqlCommand) {
-      string invalidParamName = IsValid(connectionString, sqlCommand);
-      if(!string.IsNullOrEmpty(invalidParamName)) {
-        throw new RequiredParamsException(Situation.IsNullOrEmpty, invalidParamName);
-      }
-
-      this.con = new SqlConnection(connectionString);
-      this.cmd = sqlCommand;
-    }
+    #region PRIVATE METHODS
 
     /// <summary>
     /// [EN]: Go back to changes made to the bank and cancel all updates.<br></br>
@@ -107,6 +86,31 @@ namespace PublicUtility {
         notValidName = string.Format("connectionString");
 
       return notValidName;
+    }
+    
+    #endregion
+
+    /// <summary>
+    /// [EN]: Constructor method with required parameters<br></br>
+    /// [PT-BR]: Método construtor com parametros obrigatórios
+    /// </summary>
+    /// <param name="connectionString">
+    /// [EN]: String referring to database connection<br></br>
+    /// [PT-BR]: Cadeia de caracteres referente a conexão com o banco de dados
+    /// </param>
+    /// <param name="sqlCommand">
+    /// [EN]: Transaction object containing the basic information of the activity.<br></br>
+    /// [PT-BR]: Objeto de transação contendo as informações básicas da atividade.
+    /// </param>
+    /// <exception cref="RequiredParamsException"></exception>
+    public XSql(string connectionString, SqlCommand sqlCommand) {
+      string invalidParamName = IsValid(connectionString, sqlCommand);
+      if(!string.IsNullOrEmpty(invalidParamName)) {
+        throw new RequiredParamsException(Situation.IsNullOrEmpty, invalidParamName);
+      }
+
+      this.con = new SqlConnection(connectionString);
+      this.cmd = sqlCommand;
     }
 
     /// <summary>

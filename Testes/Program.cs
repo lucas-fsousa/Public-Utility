@@ -32,6 +32,49 @@ namespace Testes {
 
     static void Main(string[] args) {
 
+      #region TESTE CLASS XKEYBOARD
+
+      //Thread.Sleep(5000);
+
+      //// Executes the key-by-key keyboard manipulation action with output result: hello!
+      //XKeyboard.PressKey(Key.H);
+      //XKeyboard.UnPressKey(Key.H);
+      //XKeyboard.PressKey(Key.E);
+      //XKeyboard.UnPressKey(Key.E);
+      //XKeyboard.PressKey(Key.L);
+      //XKeyboard.UnPressKey(Key.L);
+      //XKeyboard.PressKey(Key.L);
+      //XKeyboard.UnPressKey(Key.L);
+      //XKeyboard.PressKey(Key.O);
+      //XKeyboard.UnPressKey(Key.O);
+      //XKeyboard.PressKey(Key.Shif);
+      //XKeyboard.PressKey(Key.N1);
+      //XKeyboard.UnPressKey(Key.N1);
+      //XKeyboard.UnPressKey(Key.Shif);
+
+      //// Executes the action of manipulating the keys creating the following output: hello!
+      //// Single digit combines Presskey with UnpressKey
+      //XKeyboard.SigleDigit(Key.H);
+      //XKeyboard.SigleDigit(Key.E);
+      //XKeyboard.SigleDigit(Key.L);
+      //XKeyboard.SigleDigit(Key.L);
+      //XKeyboard.SigleDigit(Key.O);
+      //XKeyboard.PressKey(Key.Shif);
+      //XKeyboard.SigleDigit(Key.N1);
+      //XKeyboard.UnPressKey(Key.Shif);
+
+      //// The following method is efficient to perform multiple key actions as long as it is indicated which action will be taken (press or release)
+      //// Combines multiple keys - Keyboard output: "hello!" 
+      //XKeyboard.KeyCombine(KeyAction.Press, new Key[] { Key.H, Key.E, Key.L, Key.L, Key.O, Key.Shif, Key.N1 });
+
+      //// releases all keys that have been pressed
+      //XKeyboard.KeyCombine(KeyAction.Drop, new Key[] { Key.H, Key.E, Key.L, Key.L, Key.O, Key.Shif, Key.N1 });
+
+      //// Checks if the specified key is pressed returning boolean as response
+      //bool keyDetail = XKeyboard.KeyStateInfo(Key.Shif).IsPressed;
+
+      #endregion
+
       #region TESTE CLASS XSECURITY
 
       // get a hash
@@ -45,6 +88,25 @@ namespace Testes {
 
       // Decrypting a string encrypted by a numeric key
       //string decrypt = XSecurity.Decrypt(encrypt, "12345678");
+
+      #endregion
+
+      #region TESTE CLASS XREQUEST
+
+      //// Makes a Get on the given URL and returns a content in json format / Can be used asynchronously
+      //string url = string.Format("http://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1"); // URL of a free API for testing
+      //Root response = XRequest.HttpGet<Root>(url).GetAwaiter().GetResult();
+
+      //// Make a Post request by sending an object to the server via URL
+      //string url = string.Format("http://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1");
+
+      //Root root = new Root();
+      //root.success = true;
+      //root.deck_id = "3p40paa87x90";
+      //root.remaining = 52;
+      //root.shuffled = true;
+
+      //HttpResponseMessage response = XRequest.HttpPost(url, root).GetAwaiter().GetResult();
 
       #endregion
 
@@ -71,6 +133,37 @@ namespace Testes {
       //Point point = XScreen.GetXyByHandle(handle);
       //Rectangle rectangle = XScreen.GetDemensionByHandle(handle);
       //XScreen.TakeScreenShot(@"C:\MyDocs\img.png", ImageFormat.Jpeg);
+
+      #endregion
+      
+      #region TESTE CLASS XMOUSE
+
+      //// Moves the mouse to the specified screen coordinate instantly, without motion animation.
+      //XMouse.MoveTo(150, 200, MouseSpeed.Full);
+
+      //Point start = new(10, 15); // start x y coordinate point
+      //Point end = new(220, 500); // end x y coordinate point
+      //// Performs drag from start point and drop to end point with x2 move animation
+      //XMouse.Drag(start, end, MouseSpeed.X2);
+
+      //// get the current cursor position
+      //Point currentPos = XMouse.GetPosition();
+
+      //// triggers the mouse scroll by scrolling down and then scrolling up
+      //XMouse.RollDown(600);
+      //XMouse.RollUp(100);
+
+      //// quickly moves to the indicated location and performs a click
+      //XMouse.MoveToAndClick(10, 10, MouseSpeed.X4);
+
+      //// performs a click on the current mouse position (left button)
+      //XMouse.LeftClick();
+
+      //// performs a double-click in the current mouse position (left button)
+      //XMouse.LeftClick(true);
+
+      //// performs a click on the current mouse position (right button)
+      //XMouse.RightClick();
 
       #endregion
 
@@ -135,98 +228,6 @@ namespace Testes {
 
       #endregion
 
-      #region TESTE CLASS XREQUEST
-
-      //// Makes a Get on the given URL and returns a content in json format / Can be used asynchronously
-      //string url = string.Format("http://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1"); // URL of a free API for testing
-      //Root response = XRequest.HttpGet<Root>(url).GetAwaiter().GetResult();
-
-      //// Make a Post request by sending an object to the server via URL
-      //string url = string.Format("http://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1");
-
-      //Root root = new Root();
-      //root.success = true;
-      //root.deck_id = "3p40paa87x90";
-      //root.remaining = 52;
-      //root.shuffled = true;
-
-      //HttpResponseMessage response = XRequest.HttpPost(url, root).GetAwaiter().GetResult();
-
-      #endregion
-
-      #region TESTE CLASS XKEYBOARD
-
-      //Thread.Sleep(5000);
-
-      //// Executes the key-by-key keyboard manipulation action with output result: hello!
-      //XKeyboard.PressKey(Key.H);
-      //XKeyboard.UnPressKey(Key.H);
-      //XKeyboard.PressKey(Key.E);
-      //XKeyboard.UnPressKey(Key.E);
-      //XKeyboard.PressKey(Key.L);
-      //XKeyboard.UnPressKey(Key.L);
-      //XKeyboard.PressKey(Key.L);
-      //XKeyboard.UnPressKey(Key.L);
-      //XKeyboard.PressKey(Key.O);
-      //XKeyboard.UnPressKey(Key.O);
-      //XKeyboard.PressKey(Key.Shif);
-      //XKeyboard.PressKey(Key.N1);
-      //XKeyboard.UnPressKey(Key.N1);
-      //XKeyboard.UnPressKey(Key.Shif);
-
-      //// Executes the action of manipulating the keys creating the following output: hello!
-      //// Single digit combines Presskey with UnpressKey
-      //XKeyboard.SigleDigit(Key.H);
-      //XKeyboard.SigleDigit(Key.E);
-      //XKeyboard.SigleDigit(Key.L);
-      //XKeyboard.SigleDigit(Key.L);
-      //XKeyboard.SigleDigit(Key.O);
-      //XKeyboard.PressKey(Key.Shif);
-      //XKeyboard.SigleDigit(Key.N1);
-      //XKeyboard.UnPressKey(Key.Shif);
-
-      //// The following method is efficient to perform multiple key actions as long as it is indicated which action will be taken (press or release)
-      //// Combines multiple keys - Keyboard output: "hello!" 
-      //XKeyboard.KeyCombine(KeyAction.Press, new Key[] { Key.H, Key.E, Key.L, Key.L, Key.O, Key.Shif, Key.N1 });
-
-      //// releases all keys that have been pressed
-      //XKeyboard.KeyCombine(KeyAction.Drop, new Key[] { Key.H, Key.E, Key.L, Key.L, Key.O, Key.Shif, Key.N1 });
-
-      //// Checks if the specified key is pressed returning boolean as response
-      //bool keyDetail = XKeyboard.KeyStateInfo(Key.Shif).IsPressed;
-
-      #endregion
-
-      #region TESTE CLASS XMOUSE
-
-      //// Moves the mouse to the specified screen coordinate instantly, without motion animation.
-      //XMouse.MoveTo(150, 200, Speed.Full);
-
-      //Point start = new(10, 15); // start x y coordinate point
-      //Point end = new(220, 500); // end x y coordinate point
-      //// Performs drag from start point and drop to end point with x2 move animation
-      //XMouse.Drag(start, end, Speed.X2);
-
-      //// get the current cursor position
-      //Point currentPos = XMouse.GetPosition();
-
-      //// triggers the mouse scroll by scrolling down and then scrolling up
-      //XMouse.RollDown(600);
-      //XMouse.RollUp(100);
-
-      //// quickly moves to the indicated location and performs a click
-      //XMouse.MoveToAndClick(10, 10, Speed.X4);
-
-      //// performs a click on the current mouse position (left button)
-      //XMouse.LeftClick();
-
-      //// performs a double-click in the current mouse position (left button)
-      //XMouse.LeftClick(true);
-
-      //// performs a click on the current mouse position (right button)
-      //XMouse.RightClick();
-
-      #endregion
 
     }
 

@@ -23,7 +23,7 @@ namespace PublicUtility.Xnm {
   /// [EN]: Represents mouse movement speed<br></br>
   /// [PT-BR]: Representa a velocidade de movimentação do mouse 
   /// </summary>
-  public enum Speed {
+  public enum MouseSpeed {
     X1 = 1,
     X2 = 2,
     X3 = 3,
@@ -150,4 +150,28 @@ namespace PublicUtility.Xnm {
     N9 = 0x39
   }
 
+  /// <summary>
+  /// [EN]: Represents the current state of a window (hidden or displayed)<br></br>
+  /// [PT-BR]: Representa o estado atual de uma janela(oculta ou exibida)
+  /// </summary>
+  public enum WidowMode {
+    Hide = 0,
+    Show = 5
+  }
+
+  /// <summary>
+  /// [EN]: Represents the action the mouse will take, be it clicking, moving, scrolling, etc.<br></br>
+  /// [PT-BR]: Representa a ação que o mouse tomará, seja clicar, mover, rolar e etc.s
+  /// </summary>
+  public enum MouseAction {
+    Wheel = 0x0800,
+    HWhell = 0x01000,
+    LeftDown = 0x02,
+    LeftUp = 0x04,
+    RightDown = 0x08,
+    RightUp = 0x10,
+    Absolute = 0x8000,
+    Move = 0x0001
+  }
+  
 }
