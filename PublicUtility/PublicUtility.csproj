@@ -19,7 +19,7 @@
     <PackageProjectUrl>https://github.com/lucas-fsousa/Public-Utility</PackageProjectUrl>
     <PackageId>LucasFsousa.PublicUtility</PackageId>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <Version>1.0.6</Version>
+    <Version>1.0.7</Version>
     <Copyright>Lucas F Sousa - All rights reserved</Copyright>
     <PackageReleaseNotes>[EN]: Inclusion of new tools for image manipulation, screen reading and others [PT-BR]: Inclusão de novas ferramentas para manipulação de imagens, leitura de tela e outros</PackageReleaseNotes>
     <OutputType>Library</OutputType>

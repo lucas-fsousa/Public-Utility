@@ -197,7 +197,37 @@ namespace Testes {
 
       #endregion
 
-    
+      #region TESTE CLASS XMOUSE
+
+      //// Moves the mouse to the specified screen coordinate instantly, without motion animation.
+      //XMouse.MoveTo(150, 200, Speed.Full);
+
+      //Point start = new(10, 15); // start x y coordinate point
+      //Point end = new(220, 500); // end x y coordinate point
+      //// Performs drag from start point and drop to end point with x2 move animation
+      //XMouse.Drag(start, end, Speed.X2);
+
+      //// get the current cursor position
+      //Point currentPos = XMouse.GetPosition();
+
+      //// triggers the mouse scroll by scrolling down and then scrolling up
+      //XMouse.RollDown(600);
+      //XMouse.RollUp(100);
+
+      //// quickly moves to the indicated location and performs a click
+      //XMouse.MoveToAndClick(10, 10, Speed.X4);
+
+      //// performs a click on the current mouse position (left button)
+      //XMouse.LeftClick();
+
+      //// performs a double-click in the current mouse position (left button)
+      //XMouse.LeftClick(true);
+
+      //// performs a click on the current mouse position (right button)
+      //XMouse.RightClick();
+
+      #endregion
+
     }
 
     public static void showImage() {

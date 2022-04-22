@@ -8,11 +8,11 @@ Use the package manager [NuGet](https://www.nuget.org/packages/LucasFsousa.Publi
 
 ```bash
 EXAMPLE
-PM> Install-Package LucasFsousa.PublicUtility -Version 1.0.6
+PM> Install-Package LucasFsousa.PublicUtility -Version 1.0.7
 
-.NET CLI> dotnet add package LucasFsousa.PublicUtility --version 1.0.6
+.NET CLI> dotnet add package LucasFsousa.PublicUtility --version 1.0.7
 
-Package Reference> <PackageReference Include="LucasFsousa.PublicUtility" Version="1.0.6" />
+Package Reference> <PackageReference Include="LucasFsousa.PublicUtility" Version="1.0.7" />
 
 ```
 
@@ -142,6 +142,35 @@ root.shuffled = true;
 
 HttpResponseMessage response = XRequest.HttpPost(url, root).GetAwaiter().GetResult();
 
+
+// ================= examples of use of the XMouse class =================
+
+// quickly moves to the indicated location and performs a click
+XMouse.MoveToAndClick(10, 10, Speed.X4);
+
+// performs a click on the current mouse position (left button)
+XMouse.LeftClick();
+
+// performs a double-click in the current mouse position (left button)
+XMouse.LeftClick(true);
+
+// performs a click on the current mouse position (right button)
+XMouse.RightClick();
+
+// Moves the mouse to the specified screen coordinate instantly, without motion animation.
+XMouse.MoveTo(150, 200, Speed.Full);
+
+Point start = new(10, 15); // start x y coordinate point
+Point end = new(220, 500); // end x y coordinate point
+// Performs drag from start point and drop to end point with x2 move animation
+XMouse.Drag(start, end, Speed.X2);
+
+// get the current cursor position
+Point currentPos = XMouse.GetPosition();
+
+// triggers the mouse scroll by scrolling down and then scrolling up
+XMouse.RollDown(600);
+XMouse.RollUp(100);
 
 // ================= examples of use of the XKeyboard class =================
 
