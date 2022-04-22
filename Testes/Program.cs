@@ -28,8 +28,7 @@ using Emgu.CV.Features2D;
 
 namespace Testes {
   internal class Program {
-    [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-    private static extern void keybd_event(uint bVk, uint bScan, uint dwFlags, uint dwExtraInfo);
+
 
     static void Main(string[] args) {
 
@@ -155,10 +154,47 @@ namespace Testes {
 
       #endregion
 
-      string path = @"C:\MyDocs\Captura.png";
-      Thread.Sleep(2000);
-      var teste = XScreen.LocateOnScreen(path);
-    
+      Thread.Sleep(5000);
+      //string path = @"C:\MyDocs\Captura.png";
+      //var teste = XScreen.LocateOnScreen(path);
+
+      // Executes the key-by-key keyboard manipulation action with output result: hello!
+      XKeyboard.PressKey(Key.H);
+      XKeyboard.UnPressKey(Key.H);
+      XKeyboard.PressKey(Key.E);
+      XKeyboard.UnPressKey(Key.E);
+      XKeyboard.PressKey(Key.L);
+      XKeyboard.UnPressKey(Key.L);
+      XKeyboard.PressKey(Key.L);
+      XKeyboard.UnPressKey(Key.L);
+      XKeyboard.PressKey(Key.O);
+      XKeyboard.UnPressKey(Key.O);
+      XKeyboard.PressKey(Key.Shif);
+      XKeyboard.PressKey(Key.N1);
+      XKeyboard.UnPressKey(Key.N1);
+      XKeyboard.UnPressKey(Key.Shif);
+
+      // Executes the action of manipulating the keys creating the following output: hello!
+      // Single digit combines Presskey with UnpressKey
+      XKeyboard.SigleDigit(Key.H);
+      XKeyboard.SigleDigit(Key.E);
+      XKeyboard.SigleDigit(Key.L);
+      XKeyboard.SigleDigit(Key.L);
+      XKeyboard.SigleDigit(Key.O);
+      XKeyboard.PressKey(Key.Shif);
+      XKeyboard.SigleDigit(Key.N1);
+      XKeyboard.UnPressKey(Key.Shif);
+
+      // The following method is efficient to perform multiple key actions as long as it is indicated which action will be taken (press or release)
+      // Combines multiple keys - Keyboard output: "hello!" 
+      XKeyboard.KeyCombine(KeyAction.Press, new Key[] { Key.H, Key.E, Key.L, Key.L, Key.O, Key.Shif, Key.N1 });
+
+      // releases all keys that have been pressed
+      XKeyboard.KeyCombine(KeyAction.Drop, new Key[] { Key.H, Key.E, Key.L, Key.L, Key.O, Key.Shif, Key.N1 });
+
+      // Checks if the specified key is pressed returning boolean as response
+      bool keyDetail = XKeyboard.KeyStateInfo(Key.Shif).IsPressed;
+      
     }
 
     public static void showImage() {

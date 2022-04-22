@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Text;
 
 namespace PublicUtility.Xnm {
@@ -32,5 +33,16 @@ namespace PublicUtility.Xnm {
       return new Point(Location.X, Location.Y);
     }
   }
+
+  public struct KeyDetails {
+    public bool IsPressed { get; }
+    public bool IsToggled { get; }
+
+    public KeyDetails(bool isPressed, bool isToggled) { 
+      IsPressed = isPressed;
+      IsToggled = isToggled;
+    }
+  }
+
 
 }

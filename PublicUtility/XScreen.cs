@@ -50,16 +50,16 @@ namespace PublicUtility {
       bool response = false;
 
       if(point.X < 0)
-        throw new RequiredParamsException(Situation.OutOfBounds, nameof(point.X));
+        return response;
 
       else if(point.Y < 0)
-        throw new RequiredParamsException(Situation.OutOfBounds, nameof(point.Y));
+        return response;
 
       else if(point.X > size.Width)
-        throw new RequiredParamsException(Situation.OutOfBounds, nameof(point.X));
+        return response;
 
       else if(point.Y > size.Height)
-        throw new RequiredParamsException(Situation.OutOfBounds, nameof(point.Y));
+        return response;
 
       else
         response = true;
@@ -104,8 +104,24 @@ namespace PublicUtility {
     }
 
     private static void MouseMoveControl(Point start, Point end, Speed speed) {
+      bool startOk = CheckCorner(start);
+      bool endOk = CheckCorner(end);
+
+      if(!startOk) 
+        throw new RequiredParamsException(Situation.OutOfBounds, nameof(start));
+
+      if(!endOk) 
+        throw new RequiredParamsException(Situation.OutOfBounds, nameof(end));
+      
       int x = start.X, y = start.Y, cc = 0;
       bool endx = false, endy = false;
+
+      // Sets instantaneous movement to the end position of the cursor.
+      if(speed == Speed.Full) {
+        SetCursorPos(end.X, end.Y);
+        return;
+      }
+
       while(!endx || !endy) {
 
         /*Uses the Speed Variable value as an increment/decrement that changes the velocity at which drag occurs
@@ -259,7 +275,7 @@ namespace PublicUtility {
 
       return null;
     }
-    
+
     #region OVERLOAD GETXY
 
     /// <summary>
@@ -482,11 +498,11 @@ namespace PublicUtility {
     /// [PT-BR]: velocidade da execução de movimentação do mouse
     /// </param>
     public static void MouseDrag(Point start, Point end, Speed speed = Speed.X1) {
-      // checks if the coordinates are valid, otherwise it will throw an exception
-      CheckCorner(start);
-      CheckCorner(end);
+      MouseMoveTo(start, speed);
+      Thread.Sleep(300);
       mouse_event(XConst.MOUSE_LEFTDOWN, 0, 0, 0, 0);
-      MouseMoveControl(start, end, speed);
+      MouseMoveTo(end, speed);
+      Thread.Sleep(300);
       mouse_event(XConst.MOUSE_LEFTUP, 0, 0, 0, 0);
     }
 
@@ -555,7 +571,7 @@ namespace PublicUtility {
     /// [PT-BR]: Se marcado como verdadeiro, executa um click duplo no local
     /// </param>
     public static void MoveToAndClick(int x, int y, Speed speed = Speed.X2, bool doubleClick = false, bool leftbtn = true) {
-      MouseMoveTo(x, y, Speed.X1);
+      MouseMoveTo(x, y, speed);
       if(leftbtn)
         LeftClick(doubleClick);
       else
@@ -584,7 +600,7 @@ namespace PublicUtility {
     /// [PT-BR]: Se marcado como verdadeiro, executa um click duplo no local
     /// </param>
     public static void MoveToAndClick(Point point, Speed speed = Speed.X2, bool doubleClick = false, bool leftbtn = true) {
-      MouseMoveTo(point, Speed.X1);
+      MouseMoveTo(point, speed);
       if(leftbtn)
         LeftClick(doubleClick);
       else
@@ -635,7 +651,7 @@ namespace PublicUtility {
     }
 
     #endregion
-
+    
     #endregion
 
   }

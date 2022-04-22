@@ -8,11 +8,11 @@ Use the package manager [NuGet](https://www.nuget.org/packages/LucasFsousa.Publi
 
 ```bash
 EXAMPLE
-PM> Install-Package LucasFsousa.PublicUtility -Version 1.0.5
+PM> Install-Package LucasFsousa.PublicUtility -Version 1.0.6
 
-.NET CLI> dotnet add package LucasFsousa.PublicUtility --version 1.0.5
+.NET CLI> dotnet add package LucasFsousa.PublicUtility --version 1.0.6
 
-Package Reference> <PackageReference Include="LucasFsousa.PublicUtility" Version="1.0.5" />
+Package Reference> <PackageReference Include="LucasFsousa.PublicUtility" Version="1.0.6" />
 
 ```
 
@@ -141,6 +141,48 @@ root.remaining = 52;
 root.shuffled = true;
 
 HttpResponseMessage response = XRequest.HttpPost(url, root).GetAwaiter().GetResult();
+
+
+// ================= examples of use of the XKeyboard class =================
+
+
+// Executes the key-by-key keyboard manipulation action with output result: "hello!"
+XKeyboard.PressKey(Key.H);
+XKeyboard.UnPressKey(Key.H);
+XKeyboard.PressKey(Key.E);
+XKeyboard.UnPressKey(Key.E);
+XKeyboard.PressKey(Key.L);
+XKeyboard.UnPressKey(Key.L);
+XKeyboard.PressKey(Key.L);
+XKeyboard.UnPressKey(Key.L);
+XKeyboard.PressKey(Key.O);
+XKeyboard.UnPressKey(Key.O);
+XKeyboard.PressKey(Key.Shif);
+XKeyboard.PressKey(Key.N1);
+XKeyboard.UnPressKey(Key.N1);
+XKeyboard.UnPressKey(Key.Shif);
+
+// Executes the action of manipulating the keys creating the following output: "hello!"
+// Single digit combines Presskey with UnpressKey
+XKeyboard.SigleDigit(Key.H);
+XKeyboard.SigleDigit(Key.E);
+XKeyboard.SigleDigit(Key.L);
+XKeyboard.SigleDigit(Key.L);
+XKeyboard.SigleDigit(Key.O);
+XKeyboard.PressKey(Key.Shif);
+XKeyboard.SigleDigit(Key.N1);
+XKeyboard.UnPressKey(Key.Shif);
+
+// The following method is efficient to perform multiple key actions as long as it is indicated which action will be taken (press or release)
+// Combines multiple keys - Keyboard output: "hello!" 
+XKeyboard.KeyCombine(KeyAction.Press, new Key[] { Key.H, Key.E, Key.L, Key.L, Key.O, Key.Shif, Key.N1 });
+
+// releases all keys that have been pressed
+XKeyboard.KeyCombine(KeyAction.Drop, new Key[] { Key.H, Key.E, Key.L, Key.L, Key.O, Key.Shif, Key.N1 });
+
+// Checks if the specified key is pressed returning boolean as response
+bool keyDetail = XKeyboard.KeyStateInfo(Key.Shif).IsPressed;
+
 
 ```
 

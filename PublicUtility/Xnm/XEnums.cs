@@ -27,23 +27,26 @@ namespace PublicUtility.Xnm {
     X1 = 1,
     X2 = 2,
     X3 = 3,
-    X4 = 4
+    X4 = 4,
+    Full = 5
   }
 
   /// <summary>
   /// [EN]: Represents the action of Pressing or Releasing a key<br></br>
   /// [PT-BR]: Representa a ação de Pressionar ou Soltar uma tecla
   /// </summary>
-  public enum Keyboard {
-    Down = 0x0001,
-    Up = 0x0002,
+  [Flags]
+  public enum KeyAction {
+    Press = 0,
+    Drop = 0x2,
   }
 
   /// <summary>
   /// [EN]: Represents the main virtual keys that can be used to simulate Keyboard input <br></br>
   /// [PT-BR]: Representa as principais teclas virtuais que podem ser utilizadas para simular um input do teclado
   /// </summary>
-  public enum KeyboardKey {
+  [Flags]
+  public enum Key {
     A = 0x41,
     B = 0x42,
     C = 0x43,
@@ -70,8 +73,6 @@ namespace PublicUtility.Xnm {
     X = 0x58,
     Y = 0x59,
     Z = 0x5A,
-    WinLeft = 0x5B,
-    WinRight = 0x5C,
     Sleep = 0x5F,
     Num0 = 0x60,
     Num1 = 0x61,
@@ -124,6 +125,7 @@ namespace PublicUtility.Xnm {
     UpArrow = 0x26,
     Delete = 0x2E,
     Enter = 0x0D,
+    PrtSc = 0x2C,
     Tab = 0x09,
     Backspace = 0x08,
     Esc = 0x1B,

@@ -14,7 +14,7 @@ namespace PublicUtility {
   /// [EN]: Class with useful system features<br></br>
   /// [PT-BR]: Classe com funcionalidades uteis do sistema
   /// </summary>
-  public class XSystem {
+  public static class XSystem {
 
     private const int SW_HIDE = 0;
     private const int SW_SHOW = 5;
