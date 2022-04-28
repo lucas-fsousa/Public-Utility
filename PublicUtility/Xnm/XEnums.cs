@@ -154,6 +154,7 @@ namespace PublicUtility.Xnm {
   /// [EN]: Represents the current state of a window (hidden or displayed)<br></br>
   /// [PT-BR]: Representa o estado atual de uma janela(oculta ou exibida)
   /// </summary>
+  [Flags]
   public enum WidowMode {
     Hide = 0,
     Show = 5
@@ -163,6 +164,7 @@ namespace PublicUtility.Xnm {
   /// [EN]: Represents the action the mouse will take, be it clicking, moving, scrolling, etc.<br></br>
   /// [PT-BR]: Representa a ação que o mouse tomará, seja clicar, mover, rolar e etc.s
   /// </summary>
+  [Flags]
   public enum MouseAction {
     Wheel = 0x0800,
     HWhell = 0x01000,

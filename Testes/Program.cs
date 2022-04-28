@@ -25,6 +25,8 @@ using System;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Util;
 using Emgu.CV.Features2D;
+using System.Net.NetworkInformation;
+using System.Net;
 
 namespace Testes {
   internal class Program {
@@ -135,11 +137,11 @@ namespace Testes {
       //XScreen.TakeScreenShot(@"C:\MyDocs\img.png", ImageFormat.Jpeg);
 
       #endregion
-      
+
       #region TESTE CLASS XMOUSE
 
-      //// Moves the mouse to the specified screen coordinate instantly, without motion animation.
-      //XMouse.MoveTo(150, 200, MouseSpeed.Full);
+      // Moves the mouse to the specified screen coordinate instantly, without motion animation.
+      ////XMouse.MoveTo(590, 299, MouseSpeed.Full);
 
       //Point start = new(10, 15); // start x y coordinate point
       //Point end = new(220, 500); // end x y coordinate point
@@ -228,8 +230,20 @@ namespace Testes {
 
       #endregion
 
+      //string path = @"C:\MyDocs";
+
+      while(true) {
+        var ping = X.GetPing("8.8.8.8").Result;
+        ping.ToString().Print();
+        Thread.Sleep(500);
+      }
+      
+
+
 
     }
+
+    
 
     public static void showImage() {
       string path = string.Format(@"C:\MyDocs\printscreen.png");

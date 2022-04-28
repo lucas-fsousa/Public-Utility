@@ -2,7 +2,11 @@
 using PublicUtility.Xnm;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Net;
+using System.Net.NetworkInformation;
+using System.Threading.Tasks;
 using zip = System.IO.Compression;
 
 namespace PublicUtility {
@@ -17,9 +21,9 @@ namespace PublicUtility {
   /// </remarks>
   /// <exception cref="BadImageFormatException"></exception>
   public static class X {
-
+#pragma warning disable CS8632
     #region OTHERS
-    
+
     /// <summary>
     /// [EN]: Captures Keyboard input and converts it to the object type given during the method call <br></br>
     /// [PT-BR]: Captura a entrada do teclado e converte para o tipo de objeto informado durante a chamada do método
@@ -100,7 +104,7 @@ namespace PublicUtility {
 
       return response;
     }
-    
+
     /// <summary>
     /// [EN]: Unzip a .zip file in the destination folder<br></br>
     /// [PT-BR]: Descompacta um arquivo .zip na pasta de destino
@@ -114,7 +118,7 @@ namespace PublicUtility {
     /// [PT-BR]: Endereço da pasta de destino
     /// </param>
     public static void UnzipFile(string zipFilePath, string destinationDir) => zip.ZipFile.ExtractToDirectory(zipFilePath, destinationDir);
-    
+
     /// <summary>
     /// [EN]: Compress a file to .zip<br></br>
     /// [PT-BR]: Compacta um arquivo para .zip
@@ -129,7 +133,55 @@ namespace PublicUtility {
     /// </param>
     public static void ZipFile(string fileToZipPath, string fileZipDir) => zip.ZipFile.CreateFromDirectory(fileToZipPath, fileZipDir);
 
-    
+    /// <summary>
+    /// [EN]: Requests a response from the server to check the status of the connection.<br></br>
+    /// [PT-BR]: Solicita uma resposta do servidor para verificar o status da conexão.
+    /// </summary>
+    /// <param name="ipOrHostname">
+    /// [EN]: IP address or hostname of the location that will be requested<br></br>
+    /// [PT-BR]: Endereço IP ou hostname da localidade que será requisitada
+    /// </param>
+    /// <param name="timeout">
+    /// [EN]: Time to wait until timeout is considered<br></br>
+    /// [PT-BR]: Tempo de espera até que o tempo limite seja considerado
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a struct containing the request details<br></br>
+    /// [PT-BR]: Retorna uma estrutura contendo os detalhes da solicitação
+    /// </returns>
+    public async static Task<PingDetail> GetPing(string ipOrHostname, int timeout = 999) {
+      int tlt = -1;
+      long ms = -1;
+      bool timeOver = false;
+      bool dontFragmented = false;
+      string status = string.Empty;
+      IPAddress address = null;
+
+      try {
+        Ping ping = new();
+        PingReply response = await ping.SendPingAsync(ipOrHostname, timeout);
+        status = response.Status.ToString();
+
+        if(status.ToLower() == "timedout") {
+          status = "Timeout";
+          timeOver = true;
+          address = IPAddress.Parse(ipOrHostname);
+          ms = -1;
+          tlt = -1;
+          dontFragmented = false;
+
+        } else {
+          address = response.Address;
+          ms = response.RoundtripTime;
+          tlt = response.Options.Ttl;
+          dontFragmented = response.Options.DontFragment;
+
+        }
+
+      } catch(Exception) { }
+      return new(ms, status, address, tlt, dontFragmented, timeOver);
+    }
+
     #endregion
 
     #region EXTENSION
@@ -256,6 +308,7 @@ namespace PublicUtility {
     /// [EN]: Object to be written to the console along with the message <br></br>
     /// [PT-BR]: Objeto a ser escrito no console juntamente com a mensagem
     /// </param>
+
     public static void Print(this string message, object? arg) => Console.WriteLine(message, arg);
 
     /// <summary>

@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace PublicUtility {
-  public class XMouse {
+  public static class XMouse {
 
     #region INTEROPT DLL IMPORTS
 
@@ -275,7 +275,7 @@ namespace PublicUtility {
     /// [EN]: If marked true, double-click the location<br></br>
     /// [PT-BR]: Se marcado como verdadeiro, executa um click duplo no local
     /// </param>
-    public static void MoveToAndClick(Point point, MouseSpeed speed = MouseSpeed.X2, bool doubleClick = false, bool leftbtn = true) {
+    public static void MoveToAndClick(this Point point, MouseSpeed speed = MouseSpeed.X2, bool doubleClick = false, bool leftbtn = true) {
       MoveTo(point, speed);
       if(leftbtn)
         LeftClick(doubleClick);
@@ -300,7 +300,7 @@ namespace PublicUtility {
     /// [EN]: Mouse movement execution speed<br></br>
     /// [PT-BR]: velocidade da execução de movimentação do mouse
     /// </param>
-    public static void MoveTo(Point point, MouseSpeed speed = MouseSpeed.X1) {
+    public static void MoveTo(this Point point, MouseSpeed speed = MouseSpeed.X1) {
       Point start = GetPosition();
       MouseMoveControl(start, point, speed);
     }
