@@ -253,7 +253,7 @@ namespace Testes {
       //}
 
 
-      var response = X.Input<double[]>();
+      var response = X.Input<double>();
 
 
     }

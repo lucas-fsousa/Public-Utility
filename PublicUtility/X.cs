@@ -113,7 +113,6 @@ namespace PublicUtility {
       return response;
     }
 
-
     /// <summary>
     /// [EN]: Unzip a .zip file in the destination folder<br></br>
     /// [PT-BR]: Descompacta um arquivo .zip na pasta de destino
