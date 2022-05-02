@@ -32,7 +32,7 @@ XSystem.RunCmdScript(commands);
 List<FileInfo> files = XSystem.GrabFilesFromFolder(@"C:\MyDocs");
 
 // gets all processes that have "chrome" signature or similar
-List<Process> processes = XSystem.GetAllProcessByName("chrome", true);
+List<Process> processes = XSystem.GetAllProcessByName("chrome", false);
 
 // ================= examples of use of the XSql class =================
 
@@ -97,6 +97,10 @@ bool isValid = anyInvalidNumber.IsNumber(); // return false value
 
 string anyValidNumber = "10000.50"; // supports floating-point or non-floating-point checking
 bool isValid = anyValidNumber.IsNumber(); // return true value
+
+// requests a response confirmation from the server
+var ping = X.GetPing("8.8.8.8").Result; // 8.8.8.8 is a google server IP
+ping.ToString().Print(); 
 
 
 /* Usage example: Inform the type of object that will be imputed and the conversion will be performed at the time of data entry.

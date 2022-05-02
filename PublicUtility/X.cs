@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using zip = System.IO.Compression;
 
 namespace PublicUtility {
+#pragma warning disable CS8632
 
   /// <summary>
   /// [EN]: Public utility class that contains several methods to aid in application development <br></br>
@@ -21,8 +22,36 @@ namespace PublicUtility {
   /// </remarks>
   /// <exception cref="BadImageFormatException"></exception>
   public static class X {
-#pragma warning disable CS8632
+
     #region OTHERS
+
+    #region PRIVATE METHODS
+
+    public static Dictionary<string, object> ValidInputs() {
+      Dictionary<string, object> validInputs = new Dictionary<string, object>();
+      validInputs.Add("datetime", typeof(DateTime));
+      validInputs.Add("decimal", typeof(decimal));
+      validInputs.Add("object", typeof(object));
+      validInputs.Add("double", typeof(double));
+      validInputs.Add("string", typeof(string));
+      validInputs.Add("ushort", typeof(ushort));
+      validInputs.Add("ulong", typeof(ulong));
+      validInputs.Add("float", typeof(float));
+      validInputs.Add("nuint", typeof(nuint));
+      validInputs.Add("short", typeof(short));
+      validInputs.Add("sbyte", typeof(sbyte));
+      validInputs.Add("nint", typeof(nint));
+      validInputs.Add("long", typeof(long));
+      validInputs.Add("uint", typeof(uint));
+      validInputs.Add("char", typeof(char));
+      validInputs.Add("byte", typeof(byte));
+      validInputs.Add("bool", typeof(bool));
+      validInputs.Add("int", typeof(int));
+      
+      return validInputs;
+    }
+
+    #endregion
 
     /// <summary>
     /// [EN]: Captures Keyboard input and converts it to the object type given during the method call <br></br>
@@ -47,30 +76,6 @@ namespace PublicUtility {
     /// <exception cref="RequiredParamsException"></exception>
     public static T Input<T>(string messageToPrint = "", bool hidden = false) {
       T response = default;
-
-      #region PRE-VALIDATION OF VALID INPUTS
-
-      Dictionary<string, object> validInputs = new Dictionary<string, object>();
-      validInputs.Add("datetime", typeof(DateTime));
-      validInputs.Add("object", typeof(object));
-      validInputs.Add("ushort", typeof(ushort));
-      validInputs.Add("string", typeof(string));
-      validInputs.Add("ulong", typeof(ulong));
-      validInputs.Add("short", typeof(short));
-      validInputs.Add("nuint", typeof(nuint));
-      validInputs.Add("sbyte", typeof(sbyte));
-      validInputs.Add("uint", typeof(uint));
-      validInputs.Add("long", typeof(long));
-      validInputs.Add("char", typeof(char));
-      validInputs.Add("byte", typeof(byte));
-      validInputs.Add("nint", typeof(nint));
-      validInputs.Add("bool", typeof(bool));
-      validInputs.Add("int", typeof(int));
-
-      if(!validInputs.ContainsValue(typeof(T)))
-        throw new RequiredParamsException(Situation.InvalidType, nameof(T));
-
-      #endregion
 
       if(string.IsNullOrEmpty(messageToPrint))
         messageToPrint = string.Format(">> ");
@@ -100,7 +105,9 @@ namespace PublicUtility {
         }
 
         response = (T)Convert.ChangeType(reader, typeof(T));
-      } catch(Exception) { }
+      } catch(Exception) {
+        throw new RequiredParamsException(Situation.InvalidType, nameof(T));
+      }
 
       return response;
     }

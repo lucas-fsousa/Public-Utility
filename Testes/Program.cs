@@ -228,19 +228,34 @@ namespace Testes {
       // Example with 1 parameter
       //string anyChar = X.Input<string>("password: ", true);
 
+      //var ping = X.GetPing("8.8.8.8").Result;
+      //ping.ToString().Print();
+
       #endregion
 
       //string path = @"C:\MyDocs";
-
-      while(true) {
-        var ping = X.GetPing("8.8.8.8").Result;
-        ping.ToString().Print();
-        Thread.Sleep(500);
-      }
       
+      //var server = X.Input<string>("SERVER: ");
+      //while(true) {
+      //  int i;
+      //  double falhou = 0.0;
+      //  X.Print("DISPARANDO 10 SOLICITAÇÕES");
+      //  for(i = 0; i < 10; i++) {
+      //    var ping = X.GetPing(server, 999).Result;
+      //    if(ping.Timeout)
+      //      falhou += 1;
+      //    ping.ToString().Print();
+      //    Thread.Sleep(500);
+      //  }
+      //  X.Print($"PERCA DE PACOTE {(falhou * i) / 1}%");
+        
+        
+      //}
 
 
-
+      double[] values = Console.ReadLine().Split(' ').Select(x=> double.Parse(x)).ToArray();
+      
+      values.ToList().ForEach(x => Console.WriteLine(x));
     }
 
     
