@@ -47,7 +47,7 @@ namespace PublicUtility {
       validInputs.Add("byte", typeof(byte));
       validInputs.Add("bool", typeof(bool));
       validInputs.Add("int", typeof(int));
-      
+
       return validInputs;
     }
 
@@ -74,7 +74,7 @@ namespace PublicUtility {
     /// [PT-BR]: Retorna um objeto do tipo que foi informado durante a chamada do método
     /// </returns>
     /// <exception cref="RequiredParamsException"></exception>
-    public static T Input<T>(string messageToPrint = "", bool hidden = false) {
+    public static T Input<T>(string messageToPrint="", bool hidden = false) {
       T response = default;
 
       if(string.IsNullOrEmpty(messageToPrint))
@@ -99,6 +99,7 @@ namespace PublicUtility {
             Console.Write('*');
             GC.Collect();
           } while(true);
+
         } else {
           reader = Console.ReadLine();
 
@@ -111,6 +112,7 @@ namespace PublicUtility {
 
       return response;
     }
+
 
     /// <summary>
     /// [EN]: Unzip a .zip file in the destination folder<br></br>

@@ -234,7 +234,7 @@ namespace Testes {
       #endregion
 
       //string path = @"C:\MyDocs";
-      
+
       //var server = X.Input<string>("SERVER: ");
       //while(true) {
       //  int i;
@@ -248,14 +248,14 @@ namespace Testes {
       //    Thread.Sleep(500);
       //  }
       //  X.Print($"PERCA DE PACOTE {(falhou * i) / 1}%");
-        
-        
+
+
       //}
 
 
-      double[] values = Console.ReadLine().Split(' ').Select(x=> double.Parse(x)).ToArray();
-      
-      values.ToList().ForEach(x => Console.WriteLine(x));
+      var response = X.Input<double[]>();
+
+
     }
 
     
