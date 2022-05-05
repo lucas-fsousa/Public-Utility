@@ -19,7 +19,7 @@
     <PackageProjectUrl>https://github.com/lucas-fsousa/Public-Utility</PackageProjectUrl>
     <PackageId>LucasFsousa.PublicUtility</PackageId>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <Version>1.0.7</Version>
+    <Version>1.0.8</Version>
     <Copyright>Lucas F Sousa - All rights reserved</Copyright>
     <PackageReleaseNotes>[EN]: Fragmented the screen class that contained the mouse manipulation information. Added XMouse class for mouse related events. Correction of existing items. Inclusion of the XKeyboard class for keyboard-related events (item in testing phase) [PT-BR]: Fragmentada a classe da tela que continha as informações de manipulação do mouse. Adicionada a classe XMouse para eventos relacionados ao mouse. Correção de itens existentes. Inclusão da classe XKeyboard para eventos relacionados ao teclado(item em fase de testes)</PackageReleaseNotes>
     <OutputType>Library</OutputType>

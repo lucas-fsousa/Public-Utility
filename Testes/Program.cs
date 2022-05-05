@@ -93,6 +93,30 @@ namespace Testes {
 
       #endregion
 
+      #region TESTE CLASS XTEXTFILE
+
+      //string path = @"C:\MyDocs\doc.txt";
+
+      //XTextFile.AppendMultLines(path, new[] { "TESTE MULTI LINE 01", "TESTE MULTI LINE 02", "TESTE MULTI LINE 03", "TESTE MULTI LINE 04" }); // Insert multiple lines into the file consecutively
+
+      //XTextFile.AppendLine(path, $"TEST AT {DateTime.Now}"); // Inserts a new line in the text document
+
+      //XTextFile.ReplaceLine(path, 4, "NEW ITEM FOR INSERT IN LINE 5 IF THERE ARE 5 LINES IN THE FILE"); // Change the value of a row based on its location number (min is 1)
+
+      //XTextFile.ReplaceLine(path, "TESTE MULTI LINE 02", "FIRST LOCATED - REPLACED", true); // Change the value of the old line if match (can be applied to all lines found or just the first line)
+
+      //string text01 = XTextFile.GetTextLine(path, 2); // get the text of line 2 from the destination file
+
+      //List<string> textLines = XTextFile.GetTextLines(path, new[] { 1, 5, 3 }); // Get specific text lines from the file ( line 1, line 5 and 3 for example)
+
+      //List<string> otherTextLines = XTextFile.GetTextLines(path, 4, 6); // Gets the text of lines in the desired range
+
+      //XTextFile.CreateText(@"C:\MyDocs\newdoc.txt", "LONG TEXT HERE"); // Creates a new Text file or replaces an existing one
+
+      //string recText = XTextFile.GetText(@"C:\MyDocs\newdoc.txt"); // Get all the text from a file
+
+      #endregion
+
       #region TESTE CLASS XREQUEST
 
       //// Makes a Get on the given URL and returns a content in json format / Can be used asynchronously
@@ -233,32 +257,10 @@ namespace Testes {
 
       #endregion
 
-      //string path = @"C:\MyDocs";
-
-      //var server = X.Input<string>("SERVER: ");
-      //while(true) {
-      //  int i;
-      //  double falhou = 0.0;
-      //  X.Print("DISPARANDO 10 SOLICITAÇÕES");
-      //  for(i = 0; i < 10; i++) {
-      //    var ping = X.GetPing(server, 999).Result;
-      //    if(ping.Timeout)
-      //      falhou += 1;
-      //    ping.ToString().Print();
-      //    Thread.Sleep(500);
-      //  }
-      //  X.Print($"PERCA DE PACOTE {(falhou * i) / 1}%");
-
-
-      //}
-
-
-      var response = X.Input<double>();
-
 
     }
 
-    
+
 
     public static void showImage() {
       string path = string.Format(@"C:\MyDocs\printscreen.png");

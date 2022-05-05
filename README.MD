@@ -8,11 +8,11 @@ Use the package manager [NuGet](https://www.nuget.org/packages/LucasFsousa.Publi
 
 ```bash
 EXAMPLE
-PM> Install-Package LucasFsousa.PublicUtility -Version 1.0.7
+PM> Install-Package LucasFsousa.PublicUtility -Version 1.0.8
 
-.NET CLI> dotnet add package LucasFsousa.PublicUtility --version 1.0.7
+.NET CLI> dotnet add package LucasFsousa.PublicUtility --version 1.0.8
 
-Package Reference> <PackageReference Include="LucasFsousa.PublicUtility" Version="1.0.7" />
+Package Reference> <PackageReference Include="LucasFsousa.PublicUtility" Version="1.0.8" />
 
 ```
 
@@ -215,6 +215,29 @@ XKeyboard.KeyCombine(KeyAction.Drop, new Key[] { Key.H, Key.E, Key.L, Key.L, Key
 
 // Checks if the specified key is pressed returning boolean as response
 bool keyDetail = XKeyboard.KeyStateInfo(Key.Shif).IsPressed;
+
+// ================= examples of use of the XTextFile class =================
+
+
+string path = @"C:\MyDocs\doc.txt";
+
+XTextFile.AppendMultLines(path, new[] { "TESTE MULTI LINE 01", "TESTE MULTI LINE 02", "TESTE MULTI LINE 03", "TESTE MULTI LINE 04" }); // Insert multiple lines into the file consecutively
+
+XTextFile.AppendLine(path, $"TEST AT {DateTime.Now}"); // Inserts a new line in the text document
+
+XTextFile.ReplaceLine(path, 4, "NEW ITEM FOR INSERT IN LINE 5 IF THERE ARE 5 LINES IN THE FILE"); // Change the value of a row based on its location number (min is 1)
+
+XTextFile.ReplaceLine(path, "TESTE MULTI LINE 02", "FIRST LOCATED - REPLACED", true); // Change the value of the old line if match (can be applied to all lines found or just the first line)
+
+string text01 = XTextFile.GetTextLine(path, 2); // get the text of line 2 from the destination file
+
+List<string> textLines = XTextFile.GetTextLines(path, new[] { 1, 5, 3 }); // Get specific text lines from the file ( line 1, line 5 and 3 for example)
+
+List<string> otherTextLines = XTextFile.GetTextLines(path, 4, 6); // Gets the text of lines in the desired range
+
+XTextFile.CreateText(@"C:\MyDocs\newdoc.txt", "LONG TEXT HERE"); // Creates a new Text file or replaces an existing one
+
+string recText = XTextFile.GetText(@"C:\MyDocs\newdoc.txt"); // Get all the text from a file
 
 
 ```

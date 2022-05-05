@@ -16,7 +16,8 @@ namespace PublicUtility.Xnm {
     InvalidType,
     NotExists,
     OutOfBounds,
-    KeyNotFound
+    KeyNotFound,
+    OK
   }
 
   /// <summary>
