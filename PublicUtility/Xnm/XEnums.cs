@@ -177,4 +177,10 @@ namespace PublicUtility.Xnm {
     Move = 0x0001
   }
   
+  [Flags]
+  public enum ActionType {
+    Delete,
+    Select
+  }
+
 }

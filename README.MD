@@ -225,7 +225,7 @@ XTextFile.AppendMultLines(path, new[] { "TESTE MULTI LINE 01", "TESTE MULTI LINE
 
 XTextFile.AppendLine(path, $"TEST AT {DateTime.Now}"); // Inserts a new line in the text document
 
-XTextFile.ReplaceLine(path, 4, "NEW ITEM FOR INSERT IN LINE 5 IF THERE ARE 5 LINES IN THE FILE"); // Change the value of a row based on its location number (min is 1)
+XTextFile.ReplaceLine(path, 4, "NEW ITEM FOR INSERT IN LINE 4 IF THERE ARE 4 LINES IN THE FILE"); // Change the value of a row based on its location number (min is 1)
 
 XTextFile.ReplaceLine(path, "TESTE MULTI LINE 02", "FIRST LOCATED - REPLACED", true); // Change the value of the old line if match (can be applied to all lines found or just the first line)
 
@@ -238,6 +238,12 @@ List<string> otherTextLines = XTextFile.GetTextLines(path, 4, 6); // Gets the te
 XTextFile.CreateText(@"C:\MyDocs\newdoc.txt", "LONG TEXT HERE"); // Creates a new Text file or replaces an existing one
 
 string recText = XTextFile.GetText(@"C:\MyDocs\newdoc.txt"); // Get all the text from a file
+
+XTextFile.DeleteLine(path, 21); // Deletes the line text corresponding to the indicator (minimum number = 1)
+
+XTextFile.DeleteLines(path, new[] { 3, 1 }); // Deletes specific lines of text
+
+XTextFile.DeleteLines(path, 51, 73); // Delete lines of text in a range
 
 
 ```
