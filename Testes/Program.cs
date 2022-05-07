@@ -263,55 +263,44 @@ namespace Testes {
 
       #endregion
 
+      // SIMULA BANCO DE DADOS
+      List<Obj> lstObj =  new List<Obj>();
+      for(int i = 1; i <= 10; i++) {
+        Obj obj = new Obj();
+        obj.str = $"STR {i}";
+        obj.ints = i;
+        obj.chars = Convert.ToChar(i);
+        lstObj.Add(obj);
+      }
 
-      Obj obj = new Obj();
-      obj.strs = new List<string> { "UMA STR", "DOIS STR", "3 STR" };
-      obj.ints = new List<int>() { 51, 651, 44 };
-      obj.chars = new List<char>() { 'Q', 'S', 'T' };
-
-      var nextColum = Excel.GetNextColumn();
-      List<ExcelColumn> columns = new List<ExcelColumn>();
+      // CABECALHO TABELA
+      string nextCell = null;
+      List<Cell> cells = new List<Cell>();
       for(int i = 1; i <= 3; i++) {
-        ExcelColumn excelColumn = new();
-        excelColumn.ColumnName = $"COLUNA {i}";
-        excelColumn.CellPosition = nextColum;
-        columns.Add(excelColumn);
-        nextColum = Excel.GetNextColumn(nextColum);
+        nextCell = Excel.GetNextColumn(nextCell);
+        Cell cell = new();
+        cell.Value = $"COLUNA {i}";
+        cell.Position = nextCell;
+        cells.Add(cell);
       }
 
-      string nextLine = "A1";
-      nextLine = Excel.GetNextLine(nextLine);
-      string aux = nextLine;
-      
-      List<ExcelLine> lines = new();
-      foreach(var item in obj.ints) {
-        ExcelLine line = new();
-        line.CellValue = $"VALUE INT {item}";
-        line.CellPosition = nextLine;
-        lines.Add(line);
-        nextLine = Excel.GetNextColumn(nextLine);
-      }
+      // START INSERT ITENS TABELA
+      nextCell = Excel.GetNextLine("A1");
+      string aux = nextCell;
+      foreach(Obj obj in lstObj) {
+        Cell str = new() { Position = nextCell, Value = $"VALUE STR {obj.str}" };
+        nextCell = Excel.GetNextColumn(nextCell);
+        Cell chars = new() { Position = nextCell, Value = $"VALUE CHARS {obj.chars}" };
+        nextCell = Excel.GetNextColumn(nextCell);
+        Cell ints = new() { Position = nextCell, Value = $"VALUE INTS {obj.ints}" };
+        nextCell = Excel.GetNextColumn(nextCell);
+        
+        nextCell = Excel.GetNextLine(aux);
+        aux = nextCell;
 
-      nextLine = Excel.GetNextLine(aux);
-      aux = nextLine;
-
-      foreach(var item in obj.strs) {
-        ExcelLine line = new();
-        line.CellValue = $"VALUE STR {item}";
-        line.CellPosition = nextLine;
-        lines.Add(line);
-        nextLine = Excel.GetNextColumn(nextLine);
-      }
-
-      nextLine = Excel.GetNextLine(aux);
-      aux = nextLine;
-
-      foreach(var item in obj.chars) {
-        ExcelLine line = new();
-        line.CellValue = $"VALUE CHAR {item}";
-        line.CellPosition = nextLine;
-        lines.Add(line);
-        nextLine = Excel.GetNextColumn(nextLine);
+        cells.Add(str);
+        cells.Add(chars);
+        cells.Add(ints);
       }
 
       TableStyle style = new TableStyle();
@@ -321,9 +310,9 @@ namespace Testes {
 
       Excel excel = new();
       excel.PlanName = "PLANTESTEE";
-      excel.ExcelColumns = columns;
-      excel.ExcelLines = lines;
-      //excel.TableStyle = style;
+      excel.Cells = cells;
+      excel.NumberOfColumns = 3;
+      excel.TableStyle = style;
 
       excel.GerarExcel(@"C:\MyDocs\planTest.xlsx");
 
@@ -339,9 +328,9 @@ namespace Testes {
 
 
   public class Obj {
-    public List<string> strs { get; set; }
-    public List<char> chars { get; set; }
-    public List<int> ints { get; set; }
+    public string str { get; set; }
+    public char chars { get; set; }
+    public int ints { get; set; }
   }
 
 
