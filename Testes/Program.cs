@@ -200,6 +200,7 @@ namespace Testes {
       #endregion
 
       #region TESTE CLASS XEMAIL
+      
       //Stream anexo = new FileStream(@"C:\MyDocs\planTest.xlsx", FileMode.Open);
 
       //XEmail email = new XEmail("c3NBqo7a", "autoreplynewpassword@hotmail.com", "Notification");
@@ -272,7 +273,7 @@ namespace Testes {
       // SIMULA BANCO DE DADOS
       List<Obj> lstObj =  new List<Obj>();
       for(int i = 1; i <= 10; i++) {
-        Obj obj = new Obj();
+        Obj obj = new();
         obj.str = $"STR {i}";
         obj.ints = i;
         obj.chars = Convert.ToChar(i);
@@ -365,10 +366,6 @@ namespace Testes {
       excel.GerarExcel(@"C:\MyDocs\planTest.xlsx");
 
       #endregion
-    
-    
-    
-    
     
     }
 
