@@ -1,12 +1,9 @@
 ﻿using ClosedXML.Excel;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Testes {
+namespace PublicUtility {
   public class Cell {
     public string Position { get; set; }
     public string Value { get; set; }
@@ -24,20 +21,20 @@ namespace Testes {
     public List<Cell> Cells { get; set; }
   }
 
-  public class Excel {
+  public class XExcel {
     public string PlanName { get; set; }
     public List<Table> Tables { get; set; }
 
-    public void GerarExcel(string caminhoArquivoParaSalvar) {
+    public void Generate(string filepath) {
+      // Make sure the extension is compatible with the file
+      if(!filepath.EndsWith(".xlsx"))
+        filepath += ".xlsx";
+
       using(XLWorkbook workb = new()) {
-        string cellFirstColumn = string.Empty;
-        string cellLastColumn = string.Empty;
+        var plan = workb.Worksheets.Add(string.IsNullOrEmpty(this.PlanName) ? "PLAN1" : this.PlanName); // Create the Worksheet
+        string cellFirstColumn;
+        string cellLastColumn;
         int countCells;
-
-        if(this == null)
-          return;
-
-        var plan = workb.Worksheets.Add(string.IsNullOrEmpty(this.PlanName)? "PLAN1": this.PlanName); // Cria planilha excel
 
         foreach(Table table in this.Tables) {
           cellFirstColumn = table.Cells.FirstOrDefault().Position;
@@ -53,14 +50,14 @@ namespace Testes {
             table.Style = style;
           }
 
-          // CRIA COLUNAS E FORMATA A COR DA COLUNA
+          // create the columns and format the background color
           while(countCells < table.NumberOfColumns) {
             plan.Cell(table.Cells[countCells].Position).SetValue(table.Cells[countCells].Value);
             plan.Cell(table.Cells[countCells].Position).Style.Fill.BackgroundColor = XLColor.FromHtml(table.Style.ColumnColor);
             countCells++;
           }
 
-          // CRIA LINHAS E FORMATA A COR DA LINHA
+          // create the lines and format the background color
           string color = table.Style.FirstLineColor;
           int breakLine = 0;
           while(countCells < table.Cells.Count) {
@@ -75,23 +72,22 @@ namespace Testes {
             breakLine++;
           }
 
-          // DEFINE OS ITENS PARA FORMATO DE TABELA
+          // convert cells to table format
           var tableRange = plan.Range($"{cellFirstColumn}:{cellLastColumn}");
           tableRange.CreateTable();
 
         }
-       
-        // CONFIG DA PLANILHA
+
+        // worksheet configuration
         plan.TabColor = XLColor.DarkViolet;
         plan.Rows().AdjustToContents();
         plan.Rows().Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
         plan.Columns().AdjustToContents();
         plan.Columns().Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
         plan.Style.Alignment.JustifyLastLine = true;
-        //plan.Style.Alignment.TopToBottom  = true;
 
-        // SALVA O ARQUIVO
-        workb.SaveAs(caminhoArquivoParaSalvar);
+        // Save file
+        workb.SaveAs(filepath);
       }
     }
 

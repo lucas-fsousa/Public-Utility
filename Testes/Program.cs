@@ -268,102 +268,100 @@ namespace Testes {
 
       #endregion
 
-      #region TESTE CLASS XEXCELTABLE
+      #region TESTE CLASS XEXCEL
 
-      // SIMULA BANCO DE DADOS
-      List<Obj> lstObj =  new List<Obj>();
-      for(int i = 1; i <= 10; i++) {
-        Obj obj = new();
-        obj.str = $"STR {i}";
-        obj.ints = i;
-        obj.chars = Convert.ToChar(i);
-        lstObj.Add(obj);
-      }
+      //// SIMULA BANCO DE DADOS
+      //List<Obj> lstObj =  new List<Obj>();
+      //for(int i = 1; i <= 10; i++) {
+      //  Obj obj = new();
+      //  obj.str = $"STR {i}";
+      //  obj.ints = i;
+      //  obj.chars = Convert.ToChar(i);
+      //  lstObj.Add(obj);
+      //}
 
-      // CABECALHO PRIMEIRA TABELA
-      string nextCell = null;
-      List<Cell> cells = new List<Cell>();
-      for(int i = 1; i <= 3; i++) {
-        nextCell = Excel.GetNextColumn(nextCell);
-        Cell cell = new();
-        cell.Value = $"COLUNA {i}";
-        cell.Position = nextCell;
-        cells.Add(cell);
-      }
+      //// CABECALHO PRIMEIRA TABELA
+      //string nextCell = null;
+      //List<Cell> cells = new List<Cell>();
+      //for(int i = 1; i <= 3; i++) {
+      //  nextCell = XExcel.GetNextColumn(nextCell);
+      //  Cell cell = new();
+      //  cell.Value = $"COLUNA {i}";
+      //  cell.Position = nextCell;
+      //  cells.Add(cell);
+      //}
 
-      // START INSERT ITENS PRIMEIRA TABELA
-      nextCell = Excel.GetNextLine("A1");
-      string aux = nextCell;
-      foreach(Obj obj in lstObj) {
-        Cell str = new() { Position = nextCell, Value = $"VALUE STR {obj.str}" };
-        nextCell = Excel.GetNextColumn(nextCell);
-        Cell chars = new() { Position = nextCell, Value = $"VALUE CHARS {obj.chars}" };
-        nextCell = Excel.GetNextColumn(nextCell);
-        Cell ints = new() { Position = nextCell, Value = $"VALUE INTS {obj.ints}" };
+      //// START INSERT ITENS PRIMEIRA TABELA
+      //nextCell = XExcel.GetNextLine("A1");
+      //string aux = nextCell;
+      //foreach(Obj obj in lstObj) {
+      //  Cell str = new() { Position = nextCell, Value = $"VALUE STR {obj.str}" };
+      //  nextCell = XExcel.GetNextColumn(nextCell);
+      //  Cell chars = new() { Position = nextCell, Value = $"VALUE CHARS {obj.chars}" };
+      //  nextCell = XExcel.GetNextColumn(nextCell);
+      //  Cell ints = new() { Position = nextCell, Value = $"VALUE INTS {obj.ints}" };
 
-        cells.Add(str);
-        cells.Add(chars);
-        cells.Add(ints);
+      //  cells.Add(str);
+      //  cells.Add(chars);
+      //  cells.Add(ints);
 
-        nextCell = Excel.GetNextLine(aux);
-        aux = nextCell;
-      }
+      //  nextCell = XExcel.GetNextLine(aux);
+      //  aux = nextCell;
+      //}
 
-      // ===================================================
+      //// ===================================================
 
-      // CABECALHO SEGUNDA TABELA
-      nextCell = "D1";
-      List<Cell> cells2 = new List<Cell>();
-      for(int i = 1; i <= 3; i++) {
-        nextCell = Excel.GetNextColumn(nextCell);
-        Cell cell = new();
-        cell.Value = $"COLUNA SEGUNDA {i}";
-        cell.Position = nextCell;
-        cells2.Add(cell);
-      }
+      //// CABECALHO SEGUNDA TABELA
+      //nextCell = "D1";
+      //List<Cell> cells2 = new();
+      //for(int i = 1; i <= 3; i++) {
+      //  nextCell = XExcel.GetNextColumn(nextCell);
+      //  Cell cell = new();
+      //  cell.Value = $"COLUNA SEGUNDA {i}";
+      //  cell.Position = nextCell;
+      //  cells2.Add(cell);
+      //}
 
-      // START INSERT ITENS SEGUNDA TABELA
-      nextCell = Excel.GetNextLine("E1");
-      aux = nextCell;
-      foreach(Obj obj in lstObj) {
-        Cell str = new() { Position = nextCell, Value = $"VALUE STR {obj.str}" };
-        nextCell = Excel.GetNextColumn(nextCell);
-        Cell chars = new() { Position = nextCell, Value = $"VALUE CHARS {obj.chars}" };
-        nextCell = Excel.GetNextColumn(nextCell);
-        Cell ints = new() { Position = nextCell, Value = $"VALUE INTS {obj.ints}" };
+      //// START INSERT ITENS SEGUNDA TABELA
+      //nextCell = XExcel.GetNextLine("E1");
+      //aux = nextCell;
+      //foreach(Obj obj in lstObj) {
+      //  Cell str = new() { Position = nextCell, Value = $"VALUE STR {obj.str}" };
+      //  nextCell = XExcel.GetNextColumn(nextCell);
+      //  Cell chars = new() { Position = nextCell, Value = $"VALUE CHARS {obj.chars}" };
+      //  nextCell = XExcel.GetNextColumn(nextCell);
+      //  Cell ints = new() { Position = nextCell, Value = $"VALUE INTS {obj.ints}" };
 
-        cells2.Add(str);
-        cells2.Add(chars);
-        cells2.Add(ints);
+      //  cells2.Add(str);
+      //  cells2.Add(chars);
+      //  cells2.Add(ints);
 
-        nextCell = Excel.GetNextLine(aux);
-        aux = nextCell;
-      }
+      //  nextCell = XExcel.GetNextLine(aux);
+      //  aux = nextCell;
+      //}
 
-      // ====================================================
+      //// ====================================================
 
+      //TableStyle style = new();
+      //style.ColumnColor = "#063970";
+      //style.FirstLineColor = "#A6cbde";
+      //style.SecondLineColor = "#abdbe3";
 
-      TableStyle style = new TableStyle();
-      style.ColumnColor = "#063970";
-      style.FirstLineColor = "#A6cbde";
-      style.SecondLineColor = "#abdbe3";
+      //Table table = new();
+      //table.Style = style;
+      //table.Cells = cells;
+      //table.NumberOfColumns = 3;
 
-      Table table = new Table();
-      table.Style = style;
-      table.Cells = cells;
-      table.NumberOfColumns = 3;
+      //Table table2 = new();
+      ////table2.Style = style;
+      //table2.Cells = cells2;
+      //table2.NumberOfColumns = 3;
 
-      Table table2 = new Table();
-      //table2.Style = style;
-      table2.Cells = cells2;
-      table2.NumberOfColumns = 3;
+      //XExcel excel = new();
+      //excel.PlanName = "PLANTESTEE";
+      //excel.Tables = new List<Table> { table, table2 };
 
-
-      Excel excel = new();
-      excel.PlanName = "PLANTESTEE";
-      excel.Tables = new List<Table> { table, table2 };
-
-      excel.GerarExcel(@"C:\MyDocs\planTest.xlsx");
+      //excel.Generate(@"C:\MyDocs\planTest");
 
       #endregion
     
