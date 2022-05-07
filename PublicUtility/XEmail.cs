@@ -1,6 +1,8 @@
 ﻿using PublicUtility.CustomExceptions;
 using PublicUtility.Xnm;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -26,6 +28,8 @@ namespace PublicUtility {
     public string To { get; set; }
     public string Subject { get; set; }
     public string Body { get; set; }
+    public string CC { get; set; }
+    public List<Attachment> Attachment { get; set; }
     public MailPriority Priority { get; set; }
 
     /// <summary>
@@ -88,8 +92,8 @@ namespace PublicUtility {
     /// </remarks>
     /// <exception cref="RequiredParamsException"></exception>
     public bool SendMail(out string message) {
-      SmtpClient client = new SmtpClient();
       MailMessage mail = new MailMessage();
+      SmtpClient client = new SmtpClient();
 
       // CONFIG TO SEND
       mail.Sender = new MailAddress(CredentialEmail, PresentationName);
@@ -108,6 +112,17 @@ namespace PublicUtility {
 
         mail.To.Add(new MailAddress(email));
       }
+
+      foreach(string email in this.CC.Split(MailsSeparator)) {
+        if(!IsValid(email)) {
+          throw new RequiredParamsException(Situation.InvalidFormat, "Destination Copy Email");
+        }
+
+        mail.CC.Add(new MailAddress(email));
+      }
+
+
+      //END CONFIG TO RECEPT
 
       // SERVER CONFIG
       client.Host = "smtp.office365.com";
@@ -128,9 +143,15 @@ namespace PublicUtility {
       mail.Priority = this.Priority;
       mail.IsBodyHtml = true;
 
+      // ATTACHMENTS CONFIG
+      foreach(Attachment att in this.Attachment) {
+        mail.Attachments.Add(att);
+      }
+
       try {
         client.Send(mail);
         message = string.Format($"## ACTION EMAIL ## SUCCESS ## {DateTime.Now} ## OK ##");
+        mail.Dispose();
         return true;
       } catch(Exception ex) {
         message = string.Format($"## ACTION EMAIL ## FAILED ## {DateTime.Now} ## {ex.Message} ##");

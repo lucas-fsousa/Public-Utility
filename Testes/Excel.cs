@@ -18,66 +18,69 @@ namespace Testes {
     public string SecondLineColor { get; set; }
   }
 
-  public class Excel {
-    public string PlanName { get; set; }
+  public class Table {
+    public TableStyle Style { get; set; }
     public int NumberOfColumns { get; set; }
     public List<Cell> Cells { get; set; }
-    public TableStyle TableStyle { get; set; }
+  }
+
+  public class Excel {
+    public string PlanName { get; set; }
+    public List<Table> Tables { get; set; }
 
     public void GerarExcel(string caminhoArquivoParaSalvar) {
       using(XLWorkbook workb = new()) {
         string cellFirstColumn = string.Empty;
         string cellLastColumn = string.Empty;
-        int countCells = 0;
+        int countCells;
 
-        // INICIO DE CHECAGENS
         if(this == null)
           return;
 
-        if(this.Cells.Count > 0) {
-          cellFirstColumn = this.Cells.FirstOrDefault().Position;
-          cellLastColumn = this.Cells.LastOrDefault().Position;
-        }
+        var plan = workb.Worksheets.Add(string.IsNullOrEmpty(this.PlanName)? "PLAN1": this.PlanName); // Cria planilha excel
 
-        if(this.TableStyle == null) {
-          TableStyle style = new TableStyle();
-          style.ColumnColor = "#252525";
-          style.FirstLineColor = "#959595";
-          style.SecondLineColor = "#C0C0C0";
+        foreach(Table table in this.Tables) {
+          cellFirstColumn = table.Cells.FirstOrDefault().Position;
+          cellLastColumn = table.Cells.LastOrDefault().Position;
+          countCells = 0;
 
-          this.TableStyle = style;
-        }
-        // FIM CHECAGENS
+          if(table.Style == null) {
+            TableStyle style = new TableStyle();
+            style.ColumnColor = "#252525";
+            style.FirstLineColor = "#959595";
+            style.SecondLineColor = "#C0C0C0";
 
-        var plan = workb.Worksheets.Add(this.PlanName); // Cria planilha excel
-
-        // CRIA COLUNAS E FORMATA A COR DA COLUNA
-        while(countCells < this.NumberOfColumns) {
-          plan.Cell(this.Cells[countCells].Position).SetValue(this.Cells[countCells].Value);
-          plan.Cell(this.Cells[countCells].Position).Style.Fill.BackgroundColor = XLColor.FromHtml(this.TableStyle.ColumnColor);
-          countCells++;
-        }
-
-        // CRIA LINHAS E FORMATA A COR DA LINHA
-        string color = this.TableStyle.FirstLineColor;
-        int breakLine = 0;
-        while(countCells < this.Cells.Count) {
-          if(breakLine == this.NumberOfColumns) {
-            color = color == this.TableStyle.FirstLineColor ? this.TableStyle.SecondLineColor : this.TableStyle.FirstLineColor;
-            breakLine = 0;
+            table.Style = style;
           }
 
-          plan.Cell(this.Cells[countCells].Position).SetValue(this.Cells[countCells].Value);
-          plan.Cell(this.Cells[countCells].Position).Style.Fill.BackgroundColor = XLColor.FromHtml(color);
-          countCells++;
-          breakLine++;
+          // CRIA COLUNAS E FORMATA A COR DA COLUNA
+          while(countCells < table.NumberOfColumns) {
+            plan.Cell(table.Cells[countCells].Position).SetValue(table.Cells[countCells].Value);
+            plan.Cell(table.Cells[countCells].Position).Style.Fill.BackgroundColor = XLColor.FromHtml(table.Style.ColumnColor);
+            countCells++;
+          }
+
+          // CRIA LINHAS E FORMATA A COR DA LINHA
+          string color = table.Style.FirstLineColor;
+          int breakLine = 0;
+          while(countCells < table.Cells.Count) {
+            if(breakLine == table.NumberOfColumns) {
+              color = color == table.Style.FirstLineColor ? table.Style.SecondLineColor : table.Style.FirstLineColor;
+              breakLine = 0;
+            }
+
+            plan.Cell(table.Cells[countCells].Position).SetValue(table.Cells[countCells].Value);
+            plan.Cell(table.Cells[countCells].Position).Style.Fill.BackgroundColor = XLColor.FromHtml(color);
+            countCells++;
+            breakLine++;
+          }
+
+          // DEFINE OS ITENS PARA FORMATO DE TABELA
+          var tableRange = plan.Range($"{cellFirstColumn}:{cellLastColumn}");
+          tableRange.CreateTable();
+
         }
-
-
-        // DEFINE OS ITENS PARA FORMATO DE TABELA
-        var tableRange = plan.Range($"{cellFirstColumn}:{cellLastColumn}");
-        tableRange.CreateTable();
-
+       
         // CONFIG DA PLANILHA
         plan.TabColor = XLColor.DarkViolet;
         plan.Rows().AdjustToContents();
