@@ -27,11 +27,11 @@ using Emgu.CV.Util;
 using Emgu.CV.Features2D;
 using System.Net.NetworkInformation;
 using System.Net;
+using ClosedXML.Excel;
+using Testes;
 
 namespace Testes {
   internal class Program {
-
-
     static void Main(string[] args) {
 
       #region TESTE CLASS XKEYBOARD
@@ -95,7 +95,7 @@ namespace Testes {
 
       #region TESTE CLASS XTEXTFILE
 
-      string path = @"C:\MyDocs\doc.txt";
+      //string path = @"C:\MyDocs\doc.txt";
 
       //XTextFile.AppendMultLines(path, new[] { "TESTE MULTI LINE 01", "TESTE MULTI LINE 02", "TESTE MULTI LINE 03", "TESTE MULTI LINE 04" }); // Insert multiple lines into the file consecutively
 
@@ -264,19 +264,85 @@ namespace Testes {
       #endregion
 
 
+      Obj obj = new Obj();
+      obj.strs = new List<string> { "UMA STR", "DOIS STR", "3 STR" };
+      obj.ints = new List<int>() { 51, 651, 44 };
+      obj.chars = new List<char>() { 'Q', 'S', 'T' };
+
+      var nextColum = Excel.GetNextColumn();
+      List<ExcelColumn> columns = new List<ExcelColumn>();
+      for(int i = 1; i <= 3; i++) {
+        ExcelColumn excelColumn = new();
+        excelColumn.ColumnName = $"COLUNA {i}";
+        excelColumn.CellPosition = nextColum;
+        columns.Add(excelColumn);
+        nextColum = Excel.GetNextColumn(nextColum);
+      }
+
+      string nextLine = "A1";
+      nextLine = Excel.GetNextLine(nextLine);
+      string aux = nextLine;
+      
+      List<ExcelLine> lines = new();
+      foreach(var item in obj.ints) {
+        ExcelLine line = new();
+        line.CellValue = $"VALUE INT {item}";
+        line.CellPosition = nextLine;
+        lines.Add(line);
+        nextLine = Excel.GetNextColumn(nextLine);
+      }
+
+      nextLine = Excel.GetNextLine(aux);
+      aux = nextLine;
+
+      foreach(var item in obj.strs) {
+        ExcelLine line = new();
+        line.CellValue = $"VALUE STR {item}";
+        line.CellPosition = nextLine;
+        lines.Add(line);
+        nextLine = Excel.GetNextColumn(nextLine);
+      }
+
+      nextLine = Excel.GetNextLine(aux);
+      aux = nextLine;
+
+      foreach(var item in obj.chars) {
+        ExcelLine line = new();
+        line.CellValue = $"VALUE CHAR {item}";
+        line.CellPosition = nextLine;
+        lines.Add(line);
+        nextLine = Excel.GetNextColumn(nextLine);
+      }
+
+      TableStyle style = new TableStyle();
+      style.ColumnColor = "#063970";
+      style.FirstLineColor = "#A6cbde";
+      style.SecondLineColor = "#abdbe3";
+
+      Excel excel = new();
+      excel.PlanName = "PLANTESTEE";
+      excel.ExcelColumns = columns;
+      excel.ExcelLines = lines;
+      //excel.TableStyle = style;
+
+      excel.GerarExcel(@"C:\MyDocs\planTest.xlsx");
+
     }
 
-
-
-    public static void showImage() {
+    public static void ShowImage() {
       string path = string.Format(@"C:\MyDocs\printscreen.png");
       var im1 = new Image<Bgr, byte>(path);
       CvInvoke.Imshow("Image", im1);
       CvInvoke.WaitKey(0);
     }
-
-
-
   }
+
+
+  public class Obj {
+    public List<string> strs { get; set; }
+    public List<char> chars { get; set; }
+    public List<int> ints { get; set; }
+  }
+
 
 }
