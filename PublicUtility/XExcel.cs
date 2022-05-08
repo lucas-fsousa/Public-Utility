@@ -237,6 +237,5 @@ namespace PublicUtility {
 
       return aux + lineNextNumber;
     }
-
   }
 }

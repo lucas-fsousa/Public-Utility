@@ -895,6 +895,85 @@ namespace PublicUtility {
 
     #endregion
 
+    #region OVERLOAD GETINDEX
+
+    /// <summary>
+    /// [EN]: Get the index of an item in an array, if it doesn't exist, it will return -1<br></br>
+    /// [PT-BR]: Obtém o indice de um item em uma array, se ele não existir o retorno será -1
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of item to find<br></br>
+    /// [PT-BR]: Tipo do item a ser localizado
+    /// </typeparam>
+    /// <param name="array">
+    /// [EN]: Array containing items to find<br></br>
+    /// [PT-BR]: Matriz que contém itens a serem localizados
+    /// </param>
+    /// <param name="itemToLoc">
+    /// [EN]: Object to find in array<br></br>
+    /// [PT-BR]: Objeto a ser localizado na matriz
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns the index of the item in the array if it exists or -1 for non-existent.<br></br>
+    /// [PT-BR]: Retorna o indice do item na matriz caso ele exista ou -1 para não existente.
+    /// </returns>
+    public static int GetIndex<T>(this T[] array, T itemToLoc) {
+      int index = -1;
+      for(int i = 0; i < array.Length; i++) {
+        if(array[i].Equals(itemToLoc)) {
+          index = i;
+          break;
+        }
+      }
+      return index;
+    }
+
+    /// <summary>
+    /// [EN]: Get the index of an item in an array, if it doesn't exist, it will return -1<br></br>
+    /// [PT-BR]: Obtém o indice de um item em uma array, se ele não existir o retorno será -1
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of item to find<br></br>
+    /// [PT-BR]: Tipo do item a ser localizado
+    /// </typeparam>
+    /// <param name="list">
+    /// [EN]: List containing items to find<br></br>
+    /// [PT-BR]: Lista que contém itens a serem localizados
+    /// </param>
+    /// <param name="itemToLoc">
+    /// [EN]: Object to find in list<br></br>
+    /// [PT-BR]: Objeto a ser localizado na lista
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns the index of the item in the list if it exists or -1 for non-existent.<br></br>
+    /// [PT-BR]: Retorna o indice do item na lista caso ele exista ou -1 para não existente.
+    /// </returns>
+    public static int GetIndex<T>(this List<T> list, T itemToLoc) => GetIndex(list.ToArray(), itemToLoc);
+
+    /// <summary>
+    /// [EN]: Get the index of an item in an enumerable, if it doesn't exist, it will return -1<br></br>
+    /// [PT-BR]: Obtém o indice de um item em um enumerador, se ele não existir o retorno será -1
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of item to find<br></br>
+    /// [PT-BR]: Tipo do item a ser localizado
+    /// </typeparam>
+    /// <param name="enumerable">
+    /// [EN]: Enumerable containing items to find<br></br>
+    /// [PT-BR]: Enumerador que contém itens a serem localizados
+    /// </param>
+    /// <param name="itemToLoc">
+    /// [EN]: Object to find in list<br></br>
+    /// [PT-BR]: Objeto a ser localizado na lista
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns the index of the item in the enumerador if it exists or -1 for non-existent.<br></br>
+    /// [PT-BR]: Retorna o indice do item no enumerador caso ele exista ou -1 para não existente.
+    /// </returns>
+    public static int GetIndex<T>(this IEnumerable<T> enumerable, T itemToLoc) => GetIndex(enumerable.ToArray(), itemToLoc);
+    
+    #endregion
+
     #region OVERLOAD GETNEGATIVES
 
     /// <summary>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 namespace PublicUtility.Xnm {
+
   /// <summary>
   /// [EN]: Possible situations that caused the exception <br></br>
   /// [PT-BR]: Possiveis situações que ocasionaram a exceção
@@ -176,7 +177,11 @@ namespace PublicUtility.Xnm {
     Absolute = 0x8000,
     Move = 0x0001
   }
-  
+
+  /// <summary>
+  /// [EN]: Refers to the action to be performed on a text document<br></br>
+  /// [PT-BR]: Refere-se a ação a ser realizada em um documento de texto
+  /// </summary>
   [Flags]
   public enum ActionType {
     Delete,

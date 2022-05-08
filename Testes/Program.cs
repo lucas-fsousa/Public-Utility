@@ -374,12 +374,7 @@ namespace Testes {
 
       #endregion
 
-    
-    
-    
-    
-    
-    
+
     }
 
     public static void ShowImage() {
