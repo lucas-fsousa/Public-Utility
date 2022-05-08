@@ -1,30 +1,105 @@
 ﻿using ClosedXML.Excel;
+using PublicUtility.CustomExceptions;
+using PublicUtility.Xnm;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace PublicUtility {
+
+  /// <summary>
+  /// [EN]: Represents a cell of an Excel worksheet<br></br>
+  /// [PT-BR]: Representa uma célula de uma planilha Excel
+  /// </summary>
   public class Cell {
+    /// <summary>
+    /// [EN]: Represents the position of the cell in the worksheet<br></br>
+    /// [PT-BR]: Representa a posição da célula da na planilha
+    /// </summary>
     public string Position { get; set; }
+    /// <summary>
+    /// [EN]: Represents the value of the cell in the worksheet<br></br>
+    /// [PT-BR]: Representa o valor da célula da na planilha
+    /// </summary>
     public string Value { get; set; }
   }
 
+  /// <summary>
+  /// [EN]: Represents excel table styling<br></br>
+  /// [PT-BR]: Representa a estilização da tabela excel
+  /// </summary>
   public class TableStyle {
+
+    /// <summary>
+    /// [EN]: Represents the color of the columns<br></br>
+    /// [PT-BR]: Representa a cor das colunas
+    /// </summary>
     public string ColumnColor { get; set; }
+
+    /// <summary>
+    /// [EN]: Represents the color of the first line that will compose a zebra shape<br></br>
+    /// [PT-BR]: Representa a cor da primeira linha que fará a composição de um formato zebrado
+    /// </summary>
     public string FirstLineColor { get; set; }
+
+    /// <summary>
+    /// [EN]: Represents the color of the second line that will compose a zebra shape<br></br>
+    /// [PT-BR]: Representa a cor da segunda linha que fará a composição de um formato zebrado
+    /// </summary>
     public string SecondLineColor { get; set; }
   }
 
+  /// <summary>
+  /// [EN]: Represents an Excel table<br></br>
+  /// [PT-BR]: Representa uma tabela Excel
+  /// </summary>
   public class Table {
+
+    /// <summary>
+    /// [EN]: Represents excel table styling<br></br>
+    /// [PT-BR]: Representa a estilização da tabela excel
+    /// </summary>
     public TableStyle Style { get; set; }
+
+    /// <summary>
+    /// [EN]: Number of columns that tables have<br></br>
+    /// [PT-BR]: Numero de colunas que as tabelas possuem
+    /// </summary>
     public int NumberOfColumns { get; set; }
+
+    /// <summary>
+    /// [EN]: Represents excel cells.<br></br>
+    /// [PT-BR]: Representa as células do excel.
+    /// </summary>
     public List<Cell> Cells { get; set; }
   }
 
+  /// <summary>
+  /// [EN]: Represents an Excel Spreadsheet<br></br>
+  /// [PT-BR]: Representa uma Planilha do Excel
+  /// </summary>
   public class XExcel {
+
+    /// <summary>
+    /// [EN]: Excel sheet name<br></br>
+    /// [PT-BR]: Nome da planilha do excel
+    /// </summary>
     public string PlanName { get; set; }
+
+    /// <summary>
+    /// [EN]: Represents tables to be inserted into the worksheet<br></br>
+    /// [PT-BR]: Representa tabelas a serem inseridas na planilha
+    /// </summary>
     public List<Table> Tables { get; set; }
 
+    /// <summary>
+    /// [EN]: Generates the excel spreadsheet with all the tables informed<br></br>
+    /// [PT-BR]: Gera a planilha do excel com todas as tabelas informadas
+    /// </summary>
+    /// <param name="filepath">
+    /// [EN]: Path including the name of the file that will be used to save the file.<br></br>
+    /// [PT-BR]: Caminho incluindo o nome do arquivo que será utilizado para salvar o arquivo.
+    /// </param>
     public void Generate(string filepath) {
       // Make sure the extension is compatible with the file
       if(!filepath.EndsWith(".xlsx"))
@@ -91,26 +166,19 @@ namespace PublicUtility {
       }
     }
 
-    public static int GetOnlyNumbers(string str) {
-      string newStr = string.Empty;
-      foreach(char c in str) {
-        if(char.IsNumber(c))
-          newStr += c;
-      }
-
-      return Convert.ToInt32(newStr);
-    }
-
-    public static string GetOnlyChars(string str) {
-      string newStr = string.Empty;
-      foreach(char c in str) {
-        if(char.IsLetter(c))
-          newStr += c;
-      }
-
-      return newStr;
-    }
-
+    /// <summary>
+    /// [EN]: Gets the location of the next column in the worksheet<br></br>
+    /// [PT-BR]: Obtém a localização da próxima coluna da planilha
+    /// </summary>
+    /// <param name="currentColumn">
+    /// [EN]: Value corresponding to the current column location<br></br>
+    /// [PT-BR]: Valor correspondente a localização da coluna atual
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns the value of the next column in the worksheet<br></br>
+    /// [PT-BR]: Retorna o valor da proxima coluna da planilha
+    /// </returns>
+    /// <exception cref="RequiredParamsException"></exception>
     public static string GetNextColumn(string currentColumn = null) {
       char[] chars = string.Format("ABCDEFGHIJKLMNOPQRSTUVWXYZ").ToArray();
       string number;
@@ -121,12 +189,12 @@ namespace PublicUtility {
       if(string.IsNullOrEmpty(currentColumn))
         return "A1";
 
-      number = GetOnlyNumbers(currentColumn).ToString();
-      aux = GetOnlyChars(currentColumn);
+      number = X.GetOnlyNumbers(currentColumn).ToString();
+      aux = X.GetOnlyLetters(currentColumn);
       lastChar = aux.ToArray().Last();
 
       if(string.IsNullOrEmpty(number))
-        throw new Exception("NUMERO DA LINHA NÃO INFORMADO");
+        throw new RequiredParamsException(Situation.IsNullOrEmpty, nameof(number));
 
       if(lastChar == 'Z') {
         nextColumn = currentColumn += $"A{number}";
@@ -146,14 +214,26 @@ namespace PublicUtility {
 
     }
 
+    /// <summary>
+    /// [EN]: Gets the value of the next row in the worksheet<br></br>
+    /// [PT-BR]: Obtém o valor da próxima linha da planilha
+    /// </summary>
+    /// <param name="currentLine">
+    /// [EN]: Value corresponding to the current line location<br></br>
+    /// [PT-BR]: Valor correspondente a localização da linha atual
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns the value of the next line in the worksheet<br></br>
+    /// [PT-BR]: Retorna o valor da proxima linha da planilha
+    /// </returns>
     public static string GetNextLine(string currentLine = null) {
       string lineNextNumber;
       string aux;
       if(string.IsNullOrEmpty(currentLine))
         return "A1";
 
-      lineNextNumber = (GetOnlyNumbers(currentLine) + 1).ToString();
-      aux = GetOnlyChars(currentLine);
+      lineNextNumber = (X.GetOnlyNumbers(currentLine) + 1).ToString();
+      aux = X.GetOnlyLetters(currentLine);
 
       return aux + lineNextNumber;
     }

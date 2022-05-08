@@ -200,11 +200,9 @@ namespace Testes {
       #endregion
 
       #region TESTE CLASS XEMAIL
-      
-      //Stream anexo = new FileStream(@"C:\MyDocs\planTest.xlsx", FileMode.Open);
 
       //XEmail email = new XEmail("c3NBqo7a", "autoreplynewpassword@hotmail.com", "Notification");
-      //email.To = "lucasads18@outlook.com;rayhuehuebrblizz@hotmail.com";
+      //email.To = "lucasads18@outlook.com;rayhuehuebrblizz@hotmail.com;";
       //email.CC = "gleycemello36@gmail.com;gleycemello36@gmail.com";
       //email.Attachment = new List<Attachment> { new Attachment(@"C:\MyDocs\planTest.xlsx") };
       //email.Body = "<p><strong>One Body :D</strong></p>";
@@ -213,58 +211,6 @@ namespace Testes {
       //string message;
 
       //bool teste = email.SendMail(out message);
-
-      #endregion
-
-      #region TESTE CLASS XSQL
-
-      //SqlCommand sqlCommand= new SqlCommand();
-      //string errorMessage;
-      //sqlCommand.CommandText = "insert into _TB values (@anyv)";
-      //sqlCommand.Parameters.AddWithValue("@anyv", "HTTPS");
-      //XSql xSql = new XSql(@"Data Source=LUCAS\SQLEXPRESS;Initial Catalog=TEMPDT;Integrated Security=True", sqlCommand);
-      //xSql.GoExec(out errorMessage);
-
-      //sqlCommand.CommandText = "select * from _TB"; // RESULT DATA TABLE SELECT
-      //XSql xSql = new XSql(@"Data Source=LUCAS\SQLEXPRESS;Initial Catalog=TEMPDT;Integrated Security=True", sqlCommand);
-      //var tb = xSql.ReturnData(out errorMessage);
-
-      #endregion
-
-      #region TESTE CLASS X
-
-      //int it = 1145161;
-      //bool bi = it.MaxMin(-101031, 90000000); 
-
-      //byte us = 250;
-      //bool ok = us.MaxMin(0, 255);
-
-      //sbyte b = -20;
-      //bool bt = b.MaxMin(-128, 127);
-
-      //int[] ai = new int[] { -10, 410, -5, -11, -12, 20 };
-      //var aineg = ai.GetNegatives();
-      //var aipos = ai.GetPositives();
-
-      //List<int> li = new List<int> { -10, 10, -5, -11, -12, 20 };
-      //var lineg = li.GetNegatives();
-      //var lipos = li.GetPositives();
-
-      /* the Input has 2 optional parameters, being the message to be written
-       * in the console, and the hiding of the console to not display the typed
-       * characters.*/
-
-      // Example with 2 parameters
-      //string password = X.Input<string>("Password: ", true);
-
-      // Example with 0 parameter
-      //int anyNumber = X.Input<int>();
-
-      // Example with 1 parameter
-      //string anyChar = X.Input<string>("password: ", true);
-
-      //var ping = X.GetPing("8.8.8.8").Result;
-      //ping.ToString().Print();
 
       #endregion
 
@@ -364,6 +310,75 @@ namespace Testes {
       //excel.Generate(@"C:\MyDocs\planTest");
 
       #endregion
+
+      #region TESTE CLASS XSQL
+
+      //SqlCommand sqlCommand= new SqlCommand();
+      //string errorMessage;
+      //sqlCommand.CommandText = "insert into _TB values (@anyv)";
+      //sqlCommand.Parameters.AddWithValue("@anyv", "HTTPS");
+      //XSql xSql = new XSql(@"Data Source=LUCAS\SQLEXPRESS;Initial Catalog=TEMPDT;Integrated Security=True", sqlCommand);
+      //xSql.GoExec(out errorMessage);
+
+      //sqlCommand.CommandText = "select * from _TB"; // RESULT DATA TABLE SELECT
+      //XSql xSql = new XSql(@"Data Source=LUCAS\SQLEXPRESS;Initial Catalog=TEMPDT;Integrated Security=True", sqlCommand);
+      //var tb = xSql.ReturnData(out errorMessage);
+
+      #endregion
+
+      #region TESTE CLASS X
+
+      //string a = "A 1 4 1 ;A,. BCCC a daad ad.,.,.,78 aJdyha @ 1 :44Gajç1:#lXpP#; 13 1* a;)#(:!!.,;%%!";
+      //var letters = a.GetOnlyLetters();
+      //var digits = a.GetOnlyLetterAndNumber();
+      //var numbers = a.GetOnlyNumbers();
+      //var one = a.GetOne();
+      //var simb = a.GetOnlySymbol();
+      //var branco = a.GetOnlyWhiteSpace();
+      //var lower = a.GetOnlyLowerCase();
+      //var upper = a.GetOnlyUpperCase();
+      //var tes = a.GetOnlySpecialChars();
+
+      //int it = 1145161;
+      //bool bi = it.MaxMin(-101031, 90000000); 
+
+      //byte us = 250;
+      //bool ok = us.MaxMin(0, 255);
+
+      //sbyte b = -20;
+      //bool bt = b.MaxMin(-128, 127);
+
+      //int[] ai = new int[] { -10, 410, -5, -11, -12, 20 };
+      //var aineg = ai.GetNegatives();
+      //var aipos = ai.GetPositives();
+
+      //List<int> li = new List<int> { -10, 10, -5, -11, -12, 20 };
+      //var lineg = li.GetNegatives();
+      //var lipos = li.GetPositives();
+
+      /* the Input has 2 optional parameters, being the message to be written
+       * in the console, and the hiding of the console to not display the typed
+       * characters.*/
+
+      // Example with 2 parameters
+      //string password = X.Input<string>("Password: ", true);
+
+      // Example with 0 parameter
+      //int anyNumber = X.Input<int>();
+
+      // Example with 1 parameter
+      //string anyChar = X.Input<string>("password: ", true);
+
+      //var ping = X.GetPing("8.8.8.8").Result;
+      //ping.ToString().Print();
+
+      #endregion
+
+    
+    
+    
+    
+    
     
     }
 
@@ -375,12 +390,10 @@ namespace Testes {
     }
   }
 
-
   public class Obj {
     public string str { get; set; }
     public char chars { get; set; }
     public int ints { get; set; }
   }
-
 
 }

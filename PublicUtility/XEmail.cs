@@ -26,11 +26,11 @@ namespace PublicUtility {
     public readonly string PresentationName;
 
     public string To { get; set; }
-    public string Subject { get; set; }
+    public string Copy { get; set; }
     public string Body { get; set; }
-    public string CC { get; set; }
-    public List<Attachment> Attachment { get; set; }
+    public string Subject { get; set; }
     public MailPriority Priority { get; set; }
+    public List<Attachment> Attachment { get; set; }
 
     /// <summary>
     /// [EN]: Constructor method with mandatory filling of the credentials of the e-mail that will be used to originate the notifications.<br></br>
@@ -100,28 +100,29 @@ namespace PublicUtility {
       mail.From = new MailAddress(CredentialEmail, PresentationName);
 
       this.To = this.To.RemoveWhiteSpaces();
-      if(string.IsNullOrEmpty(this.To)) {
+      if(string.IsNullOrEmpty(this.To))
         throw new RequiredParamsException(Situation.IsNullOrEmpty, "Destination Emails");
-      }
 
       // CONFIG TO RECEPT
       foreach(string email in this.To.Split(MailsSeparator)) {
-        if(!IsValid(email)) {
+        if(string.IsNullOrEmpty(email))
+          continue;
+
+        if(!IsValid(email))
           throw new RequiredParamsException(Situation.InvalidFormat, "Destination Email");
-        }
 
         mail.To.Add(new MailAddress(email));
       }
 
-      foreach(string email in this.CC.Split(MailsSeparator)) {
-        if(!IsValid(email)) {
+      foreach(string email in this.Copy.Split(MailsSeparator)) {
+        if(string.IsNullOrEmpty(email))
+          continue;
+
+        if(!IsValid(email))
           throw new RequiredParamsException(Situation.InvalidFormat, "Destination Copy Email");
-        }
 
         mail.CC.Add(new MailAddress(email));
       }
-
-
       //END CONFIG TO RECEPT
 
       // SERVER CONFIG
@@ -130,13 +131,11 @@ namespace PublicUtility {
       client.Credentials = new NetworkCredential(CredentialEmail, CredentialPassword);
 
       // CONTENT CONFIG
-      if(string.IsNullOrEmpty(this.Body)) {
+      if(string.IsNullOrEmpty(this.Body))
         this.Body = string.Format("<p>Oops <strong>no body</strong> has been defined for the email. This is default content. <strong>:D</strong></p>");
-      }
 
-      if(string.IsNullOrEmpty(this.Subject)) {
+      if(string.IsNullOrEmpty(this.Subject))
         this.Subject = string.Format("Default");
-      }
 
       mail.Body = this.Body;
       mail.Subject = this.Subject;
@@ -144,9 +143,8 @@ namespace PublicUtility {
       mail.IsBodyHtml = true;
 
       // ATTACHMENTS CONFIG
-      foreach(Attachment att in this.Attachment) {
+      foreach(Attachment att in this.Attachment)
         mail.Attachments.Add(att);
-      }
 
       try {
         client.Send(mail);

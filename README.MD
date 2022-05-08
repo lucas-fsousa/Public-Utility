@@ -8,11 +8,11 @@ Use the package manager [NuGet](https://www.nuget.org/packages/LucasFsousa.Publi
 
 ```bash
 EXAMPLE
-PM> Install-Package LucasFsousa.PublicUtility -Version 1.0.8
+PM> Install-Package LucasFsousa.PublicUtility -Version 1.1.0
 
-.NET CLI> dotnet add package LucasFsousa.PublicUtility --version 1.0.8
+.NET CLI> dotnet add package LucasFsousa.PublicUtility --version 1.1.0
 
-Package Reference> <PackageReference Include="LucasFsousa.PublicUtility" Version="1.0.8" />
+Package Reference> <PackageReference Include="LucasFsousa.PublicUtility" Version="1.1.0" />
 
 ```
 
@@ -21,6 +21,7 @@ Package Reference> <PackageReference Include="LucasFsousa.PublicUtility" Version
 ```csharp
 using PublicUtility; // call Namespace
 using PublicUtility.Xnm; //  call aux Namespace
+
 
 // ================= examples of use of the XSystem class =================
 
@@ -33,6 +34,7 @@ List<FileInfo> files = XSystem.GrabFilesFromFolder(@"C:\MyDocs");
 
 // gets all processes that have "chrome" signature or similar
 List<Process> processes = XSystem.GetAllProcessByName("chrome", false);
+
 
 // ================= examples of use of the XSql class =================
 
@@ -54,6 +56,7 @@ sqlCommand.Parameters.AddWithValue("@integerExample", 1); // PARAM
 sqlCommand.Parameters.AddWithValue("@floatExample", 5.5); // PARAM
 XSql xSql = new XSql(@"your connection string here", sqlCommand);
 xSql.GoExec(out errorMessage);
+
 
 // ================= examples of use of the XScreen class =================
 
@@ -81,7 +84,28 @@ string encrypt = XSecurity.Encrypt("string for encrypto", "12345678");
 // Decrypting a string encrypted by a numeric key
 string decrypt = XSecurity.Decrypt(encrypt, "12345678");
 
+
 // ================= examples of use of the X class =================
+
+string a = "A 1 4 1 ;A,. BCCC a daad ad.,.,.,78 aJdyha @ 1 :44Gajç1:#lXpP#; 13 1* a;)#(:!!.,;%%!";
+
+var letters = a.GetOnlyLetters();
+
+var digits = a.GetOnlyLetterAndNumber();
+
+var numbers = a.GetOnlyNumbers(); // Get only numbers
+
+var simb = a.GetOnlySymbol(); // get only symbols
+
+var branco = a.GetOnlyWhiteSpace(); // get only whitespace
+
+var lower = a.GetOnlyLowerCase(); // get only lowercase characters
+
+var upper = a.GetOnlyUpperCase(); // get only uppercase characters
+
+var tes = a.GetOnlySpecialChars(); // get only special characters
+
+var one = a.GetOne(); // get a random item from an array, list, or enumerator
 
 float f = 15.10f;
 bool fb = f.MaxMin(20.41f, 150.50f); // returns a false value
@@ -128,6 +152,7 @@ X.Print(a); // 2nd way to use
 string message = "Hello World!"; // string message to print
 message.Print(); // 1st way to use
 X.Print(message); // 2nd way to use
+
 
 // ================= examples of use of the XRequest class =================
 
@@ -178,7 +203,6 @@ XMouse.RollUp(100);
 
 // ================= examples of use of the XKeyboard class =================
 
-
 // Executes the key-by-key keyboard manipulation action with output result: "hello!"
 XKeyboard.PressKey(Key.H);
 XKeyboard.UnPressKey(Key.H);
@@ -217,7 +241,6 @@ XKeyboard.KeyCombine(KeyAction.Drop, new Key[] { Key.H, Key.E, Key.L, Key.L, Key
 bool keyDetail = XKeyboard.KeyStateInfo(Key.Shif).IsPressed;
 
 // ================= examples of use of the XTextFile class =================
-
 
 string path = @"C:\MyDocs\doc.txt";
 

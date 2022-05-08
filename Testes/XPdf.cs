@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Testes {
   public class XPdf {
+
     public static string GetText(byte[] buffer) => GetTextBase(new MemoryStream(buffer));
 
     public static string GetText(string filePath) => GetTextBase(File.OpenRead(filePath));
@@ -25,7 +26,6 @@ namespace Testes {
       }
       return text;
     }
-
 
     private static string Decompress(byte[] input) {
       byte[] cutinput = new byte[input.Length - 2];

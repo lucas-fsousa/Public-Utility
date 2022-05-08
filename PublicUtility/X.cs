@@ -666,6 +666,235 @@ namespace PublicUtility {
 
     #endregion
 
+    #region OVERLOAD GETONE
+
+    /// <summary>
+    /// [EN]: Get a random value contained in an list<br></br>
+    /// [PT-BR]: Obtém um valor randomico contido em uma lista
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Object type to return<br></br>
+    /// [PT-BR]: Tipo de objeto a ser retornado
+    /// </typeparam>
+    /// <param name="list">
+    /// [EN]: List that contains the values<br></br>
+    /// [PT-BR]: Lista que contém os valores
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a single item from the randomly chosen list.<br></br>
+    /// [PT-BR]: Retorna um unico item da lista escolhido de forma randomica.
+    /// </returns>
+    public static T GetOne<T>(this List<T> list)=> list[new Random().Next(0, list.Count)];
+    
+    /// <summary>
+    /// [EN]: Get a random value contained in an array<br></br>
+    /// [PT-BR]: Obtém um valor randomico contido em uma matriz
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Object type to return<br></br>
+    /// [PT-BR]: Tipo de objeto a ser retornado
+    /// </typeparam>
+    /// <param name="array">
+    /// [EN]: Array that contains the values<br></br>
+    /// [PT-BR]: Matriz que contém os valores
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a single item from the randomly chosen array.<br></br>
+    /// [PT-BR]: Retorna um unico item da matriz escolhido de forma randomica.
+    /// </returns>
+    public static T GetOne<T>(this T[] array) => array[new Random().Next(0, array.Length)];
+
+    /// <summary>
+    /// [EN]: Get a random value contained in an enumerable<br></br>
+    /// [PT-BR]: Obtém um valor randomico contido em um enumerador
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Object type to return<br></br>
+    /// [PT-BR]: Tipo de objeto a ser retornado
+    /// </typeparam>
+    /// <param name="enumerable">
+    /// [EN]: Enumerable that contains the values<br></br>
+    /// [PT-BR]: Enumerador que contém os valores
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a single item from the randomly chosen enumerable.<br></br>
+    /// [PT-BR]: Retorna um unico item do enumerador escolhido de forma randomica.
+    /// </returns>
+    public static T GetOne<T>(this IEnumerable<T> enumerable) => enumerable.ToList().GetOne();
+    #endregion
+
+    #region OVERLOAD GETONLY
+
+    /// <summary>
+    /// [EN]: Gets only the numbers contained in the string.<br></br>
+    /// [PT-BR]: Obtém apenas os numeros contidos na cadeia de caracteres.
+    /// </summary>
+    /// <param name="input">
+    /// [EN]: Input string for checking.<br></br>
+    /// [PT-BR]: Cadeia de caracteres de entrada para checagem.
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new string containing only numeric values.<br></br>
+    /// [PT-BR]: Retorna uma nova cadeia de caracteres contendo apenas os valores numericos.
+    /// </returns>
+    public static string GetOnlyNumbers(this string input) {
+      string newStr = string.Empty;
+      foreach(char c in input) {
+        if(char.IsNumber(c))
+          newStr += c;
+      }
+      return newStr;
+    }
+
+    /// <summary>
+    /// [EN]: Gets only the letters contained in the string.<br></br>
+    /// [PT-BR]: Obtém apenas as letras contidas na cadeia de caracteres.
+    /// </summary>
+    /// <param name="input">
+    /// [EN]: Input string for checking.<br></br>
+    /// [PT-BR]: Cadeia de caracteres de entrada para checagem.
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new string containing only letters.<br></br>
+    /// [PT-BR]: Retorna uma nova cadeia de caracteres contendo apenas as letras.
+    /// </returns>
+    public static string GetOnlyLetters(this string input) {
+      string newStr = string.Empty;
+      foreach(char c in input) {
+        if(char.IsLetter(c))
+          newStr += c;
+      }
+      return newStr;
+    }
+
+    /// <summary>
+    /// [EN]: Get only the numbers and letters contained in the string<br></br>
+    /// [PT-BR]: Obtém apenas os numeros e as letras contidas na cadeia de caracteres
+    /// </summary>
+    /// <param name="input">
+    /// [EN]: Input string for checking.<br></br>
+    /// [PT-BR]: Cadeia de caracteres de entrada para checagem.
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new string containing only numeric values and letters .<br></br>
+    /// [PT-BR]: Retorna uma nova cadeia de caracteres contendo apenas os valores numericos e as letras.
+    /// </returns>
+    public static string GetOnlyLetterAndNumber(this string input) {
+      string newStr = string.Empty;
+      foreach(char c in input) {
+        if(char.IsLetterOrDigit(c))
+          newStr += c;
+      }
+      return newStr;
+    }
+
+    /// <summary>
+    /// [EN]: Gets only special chars contained in the string.<br></br>
+    /// [PT-BR]: Obtém apenas os caracteres especiais contidas na cadeia de caracteres.
+    /// </summary>
+    /// <param name="input">
+    /// [EN]: Input string for checking.<br></br>
+    /// [PT-BR]: Cadeia de caracteres de entrada para checagem.
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new string containing only special chars.<br></br>
+    /// [PT-BR]: Retorna uma nova cadeia de caracteres contendo apenas os caracteres especiais.
+    /// </returns>
+    public static string GetOnlySpecialChars(this string input) {
+      string newStr = string.Empty;
+      foreach(char c in input) {
+        if(char.IsPunctuation(c))
+          newStr += c;
+      }
+      return newStr;
+    }
+
+    /// <summary>
+    /// [EN]: Get only uppercase letters<br></br>
+    /// [PT-BR]: Obtém apenas as letras em caixa alta
+    /// </summary>
+    /// <param name="input">
+    /// [EN]: Input string for checking.<br></br>
+    /// [PT-BR]: Cadeia de caracteres de entrada para checagem.
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new string containing only uppercase letters<br></br>
+    /// [PT-BR]: Retorna uma nova cadeia de caracteres contendo apenas as letras em caixa alta
+    /// </returns>
+    public static string GetOnlyUpperCase(this string input) {
+      string newStr = string.Empty;
+      foreach(char c in input) {
+        if(char.IsUpper(c))
+          newStr += c;
+      }
+      return newStr;
+    }
+
+    /// <summary>
+    /// [EN]: Get only lowercase letters<br></br>
+    /// [PT-BR]: Obtém apenas as letras em caixa baixa
+    /// </summary>
+    /// <param name="input">
+    /// [EN]: Input string for checking.<br></br>
+    /// [PT-BR]: Cadeia de caracteres de entrada para checagem.
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new string containing only lowercase letters<br></br>
+    /// [PT-BR]: Retorna uma nova cadeia de caracteres contendo apenas as letras em caixa baixa
+    /// </returns>
+    public static string GetOnlyLowerCase(this string input) {
+      string newStr = string.Empty;
+      foreach(char c in input) {
+        if(char.IsLower(c))
+          newStr += c;
+      }
+      return newStr;
+    }
+
+    /// <summary>
+    /// [EN]: Get only whitespace from a string<br></br>
+    /// [PT-BR]: Obtém apenas os espaços em branco de uma cadeia de caracteres
+    /// </summary>
+    /// <param name="input">
+    /// [EN]: Input string for checking.<br></br>
+    /// [PT-BR]: Cadeia de caracteres de entrada para checagem.
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new string with only whitespace<br></br>
+    /// [PT-BR]: Retorna uma nova cadeia de caracteres com apenas os espaços em branco
+    /// </returns>
+    public static string GetOnlyWhiteSpace(this string input) {
+      string newStr = string.Empty;
+      foreach(char c in input) {
+        if(char.IsWhiteSpace(c))
+          newStr += c;
+      }
+      return newStr;
+    }
+
+    /// <summary>
+    /// [EN]: Get only the symbols contained in the string<br></br>
+    /// [PT-BR]: Obtém apenas os simbolos contidos na cadeia de caractere
+    /// </summary>
+    /// <param name="input">
+    /// [EN]: Input string for checking.<br></br>
+    /// [PT-BR]: Cadeia de caracteres de entrada para checagem.
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new string containing only symbols.<br></br>
+    /// [PT-BR]: Retorna uma nova cadeia de caractere contendo apenas simbolos.
+    /// </returns>
+    public static string GetOnlySymbol(this string input) {
+      string newStr = string.Empty;
+      foreach(char c in input) {
+        if(char.IsSymbol(c))
+          newStr += c;
+      }
+      return newStr;
+    }
+
+    #endregion
+
     #region OVERLOAD GETNEGATIVES
 
     /// <summary>
