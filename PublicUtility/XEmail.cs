@@ -99,11 +99,12 @@ namespace PublicUtility {
       mail.Sender = new MailAddress(CredentialEmail, PresentationName);
       mail.From = new MailAddress(CredentialEmail, PresentationName);
 
+      // CONFIG TO RECEPT
       this.To = this.To.RemoveWhiteSpaces();
+
       if(string.IsNullOrEmpty(this.To))
         throw new RequiredParamsException(Situation.IsNullOrEmpty, "Destination Emails");
 
-      // CONFIG TO RECEPT
       foreach(string email in this.To.Split(MailsSeparator)) {
         if(string.IsNullOrEmpty(email))
           continue;
@@ -114,14 +115,21 @@ namespace PublicUtility {
         mail.To.Add(new MailAddress(email));
       }
 
-      foreach(string email in this.Copy.Split(MailsSeparator)) {
-        if(string.IsNullOrEmpty(email))
-          continue;
+      if(this.Copy != null) {
+        this.Copy = this.Copy.RemoveWhiteSpaces();
 
-        if(!IsValid(email))
-          throw new RequiredParamsException(Situation.InvalidFormat, "Destination Copy Email");
+        if(string.IsNullOrEmpty(this.Copy))
+          throw new RequiredParamsException(Situation.IsNullOrEmpty, "Destination Copy Email");
 
-        mail.CC.Add(new MailAddress(email));
+        foreach(string email in this.Copy.Split(MailsSeparator)) {
+          if(string.IsNullOrEmpty(email))
+            continue;
+
+          if(!IsValid(email))
+            throw new RequiredParamsException(Situation.InvalidFormat, "Destination Copy Email");
+
+          mail.CC.Add(new MailAddress(email));
+        }
       }
       //END CONFIG TO RECEPT
 
@@ -143,8 +151,11 @@ namespace PublicUtility {
       mail.IsBodyHtml = true;
 
       // ATTACHMENTS CONFIG
-      foreach(Attachment att in this.Attachment)
-        mail.Attachments.Add(att);
+      if(this.Attachment != null) {
+        foreach(Attachment att in this.Attachment)
+          mail.Attachments.Add(att);
+      }
+
 
       try {
         client.Send(mail);

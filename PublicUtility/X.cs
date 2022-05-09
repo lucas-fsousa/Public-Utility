@@ -388,7 +388,6 @@ namespace PublicUtility {
         return false;
     }
 
-
     #region OVERLOAD PRINT
 
     /// <summary>
@@ -775,63 +774,6 @@ namespace PublicUtility {
       return checkValue();
     }
 
-    #endregion
-
-    #region OVERLOAD GETONE
-
-    /// <summary>
-    /// [EN]: Get a random value contained in an list<br></br>
-    /// [PT-BR]: Obtém um valor randomico contido em uma lista
-    /// </summary>
-    /// <typeparam name="T">
-    /// [EN]: Object type to return<br></br>
-    /// [PT-BR]: Tipo de objeto a ser retornado
-    /// </typeparam>
-    /// <param name="list">
-    /// [EN]: List that contains the values<br></br>
-    /// [PT-BR]: Lista que contém os valores
-    /// </param>
-    /// <returns>
-    /// [EN]: Returns a single item from the randomly chosen list.<br></br>
-    /// [PT-BR]: Retorna um unico item da lista escolhido de forma randomica.
-    /// </returns>
-    public static T GetRandomValue<T>(this List<T> list) => GetOneValue(list);
-
-    /// <summary>
-    /// [EN]: Get a random value contained in an array<br></br>
-    /// [PT-BR]: Obtém um valor randomico contido em uma matriz
-    /// </summary>
-    /// <typeparam name="T">
-    /// [EN]: Object type to return<br></br>
-    /// [PT-BR]: Tipo de objeto a ser retornado
-    /// </typeparam>
-    /// <param name="array">
-    /// [EN]: Array that contains the values<br></br>
-    /// [PT-BR]: Matriz que contém os valores
-    /// </param>
-    /// <returns>
-    /// [EN]: Returns a single item from the randomly chosen array.<br></br>
-    /// [PT-BR]: Retorna um unico item da matriz escolhido de forma randomica.
-    /// </returns>
-    public static T GetRandomValue<T>(this T[] array) => GetOneValue(array);
-
-    /// <summary>
-    /// [EN]: Get a random value contained in an enumerable<br></br>
-    /// [PT-BR]: Obtém um valor randomico contido em um enumerador
-    /// </summary>
-    /// <typeparam name="T">
-    /// [EN]: Object type to return<br></br>
-    /// [PT-BR]: Tipo de objeto a ser retornado
-    /// </typeparam>
-    /// <param name="enumerable">
-    /// [EN]: Enumerable that contains the values<br></br>
-    /// [PT-BR]: Enumerador que contém os valores
-    /// </param>
-    /// <returns>
-    /// [EN]: Returns a single item from the randomly chosen enumerable.<br></br>
-    /// [PT-BR]: Retorna um unico item do enumerador escolhido de forma randomica.
-    /// </returns>
-    public static T GetRandomValue<T>(this IEnumerable<T> enumerable) => GetOneValue(enumerable);
     #endregion
 
     #region OVERLOAD GETONLY
@@ -1595,6 +1537,64 @@ namespace PublicUtility {
     /// [PT-BR]: Retorna um novo enumerador contendo somente os valores impares
     /// </returns>
     public static IEnumerable<T> GetOddNumbers<T>(IEnumerable<T> input) => OddNumbers(input);
+
+    #endregion
+
+    #region OVERLOAD GETRANDOMVALUE
+
+    /// <summary>
+    /// [EN]: Get a random value contained in an list<br></br>
+    /// [PT-BR]: Obtém um valor randomico contido em uma lista
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Object type to return<br></br>
+    /// [PT-BR]: Tipo de objeto a ser retornado
+    /// </typeparam>
+    /// <param name="list">
+    /// [EN]: List that contains the values<br></br>
+    /// [PT-BR]: Lista que contém os valores
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a single item from the randomly chosen list.<br></br>
+    /// [PT-BR]: Retorna um unico item da lista escolhido de forma randomica.
+    /// </returns>
+    public static T GetRandomValue<T>(this List<T> list) => GetOneValue(list);
+
+    /// <summary>
+    /// [EN]: Get a random value contained in an array<br></br>
+    /// [PT-BR]: Obtém um valor randomico contido em uma matriz
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Object type to return<br></br>
+    /// [PT-BR]: Tipo de objeto a ser retornado
+    /// </typeparam>
+    /// <param name="array">
+    /// [EN]: Array that contains the values<br></br>
+    /// [PT-BR]: Matriz que contém os valores
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a single item from the randomly chosen array.<br></br>
+    /// [PT-BR]: Retorna um unico item da matriz escolhido de forma randomica.
+    /// </returns>
+    public static T GetRandomValue<T>(this T[] array) => GetOneValue(array);
+
+    /// <summary>
+    /// [EN]: Get a random value contained in an enumerable<br></br>
+    /// [PT-BR]: Obtém um valor randomico contido em um enumerador
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Object type to return<br></br>
+    /// [PT-BR]: Tipo de objeto a ser retornado
+    /// </typeparam>
+    /// <param name="enumerable">
+    /// [EN]: Enumerable that contains the values<br></br>
+    /// [PT-BR]: Enumerador que contém os valores
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a single item from the randomly chosen enumerable.<br></br>
+    /// [PT-BR]: Retorna um unico item do enumerador escolhido de forma randomica.
+    /// </returns>
+    public static T GetRandomValue<T>(this IEnumerable<T> enumerable) => GetOneValue(enumerable);
 
     #endregion
 

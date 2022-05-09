@@ -8,11 +8,11 @@ Use the package manager [NuGet](https://www.nuget.org/packages/LucasFsousa.Publi
 
 ```bash
 EXAMPLE
-PM> Install-Package LucasFsousa.PublicUtility -Version 1.1.0
+PM> Install-Package LucasFsousa.PublicUtility -Version 1.1.1
 
-.NET CLI> dotnet add package LucasFsousa.PublicUtility --version 1.1.0
+.NET CLI> dotnet add package LucasFsousa.PublicUtility --version 1.1.1
 
-Package Reference> <PackageReference Include="LucasFsousa.PublicUtility" Version="1.1.0" />
+Package Reference> <PackageReference Include="LucasFsousa.PublicUtility" Version="1.1.1" />
 
 ```
 

@@ -201,12 +201,34 @@ namespace Testes {
 
       #region TESTE CLASS XEMAIL
 
+      //StringBuilder sb = new StringBuilder();
+      //string style = "style='background-color: #C0C0C0; color: #000; font-weight: bolder;'";
+
+      //sb.AppendLine("<p align='center'><font size='3'><b>TITULO DA PAGINA</b></font></p>");
+      //sb.AppendLine("<table align='center' border='0' width='AUTO' cellspacing='2' cellpadding='20'>");
+
+      //sb.AppendLine("   <tr>");
+      //sb.AppendLine("     <td>");
+      //sb.AppendLine("       <table>");
+      //sb.AppendLine("         <tr>");
+      //sb.AppendLine("           <td colspan='2' align='center' width=200 height=100>");
+      //sb.AppendLine($"             <font size='8'><span {style} >&nbsp;&nbsp;99&nbsp;&nbsp;</span></font>");
+      //sb.AppendLine("             <br><p><font size='2' color='#FF8C00'>ENTRADAS DIARIAS</font></p><br>");
+      //sb.AppendLine("           </td>");
+      //sb.AppendLine("         </tr>");
+      //sb.AppendLine("       </table>");
+      //sb.AppendLine("     </td>");
+      //sb.AppendLine("   </tr>");
+
+      //sb.AppendLine("</table>");
+
+
       //XEmail email = new XEmail("c3NBqo7a", "autoreplynewpassword@hotmail.com", "Notification");
-      //email.To = "lucasads18@outlook.com;rayhuehuebrblizz@hotmail.com;";
-      //email.CC = "gleycemello36@gmail.com;gleycemello36@gmail.com";
-      //email.Attachment = new List<Attachment> { new Attachment(@"C:\MyDocs\planTest.xlsx") };
-      //email.Body = "<p><strong>One Body :D</strong></p>";
-      //email.Priority = MailPriority.High;
+      //email.To = "rayhuehuebrblizz@hotmail.com;";
+      ////email.Copy = "gleycemello36@gmail.com;gleycemello36@gmail.com";
+      ////email.Attachment = new List<Attachment> { new Attachment(@"C:\MyDocs\planTest.xlsx") };
+      //email.Body = sb.ToString();
+      ////email.Priority = MailPriority.High;
       //email.Subject = "Hello";
       //string message;
 
