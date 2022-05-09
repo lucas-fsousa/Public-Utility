@@ -341,7 +341,7 @@ namespace Testes {
       //var letters = a.GetOnlyLetters();
       //var digits = a.GetOnlyLetterAndNumber();
       //var numbers = a.GetOnlyNumbers();
-      //var one = a.GetOne();
+      //var one = a.GetRandomValue();
       //var simb = a.GetOnlySymbol();
       //var branco = a.GetOnlyWhiteSpace();
       //var lower = a.GetOnlyLowerCase();

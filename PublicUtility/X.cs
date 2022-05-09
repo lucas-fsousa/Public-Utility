@@ -110,6 +110,12 @@ namespace PublicUtility {
       return newStr;
     }
 
+    private static T GetOneValue<T>(IEnumerable<T> enumrable) {
+      return enumrable.ToList()[new Random().Next(0, enumrable.Count())];
+    }
+    
+    
+
     private static Dictionary<string, object> ValidInputs() {
       Dictionary<string, object> validInputs = new Dictionary<string, object>();
       validInputs.Add("datetime", typeof(DateTime));
@@ -789,7 +795,7 @@ namespace PublicUtility {
     /// [EN]: Returns a single item from the randomly chosen list.<br></br>
     /// [PT-BR]: Retorna um unico item da lista escolhido de forma randomica.
     /// </returns>
-    public static T GetOne<T>(this List<T> list) => list[new Random().Next(0, list.Count)];
+    public static T GetRandomValue<T>(this List<T> list) => GetOneValue(list);
 
     /// <summary>
     /// [EN]: Get a random value contained in an array<br></br>
@@ -807,7 +813,7 @@ namespace PublicUtility {
     /// [EN]: Returns a single item from the randomly chosen array.<br></br>
     /// [PT-BR]: Retorna um unico item da matriz escolhido de forma randomica.
     /// </returns>
-    public static T GetOne<T>(this T[] array) => array[new Random().Next(0, array.Length)];
+    public static T GetRandomValue<T>(this T[] array) => GetOneValue(array);
 
     /// <summary>
     /// [EN]: Get a random value contained in an enumerable<br></br>
@@ -825,7 +831,7 @@ namespace PublicUtility {
     /// [EN]: Returns a single item from the randomly chosen enumerable.<br></br>
     /// [PT-BR]: Retorna um unico item do enumerador escolhido de forma randomica.
     /// </returns>
-    public static T GetOne<T>(this IEnumerable<T> enumerable) => enumerable.ToList().GetOne();
+    public static T GetRandomValue<T>(this IEnumerable<T> enumerable) => GetOneValue(enumerable);
     #endregion
 
     #region OVERLOAD GETONLY
