@@ -328,6 +328,15 @@ namespace Testes {
 
       #region TESTE CLASS X
 
+      //IEnumerable<int> enumerable = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+      //List<int> lstod = X.GetOddNumbers(enumerable.ToList());
+      //int[] arrod = X.GetOddNumbers(enumerable.ToArray());
+      //var enumod = X.GetOddNumbers(enumerable);
+
+      //List<int> evlst = X.GetEvenNumbers(enumerable.ToList());
+      //int[] evarr = X.GetEvenNumbers(enumerable.ToArray());
+      //var evenum = X.GetEvenNumbers(enumerable);
+
       //string a = "A 1 4 1 ;A,. BCCC a daad ad.,.,.,78 aJdyha @ 1 :44Gajç1:#lXpP#; 13 1* a;)#(:!!.,;%%!";
       //var letters = a.GetOnlyLetters();
       //var digits = a.GetOnlyLetterAndNumber();
@@ -373,6 +382,11 @@ namespace Testes {
       //ping.ToString().Print();
 
       #endregion
+
+
+
+
+
 
 
     }

@@ -27,7 +27,90 @@ namespace PublicUtility {
 
     #region PRIVATE METHODS
 
-    public static Dictionary<string, object> ValidInputs() {
+    private static IEnumerable<T> OddNumbers<T>(IEnumerable<T> enumrable) {
+      List<T> oddNumbers = new List<T>();
+      foreach(var value in enumrable) {
+        if(value.ToString().GetOnlyNumbers().Length <= 0) {
+          string valueContainedInInput;
+          throw new RequiredParamsException(Situation.NotANumber, nameof(valueContainedInInput));
+        } else {
+          if(Convert.ToInt64(value) % 2 == 0)
+            oddNumbers.Add(value);
+        }
+
+      }
+      return oddNumbers;
+    }
+
+    private static IEnumerable<T> EvenNumbers<T>(IEnumerable<T> enumrable) {
+      List<T> oddNumbers = new List<T>();
+      foreach(var value in enumrable) {
+        if(value.ToString().GetOnlyNumbers().Length <= 0) {
+          string valueContainedInInput;
+          throw new RequiredParamsException(Situation.NotANumber, nameof(valueContainedInInput));
+        } else {
+          if(Convert.ToInt64(value) % 2 == 1)
+            oddNumbers.Add(value);
+        }
+
+      }
+      return oddNumbers;
+    }
+
+    private static int OneIndex<T>(IEnumerable<T> enumrable, T itemToLoc) {
+      int index = -1, i = 0;
+      foreach(var value in enumrable) {
+        if(value.Equals(itemToLoc)) {
+          index = i;
+          break;
+        }
+        i++;
+      }
+      return index;
+    }
+
+    private static string GetOnly(IEnumerable<char> enumrable, string searchFor) {
+      string newStr = string.Empty;
+      foreach(char c in enumrable) {
+        if(searchFor.Equals("symbol")) {
+          if(char.IsSymbol(c))
+            newStr += c;
+
+        } else if(searchFor.Equals("number")) {
+          if(char.IsNumber(c))
+            newStr += c;
+
+        } else if(searchFor.Equals("letter")) {
+          if(char.IsLetter(c))
+            newStr += c;
+
+        } else if(searchFor.Equals("letterAndNumber")) {
+          if(char.IsLetter(c) || char.IsNumber(c))
+            newStr += c;
+
+        } else if(searchFor.Equals("special")) {
+          if(char.IsPunctuation(c))
+            newStr += c;
+
+        } else if(searchFor.Equals("upper")) {
+          if(char.IsUpper(c))
+            newStr += c;
+
+        } else if(searchFor.Equals("lower")) {
+          if(char.IsLower(c))
+            newStr += c;
+
+        } else if(searchFor.Equals("whitespace")) {
+          if(char.IsWhiteSpace(c))
+            newStr += c;
+
+        }
+
+      }
+      return newStr;
+    }
+
+    private static Dictionary<string, object> ValidInputs() {
       Dictionary<string, object> validInputs = new Dictionary<string, object>();
       validInputs.Add("datetime", typeof(DateTime));
       validInputs.Add("decimal", typeof(decimal));
@@ -74,7 +157,7 @@ namespace PublicUtility {
     /// [PT-BR]: Retorna um objeto do tipo que foi informado durante a chamada do método
     /// </returns>
     /// <exception cref="RequiredParamsException"></exception>
-    public static T Input<T>(string messageToPrint="", bool hidden = false) {
+    public static T Input<T>(string messageToPrint = "", bool hidden = false) {
       T response = default;
 
       if(string.IsNullOrEmpty(messageToPrint))
@@ -190,6 +273,27 @@ namespace PublicUtility {
       return new(ms, status, address, tlt, dontFragmented, timeOver);
     }
 
+    /// <summary>
+    /// [EN]: Adds a new item to the end of the array keeping the same reference<br></br>
+    /// [PT-BR]: Adiciona um novo item ao final do array mantendo a mesma referencia
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of value being worked on<br></br>
+    /// [PT-BR]: Tipo de valor que está sendo trabalhado
+    /// </typeparam>
+    /// <param name="array">
+    /// [EN]: Array that will receive the value<br></br>
+    /// [PT-BR]: Matriz que receberá o valor
+    /// </param>
+    /// <param name="value">
+    /// [EN]: Value to insert into the array<br></br>
+    /// [PT-BR]: Valor a ser inserido na matriz
+    /// </param>
+    public static void AddOnArray<T>(ref T[] array, T value) {
+      Array.Resize(ref array, array.Length + 1);
+      array[^1] = value;
+    }
+
     #endregion
 
     #region EXTENSION
@@ -277,6 +381,7 @@ namespace PublicUtility {
       else
         return false;
     }
+
 
     #region OVERLOAD PRINT
 
@@ -684,8 +789,8 @@ namespace PublicUtility {
     /// [EN]: Returns a single item from the randomly chosen list.<br></br>
     /// [PT-BR]: Retorna um unico item da lista escolhido de forma randomica.
     /// </returns>
-    public static T GetOne<T>(this List<T> list)=> list[new Random().Next(0, list.Count)];
-    
+    public static T GetOne<T>(this List<T> list) => list[new Random().Next(0, list.Count)];
+
     /// <summary>
     /// [EN]: Get a random value contained in an array<br></br>
     /// [PT-BR]: Obtém um valor randomico contido em uma matriz
@@ -726,48 +831,6 @@ namespace PublicUtility {
     #region OVERLOAD GETONLY
 
     /// <summary>
-    /// [EN]: Gets only the numbers contained in the string.<br></br>
-    /// [PT-BR]: Obtém apenas os numeros contidos na cadeia de caracteres.
-    /// </summary>
-    /// <param name="input">
-    /// [EN]: Input string for checking.<br></br>
-    /// [PT-BR]: Cadeia de caracteres de entrada para checagem.
-    /// </param>
-    /// <returns>
-    /// [EN]: Returns a new string containing only numeric values.<br></br>
-    /// [PT-BR]: Retorna uma nova cadeia de caracteres contendo apenas os valores numericos.
-    /// </returns>
-    public static string GetOnlyNumbers(this string input) {
-      string newStr = string.Empty;
-      foreach(char c in input) {
-        if(char.IsNumber(c))
-          newStr += c;
-      }
-      return newStr;
-    }
-
-    /// <summary>
-    /// [EN]: Gets only the letters contained in the string.<br></br>
-    /// [PT-BR]: Obtém apenas as letras contidas na cadeia de caracteres.
-    /// </summary>
-    /// <param name="input">
-    /// [EN]: Input string for checking.<br></br>
-    /// [PT-BR]: Cadeia de caracteres de entrada para checagem.
-    /// </param>
-    /// <returns>
-    /// [EN]: Returns a new string containing only letters.<br></br>
-    /// [PT-BR]: Retorna uma nova cadeia de caracteres contendo apenas as letras.
-    /// </returns>
-    public static string GetOnlyLetters(this string input) {
-      string newStr = string.Empty;
-      foreach(char c in input) {
-        if(char.IsLetter(c))
-          newStr += c;
-      }
-      return newStr;
-    }
-
-    /// <summary>
     /// [EN]: Get only the numbers and letters contained in the string<br></br>
     /// [PT-BR]: Obtém apenas os numeros e as letras contidas na cadeia de caracteres
     /// </summary>
@@ -779,77 +842,7 @@ namespace PublicUtility {
     /// [EN]: Returns a new string containing only numeric values and letters .<br></br>
     /// [PT-BR]: Retorna uma nova cadeia de caracteres contendo apenas os valores numericos e as letras.
     /// </returns>
-    public static string GetOnlyLetterAndNumber(this string input) {
-      string newStr = string.Empty;
-      foreach(char c in input) {
-        if(char.IsLetterOrDigit(c))
-          newStr += c;
-      }
-      return newStr;
-    }
-
-    /// <summary>
-    /// [EN]: Gets only special chars contained in the string.<br></br>
-    /// [PT-BR]: Obtém apenas os caracteres especiais contidas na cadeia de caracteres.
-    /// </summary>
-    /// <param name="input">
-    /// [EN]: Input string for checking.<br></br>
-    /// [PT-BR]: Cadeia de caracteres de entrada para checagem.
-    /// </param>
-    /// <returns>
-    /// [EN]: Returns a new string containing only special chars.<br></br>
-    /// [PT-BR]: Retorna uma nova cadeia de caracteres contendo apenas os caracteres especiais.
-    /// </returns>
-    public static string GetOnlySpecialChars(this string input) {
-      string newStr = string.Empty;
-      foreach(char c in input) {
-        if(char.IsPunctuation(c))
-          newStr += c;
-      }
-      return newStr;
-    }
-
-    /// <summary>
-    /// [EN]: Get only uppercase letters<br></br>
-    /// [PT-BR]: Obtém apenas as letras em caixa alta
-    /// </summary>
-    /// <param name="input">
-    /// [EN]: Input string for checking.<br></br>
-    /// [PT-BR]: Cadeia de caracteres de entrada para checagem.
-    /// </param>
-    /// <returns>
-    /// [EN]: Returns a new string containing only uppercase letters<br></br>
-    /// [PT-BR]: Retorna uma nova cadeia de caracteres contendo apenas as letras em caixa alta
-    /// </returns>
-    public static string GetOnlyUpperCase(this string input) {
-      string newStr = string.Empty;
-      foreach(char c in input) {
-        if(char.IsUpper(c))
-          newStr += c;
-      }
-      return newStr;
-    }
-
-    /// <summary>
-    /// [EN]: Get only lowercase letters<br></br>
-    /// [PT-BR]: Obtém apenas as letras em caixa baixa
-    /// </summary>
-    /// <param name="input">
-    /// [EN]: Input string for checking.<br></br>
-    /// [PT-BR]: Cadeia de caracteres de entrada para checagem.
-    /// </param>
-    /// <returns>
-    /// [EN]: Returns a new string containing only lowercase letters<br></br>
-    /// [PT-BR]: Retorna uma nova cadeia de caracteres contendo apenas as letras em caixa baixa
-    /// </returns>
-    public static string GetOnlyLowerCase(this string input) {
-      string newStr = string.Empty;
-      foreach(char c in input) {
-        if(char.IsLower(c))
-          newStr += c;
-      }
-      return newStr;
-    }
+    public static string GetOnlyLetterAndNumber(this string input) => GetOnly(input, "letterAndNumber");
 
     /// <summary>
     /// [EN]: Get only whitespace from a string<br></br>
@@ -863,14 +856,77 @@ namespace PublicUtility {
     /// [EN]: Returns a new string with only whitespace<br></br>
     /// [PT-BR]: Retorna uma nova cadeia de caracteres com apenas os espaços em branco
     /// </returns>
-    public static string GetOnlyWhiteSpace(this string input) {
-      string newStr = string.Empty;
-      foreach(char c in input) {
-        if(char.IsWhiteSpace(c))
-          newStr += c;
-      }
-      return newStr;
-    }
+    public static string GetOnlyWhiteSpace(this string input) => GetOnly(input, "whitespace");
+
+    /// <summary>
+    /// [EN]: Gets only special chars contained in the string.<br></br>
+    /// [PT-BR]: Obtém apenas os caracteres especiais contidas na cadeia de caracteres.
+    /// </summary>
+    /// <param name="input">
+    /// [EN]: Input string for checking.<br></br>
+    /// [PT-BR]: Cadeia de caracteres de entrada para checagem.
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new string containing only special chars.<br></br>
+    /// [PT-BR]: Retorna uma nova cadeia de caracteres contendo apenas os caracteres especiais.
+    /// </returns>
+    public static string GetOnlySpecialChars(this string input) => GetOnly(input, "special");
+
+    /// <summary>
+    /// [EN]: Gets only the numbers contained in the string.<br></br>
+    /// [PT-BR]: Obtém apenas os numeros contidos na cadeia de caracteres.
+    /// </summary>
+    /// <param name="input">
+    /// [EN]: Input string for checking.<br></br>
+    /// [PT-BR]: Cadeia de caracteres de entrada para checagem.
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new string containing only numeric values.<br></br>
+    /// [PT-BR]: Retorna uma nova cadeia de caracteres contendo apenas os valores numericos.
+    /// </returns>
+    public static string GetOnlyNumbers(this string input) => GetOnly(input, "number");
+
+    /// <summary>
+    /// [EN]: Gets only the letters contained in the string.<br></br>
+    /// [PT-BR]: Obtém apenas as letras contidas na cadeia de caracteres.
+    /// </summary>
+    /// <param name="input">
+    /// [EN]: Input string for checking.<br></br>
+    /// [PT-BR]: Cadeia de caracteres de entrada para checagem.
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new string containing only letters.<br></br>
+    /// [PT-BR]: Retorna uma nova cadeia de caracteres contendo apenas as letras.
+    /// </returns>
+    public static string GetOnlyLetters(this string input) => GetOnly(input, "letter");
+
+    /// <summary>
+    /// [EN]: Get only uppercase letters<br></br>
+    /// [PT-BR]: Obtém apenas as letras em caixa alta
+    /// </summary>
+    /// <param name="input">
+    /// [EN]: Input string for checking.<br></br>
+    /// [PT-BR]: Cadeia de caracteres de entrada para checagem.
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new string containing only uppercase letters<br></br>
+    /// [PT-BR]: Retorna uma nova cadeia de caracteres contendo apenas as letras em caixa alta
+    /// </returns>
+    public static string GetOnlyUpperCase(this string input) => GetOnly(input, "upper");
+
+    /// <summary>
+    /// [EN]: Get only lowercase letters<br></br>
+    /// [PT-BR]: Obtém apenas as letras em caixa baixa
+    /// </summary>
+    /// <param name="input">
+    /// [EN]: Input string for checking.<br></br>
+    /// [PT-BR]: Cadeia de caracteres de entrada para checagem.
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new string containing only lowercase letters<br></br>
+    /// [PT-BR]: Retorna uma nova cadeia de caracteres contendo apenas as letras em caixa baixa
+    /// </returns>
+    public static string GetOnlyLowerCase(this string input) => GetOnly(input, "lower");
 
     /// <summary>
     /// [EN]: Get only the symbols contained in the string<br></br>
@@ -884,14 +940,7 @@ namespace PublicUtility {
     /// [EN]: Returns a new string containing only symbols.<br></br>
     /// [PT-BR]: Retorna uma nova cadeia de caractere contendo apenas simbolos.
     /// </returns>
-    public static string GetOnlySymbol(this string input) {
-      string newStr = string.Empty;
-      foreach(char c in input) {
-        if(char.IsSymbol(c))
-          newStr += c;
-      }
-      return newStr;
-    }
+    public static string GetOnlySymbol(this string input) => GetOnly(input, "symbol");
 
     #endregion
 
@@ -917,16 +966,7 @@ namespace PublicUtility {
     /// [EN]: Returns the index of the item in the array if it exists or -1 for non-existent.<br></br>
     /// [PT-BR]: Retorna o indice do item na matriz caso ele exista ou -1 para não existente.
     /// </returns>
-    public static int GetIndex<T>(this T[] array, T itemToLoc) {
-      int index = -1;
-      for(int i = 0; i < array.Length; i++) {
-        if(array[i].Equals(itemToLoc)) {
-          index = i;
-          break;
-        }
-      }
-      return index;
-    }
+    public static int GetIndex<T>(this T[] array, T itemToLoc) => OneIndex(array, itemToLoc);
 
     /// <summary>
     /// [EN]: Get the index of an item in an array, if it doesn't exist, it will return -1<br></br>
@@ -948,7 +988,7 @@ namespace PublicUtility {
     /// [EN]: Returns the index of the item in the list if it exists or -1 for non-existent.<br></br>
     /// [PT-BR]: Retorna o indice do item na lista caso ele exista ou -1 para não existente.
     /// </returns>
-    public static int GetIndex<T>(this List<T> list, T itemToLoc) => GetIndex(list.ToArray(), itemToLoc);
+    public static int GetIndex<T>(this List<T> list, T itemToLoc) => OneIndex(list, itemToLoc);
 
     /// <summary>
     /// [EN]: Get the index of an item in an enumerable, if it doesn't exist, it will return -1<br></br>
@@ -970,8 +1010,8 @@ namespace PublicUtility {
     /// [EN]: Returns the index of the item in the enumerador if it exists or -1 for non-existent.<br></br>
     /// [PT-BR]: Retorna o indice do item no enumerador caso ele exista ou -1 para não existente.
     /// </returns>
-    public static int GetIndex<T>(this IEnumerable<T> enumerable, T itemToLoc) => GetIndex(enumerable.ToArray(), itemToLoc);
-    
+    public static int GetIndex<T>(this IEnumerable<T> enumerable, T itemToLoc) => OneIndex(enumerable, itemToLoc);
+
     #endregion
 
     #region OVERLOAD GETNEGATIVES
@@ -1491,6 +1531,122 @@ namespace PublicUtility {
     public static sbyte[] GetPositives(this sbyte[] array) {
       return array.Where(x => x >= 0).OrderByDescending(x => x).ToArray();
     }
+
+    #endregion
+
+    #region OVERLOAD GETODDNUMBERS
+
+    /// <summary>
+    /// [EN]: Gets an Array containing only odd values<br></br>
+    /// [PT-BR]: Obtém um Array contendo apenas valores impares
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of item to be analyzed<br></br>
+    /// [PT-BR]: Tipo do item a ser analisado
+    /// </typeparam>
+    /// <param name="input">
+    /// [EN]: Input of data to be analyzed<br></br>
+    /// [PT-BR]: Entrada dos dados a serem analisados
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new array containing only the odd values<br></br>
+    /// [PT-BR]: Retorna uma nova matriz contendo somente os valores impares
+    /// </returns>
+    public static T[] GetOddNumbers<T>(T[] input) => OddNumbers(input).ToArray();
+
+    /// <summary>
+    /// [EN]: Gets an list containing only odd values<br></br>
+    /// [PT-BR]: Obtém uma lista contendo apenas valores impares
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of item to be analyzed<br></br>
+    /// [PT-BR]: Tipo do item a ser analisado
+    /// </typeparam>
+    /// <param name="input">
+    /// [EN]: Input of data to be analyzed<br></br>
+    /// [PT-BR]: Entrada dos dados a serem analisados
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new list containing only the odd values<br></br>
+    /// [PT-BR]: Retorna uma nova lista contendo somente os valores impares
+    /// </returns>
+    public static List<T> GetOddNumbers<T>(List<T> input) => OddNumbers(input).ToList();
+
+    /// <summary>
+    /// [EN]: Gets an enumerable containing only odd values<br></br>
+    /// [PT-BR]: Obtém um enumerador contendo apenas valores impares
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of item to be analyzed<br></br>
+    /// [PT-BR]: Tipo do item a ser analisado
+    /// </typeparam>
+    /// <param name="input">
+    /// [EN]: Input of data to be analyzed<br></br>
+    /// [PT-BR]: Entrada dos dados a serem analisados
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new enumerable containing only the odd values<br></br>
+    /// [PT-BR]: Retorna um novo enumerador contendo somente os valores impares
+    /// </returns>
+    public static IEnumerable<T> GetOddNumbers<T>(IEnumerable<T> input) => OddNumbers(input);
+
+    #endregion
+
+    #region OVERLOAD GETEVENNUMBERS
+
+    /// <summary>
+    /// [EN]: Gets an Array containing only even values<br></br>
+    /// [PT-BR]: Obtém um Array contendo apenas valores pares
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of item to be analyzed<br></br>
+    /// [PT-BR]: Tipo do item a ser analisado
+    /// </typeparam>
+    /// <param name="input">
+    /// [EN]: Input of data to be analyzed<br></br>
+    /// [PT-BR]: Entrada dos dados a serem analisados
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new array containing only the even values<br></br>
+    /// [PT-BR]: Retorna uma nova matriz contendo somente os valores pares
+    /// </returns>
+    public static T[] GetEvenNumbers<T>(T[] input) => EvenNumbers(input).ToArray();
+
+    /// <summary>
+    /// [EN]: Gets an list containing only even values<br></br>
+    /// [PT-BR]: Obtém uma lista contendo apenas valores pares
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of item to be analyzed<br></br>
+    /// [PT-BR]: Tipo do item a ser analisado
+    /// </typeparam>
+    /// <param name="input">
+    /// [EN]: Input of data to be analyzed<br></br>
+    /// [PT-BR]: Entrada dos dados a serem analisados
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new list containing only the even values<br></br>
+    /// [PT-BR]: Retorna uma nova lista contendo somente os valores pares
+    /// </returns>
+    public static List<T> GetEvenNumbers<T>(List<T> input) => EvenNumbers(input).ToList();
+
+    /// <summary>
+    /// [EN]: Gets an enumerable containing only even values<br></br>
+    /// [PT-BR]: Obtém um enumerador contendo apenas valores pares
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of item to be analyzed<br></br>
+    /// [PT-BR]: Tipo do item a ser analisado
+    /// </typeparam>
+    /// <param name="input">
+    /// [EN]: Input of data to be analyzed<br></br>
+    /// [PT-BR]: Entrada dos dados a serem analisados
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new enumerable containing only the even values<br></br>
+    /// [PT-BR]: Retorna um novo enumerador contendo somente os valores pares
+    /// </returns>
+    public static IEnumerable<T> GetEvenNumbers<T>(IEnumerable<T> input) => EvenNumbers(input);
 
     #endregion
 
