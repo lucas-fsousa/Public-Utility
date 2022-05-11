@@ -351,7 +351,7 @@ namespace Testes {
       //XSql xSql = new XSql(@"Data Source=LUCAS\SQLEXPRESS;Initial Catalog=TEMPDT;Integrated Security=True", sqlCommand);
       //xSql.GoExec(out errorMessage);
 
-      sqlCommand.CommandText = "select ID, T, NUMERO, DataAtual, DataAtual2 from _TB;"; // RESULT DATA TABLE SELECT
+      sqlCommand.CommandText = "select top 6 ID, T, NUMERO, DataAtual, DataAtual2 from _TB;"; // RESULT DATA TABLE SELECT
       XSql xSql = new XSql(@"Data Source=LUCAS\SQLEXPRESS;Initial Catalog=TEMPDT;Integrated Security=True", sqlCommand);
       var tb = xSql.ReturnData(out errorMessage);
 
@@ -416,14 +416,9 @@ namespace Testes {
 
       #endregion
 
-      var data = DateTime.Now.ToString("s");
-
-
       var result = tb.DeserializeTable<List<OB>>();
 
-
     }
-
     
   }
 
@@ -432,11 +427,7 @@ namespace Testes {
     public int ID { get; set; }
     public string T { get; set; }
     public decimal NUMERO { get; set; }
-
-    [DataMember(EmitDefaultValue = true)]
     public DateTime DataAtual { get; set; }
-
-    [DataMember(EmitDefaultValue = true)]
     public DateTime DataAtual2 { get; set; }
 
   }

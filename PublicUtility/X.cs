@@ -31,7 +31,7 @@ namespace PublicUtility {
 
     #region PRIVATE METHODS
 
-    private static string ConvertInDateOrEmpty(this object data) => data.GetSafeValue<DateTime>().IsDefault() ? "" : data.GetSafeValue<DateTime>().ToString("s");
+    private static string ConvertToDate(this object data) => data.GetSafeValue<DateTime>().ToString("s");
 
     private static Dictionary<string, char> GetSeparators() {
       Dictionary<string, char> separators = new Dictionary<string, char>();
@@ -346,26 +346,6 @@ namespace PublicUtility {
     }
 
     /// <summary>
-    /// [EN]: Attempts to cast the object to the specified type. Always returns a safe value.<br></br>
-    /// [PT-BR]: Tenta fazer uma conversão do objeto para o tipo especificado. Sempre retorna um valor seguro.
-    /// </summary>
-    /// <typeparam name="T">
-    /// [EN]: Type of file to return<br></br>
-    /// [PT-BR]: Tipo do arquivo a ser retornado
-    /// </typeparam>
-    /// <param name="value">
-    /// [EN]: Value to be converted<br></br>
-    /// [PT-BR]: Valor a ser convertido
-    /// </param>
-    /// <returns>
-    /// [EN]: Returns a safe value of the given object's conversion<br></br>
-    /// [PT-BR]: Retorna um valor seguro da conversão do objeto informado
-    /// </returns>
-    public static T GetSafeValue<T>(this object value) {
-      try { return (T)Convert.ChangeType(value, typeof(T)); } catch(Exception) { return default; }
-    }
-
-    /// <summary>
     /// [EN]: Remove all whitespace from string <br></br>
     /// [PT-BR]: Remove todos os espaços em branco da string
     /// </summary>
@@ -495,7 +475,6 @@ namespace PublicUtility {
     /// [PT-BR]: Não garante a conversão de datas para formato DateTime, apenas para formato de cadeia de caracteres
     /// </remarks>
     public static T DeserializeTable<T>(this DataTable table, List<Type> numTypes = null) {
-      var enumerablesTypes = new List<Type>() { typeof(List<object>), typeof(object[]) };
       var json = new StringBuilder();
 
       if(numTypes == null)
@@ -526,9 +505,10 @@ namespace PublicUtility {
               json.Append($"\"{col.ColumnName}\" : {row[col].ToString().Replace(',', '.')}"); // close json line last item (NUMBER ONLY)
 
             } else if(row[col].ToString().IsAnyDate()) {
-              json.Append($"\"{col.ColumnName}\" : \"{row[col].ConvertInDateOrEmpty()}\""); // close json line last item (DATETIME ONLY)
+              json.Append($"\"{col.ColumnName}\" : \"{row[col].ConvertToDate()}\""); // close json line last item (DATETIME ONLY)
 
             } else {
+              
               json.Append($"\"{col.ColumnName}\" : \"{row[col]}\""); // close json object last item
 
             }
@@ -541,10 +521,11 @@ namespace PublicUtility {
             json.Append($"\"{col.ColumnName}\" : {row[col].ToString().Replace(',', '.')},"); // terminate json line with multiple items (NUMBER ONLY)
 
           } else if(row[col].ToString().IsAnyDate()) {
-            json.Append($"\"{col.ColumnName}\" : \"{row[col].ConvertInDateOrEmpty()}\","); // terminate json line with multiple items (DATETIME ONLY)
+            json.Append($"\"{col.ColumnName}\" : \"{row[col].ConvertToDate()}\","); // terminate json line with multiple items (DATETIME ONLY)
 
           } else {
             json.Append($"\"{col.ColumnName}\" : \"{row[col]}\","); // terminate json line with multiple items
+
           }
 
         }
@@ -1134,6 +1115,50 @@ namespace PublicUtility {
     /// [PT-BR]: Retorna o indice do item no enumerador caso ele exista ou -1 para não existente.
     /// </returns>
     public static int GetIndex<T>(this IEnumerable<T> enumerable, T itemToLoc) => OneIndex(enumerable, itemToLoc);
+
+    #endregion
+
+    #region OVERLOAD GETSAFEVALUE
+
+    /// <summary>
+    /// [EN]: Attempts to cast the object to the specified type. Always returns a safe value.<br></br>
+    /// [PT-BR]: Tenta fazer uma conversão do objeto para o tipo especificado. Sempre retorna um valor seguro.
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of file to return<br></br>
+    /// [PT-BR]: Tipo do arquivo a ser retornado
+    /// </typeparam>
+    /// <param name="value">
+    /// [EN]: Value to be converted<br></br>
+    /// [PT-BR]: Valor a ser convertido
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a safe value of the given object's conversion<br></br>
+    /// [PT-BR]: Retorna um valor seguro da conversão do objeto informado
+    /// </returns>
+    public static T GetSafeValue<T>(this T value) {
+      try { return (T)Convert.ChangeType(value, typeof(T)); } catch(Exception) { return default; }
+    }
+
+    /// <summary>
+    /// [EN]: Attempts to cast the object to the specified type. Always returns a safe value.<br></br>
+    /// [PT-BR]: Tenta fazer uma conversão do objeto para o tipo especificado. Sempre retorna um valor seguro.
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of file to return<br></br>
+    /// [PT-BR]: Tipo do arquivo a ser retornado
+    /// </typeparam>
+    /// <param name="value">
+    /// [EN]: Value to be converted<br></br>
+    /// [PT-BR]: Valor a ser convertido
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a safe value of the given object's conversion<br></br>
+    /// [PT-BR]: Retorna um valor seguro da conversão do objeto informado
+    /// </returns>
+    public static T GetSafeValue<T>(this object value) {
+      try { return (T)Convert.ChangeType(value, typeof(T)); } catch(Exception) { return default; }
+    }
 
     #endregion
 
