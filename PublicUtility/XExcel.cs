@@ -11,7 +11,7 @@ namespace PublicUtility {
   /// [EN]: Represents a cell of an Excel worksheet<br></br>
   /// [PT-BR]: Representa uma célula de uma planilha Excel
   /// </summary>
-  public class Cell {
+  public class XCell {
     /// <summary>
     /// [EN]: Represents the position of the cell in the worksheet<br></br>
     /// [PT-BR]: Representa a posição da célula da na planilha
@@ -28,7 +28,7 @@ namespace PublicUtility {
   /// [EN]: Represents excel table styling<br></br>
   /// [PT-BR]: Representa a estilização da tabela excel
   /// </summary>
-  public class TableStyle {
+  public class XTableStyle {
 
     /// <summary>
     /// [EN]: Represents the color of the columns<br></br>
@@ -47,19 +47,23 @@ namespace PublicUtility {
     /// [PT-BR]: Representa a cor da segunda linha que fará a composição de um formato zebrado
     /// </summary>
     public string SecondLineColor { get; set; }
+
+    public string FontLineColor { get; set; }
+
+    public string FontColumnColor { get; set; }
   }
 
   /// <summary>
   /// [EN]: Represents an Excel table<br></br>
   /// [PT-BR]: Representa uma tabela Excel
   /// </summary>
-  public class Table {
+  public class XTable {
 
     /// <summary>
     /// [EN]: Represents excel table styling<br></br>
     /// [PT-BR]: Representa a estilização da tabela excel
     /// </summary>
-    public TableStyle Style { get; set; }
+    public XTableStyle Style { get; set; }
 
     /// <summary>
     /// [EN]: Number of columns that tables have<br></br>
@@ -71,9 +75,28 @@ namespace PublicUtility {
     /// [EN]: Represents excel cells.<br></br>
     /// [PT-BR]: Representa as células do excel.
     /// </summary>
-    public List<Cell> Cells { get; set; }
+    public List<XCell> Cells { get; set; }
   }
 
+  /// <summary>
+  /// [EN]: Represents a excel worksheet<br></br>
+  /// [PT-BR]: Representa uma planilha do excel
+  /// </summary>
+  public class XWorkSheet {
+
+    /// <summary>
+    /// [EN]: Excel sheet name<br></br>
+    /// [PT-BR]: Nome da planilha do excel
+    /// </summary>
+    public string WorksheetName { get; set; }
+    public string WorkSheetColor { get; set; }
+
+    /// <summary>
+    /// [EN]: Represents tables to be inserted into the worksheet<br></br>
+    /// [PT-BR]: Representa tabelas a serem inseridas na planilha
+    /// </summary>
+    public List<XTable> Tables { get; set; }
+  }
   /// <summary>
   /// [EN]: Represents an Excel Spreadsheet<br></br>
   /// [PT-BR]: Representa uma Planilha do Excel
@@ -81,16 +104,10 @@ namespace PublicUtility {
   public class XExcel {
 
     /// <summary>
-    /// [EN]: Excel sheet name<br></br>
-    /// [PT-BR]: Nome da planilha do excel
+    /// [EN]: Sheets to be added to the .xlsx document<br></br>
+    /// [PT-BR]: Planilhas a serem adicionadas no documento .xlsx
     /// </summary>
-    public string PlanName { get; set; }
-
-    /// <summary>
-    /// [EN]: Represents tables to be inserted into the worksheet<br></br>
-    /// [PT-BR]: Representa tabelas a serem inseridas na planilha
-    /// </summary>
-    public List<Table> Tables { get; set; }
+    public List<XWorkSheet> WorkSheets { get; set; }
 
     /// <summary>
     /// [EN]: Generates the excel spreadsheet with all the tables informed<br></br>
@@ -106,61 +123,70 @@ namespace PublicUtility {
         filepath += ".xlsx";
 
       using(XLWorkbook workb = new()) {
-        var plan = workb.Worksheets.Add(string.IsNullOrEmpty(this.PlanName) ? "PLAN1" : this.PlanName); // Create the Worksheet
-        string cellFirstColumn;
-        string cellLastColumn;
-        int countCells;
+        foreach(XWorkSheet sheet in WorkSheets) {
+          var plan = workb.Worksheets.Add(string.IsNullOrEmpty(sheet.WorksheetName) ? "PLAN1" : sheet.WorksheetName); // Create the Worksheet
+          string cellFirstColumn;
+          string cellLastColumn;
+          int countCells;
 
-        foreach(Table table in this.Tables) {
-          cellFirstColumn = table.Cells.FirstOrDefault().Position;
-          cellLastColumn = table.Cells.LastOrDefault().Position;
-          countCells = 0;
+          foreach(XTable table in sheet.Tables) {
+            cellFirstColumn = table.Cells.FirstOrDefault().Position;
+            cellLastColumn = table.Cells.LastOrDefault().Position;
+            countCells = 0;
 
-          if(table.Style == null) {
-            TableStyle style = new TableStyle();
-            style.ColumnColor = "#252525";
-            style.FirstLineColor = "#959595";
-            style.SecondLineColor = "#C0C0C0";
+            if(table.Style == null) {
+              XTableStyle style = new XTableStyle();
+              style.ColumnColor = "#252525";
+              style.FirstLineColor = "#959595";
+              style.SecondLineColor = "#C0C0C0";
+              style.FontColumnColor = "#EE0000";
+              style.FontLineColor = "#000";
 
-            table.Style = style;
-          }
-
-          // create the columns and format the background color
-          while(countCells < table.NumberOfColumns) {
-            plan.Cell(table.Cells[countCells].Position).SetValue(table.Cells[countCells].Value);
-            plan.Cell(table.Cells[countCells].Position).Style.Fill.BackgroundColor = XLColor.FromHtml(table.Style.ColumnColor);
-            countCells++;
-          }
-
-          // create the lines and format the background color
-          string color = table.Style.FirstLineColor;
-          int breakLine = 0;
-          while(countCells < table.Cells.Count) {
-            if(breakLine == table.NumberOfColumns) {
-              color = color == table.Style.FirstLineColor ? table.Style.SecondLineColor : table.Style.FirstLineColor;
-              breakLine = 0;
+              table.Style = style;
             }
 
-            plan.Cell(table.Cells[countCells].Position).SetValue(table.Cells[countCells].Value);
-            plan.Cell(table.Cells[countCells].Position).Style.Fill.BackgroundColor = XLColor.FromHtml(color);
-            countCells++;
-            breakLine++;
+            // create the columns and format the background color
+            while(countCells < table.NumberOfColumns) {
+              plan.Cell(table.Cells[countCells].Position).SetValue(table.Cells[countCells].Value);
+              plan.Cell(table.Cells[countCells].Position).Style.Fill.BackgroundColor = XLColor.FromHtml(table.Style.ColumnColor);
+              plan.Cell(table.Cells[countCells].Position).Style.Font.FontColor = XLColor.FromHtml(table.Style.FontColumnColor);
+              countCells++;
+            }
+
+            // create the lines and format the background color
+            string color = table.Style.FirstLineColor;
+            int breakLine = 0;
+            while(countCells < table.Cells.Count) {
+              if(breakLine == table.NumberOfColumns) {
+                color = color == table.Style.FirstLineColor ? table.Style.SecondLineColor : table.Style.FirstLineColor;
+                breakLine = 0;
+              }
+
+              plan.Cell(table.Cells[countCells].Position).SetValue(table.Cells[countCells].Value);
+              plan.Cell(table.Cells[countCells].Position).Style.Fill.BackgroundColor = XLColor.FromHtml(color);
+              plan.Cell(table.Cells[countCells].Position).Style.Font.FontColor = XLColor.FromHtml(table.Style.FontLineColor);
+              countCells++;
+              breakLine++;
+            }
+
+            // convert cells to table format
+            var tableRange = plan.Range($"{cellFirstColumn}:{cellLastColumn}");
+            tableRange.CreateTable();
+
           }
 
-          // convert cells to table format
-          var tableRange = plan.Range($"{cellFirstColumn}:{cellLastColumn}");
-          tableRange.CreateTable();
+          // worksheet configuration
+          if(string.IsNullOrEmpty(sheet.WorkSheetColor))
+            sheet.WorkSheetColor = "#fff";
 
+          plan.TabColor = XLColor.FromHtml(sheet.WorkSheetColor);
+          plan.Rows().AdjustToContents();
+          plan.Rows().Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+          plan.Columns().AdjustToContents();
+          plan.Columns().Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+          plan.Style.Alignment.JustifyLastLine = true;
         }
-
-        // worksheet configuration
-        plan.TabColor = XLColor.DarkViolet;
-        plan.Rows().AdjustToContents();
-        plan.Rows().Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-        plan.Columns().AdjustToContents();
-        plan.Columns().Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-        plan.Style.Alignment.JustifyLastLine = true;
-
+        
         // Save file
         workb.SaveAs(filepath);
       }
@@ -232,7 +258,7 @@ namespace PublicUtility {
       if(string.IsNullOrEmpty(currentLine))
         return "A1";
 
-      lineNextNumber = (X.GetOnlyNumbers(currentLine) + 1).ToString();
+      lineNextNumber = (Convert.ToInt32(X.GetOnlyNumbers(currentLine)) + 1).ToString();
       aux = X.GetOnlyLetters(currentLine);
 
       return aux + lineNextNumber;

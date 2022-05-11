@@ -2,10 +2,13 @@
 using PublicUtility.Xnm;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using zip = System.IO.Compression;
 
@@ -113,8 +116,8 @@ namespace PublicUtility {
     private static T GetOneValue<T>(IEnumerable<T> enumrable) {
       return enumrable.ToList()[new Random().Next(0, enumrable.Count())];
     }
-    
-    
+
+
 
     private static Dictionary<string, object> ValidInputs() {
       Dictionary<string, object> validInputs = new Dictionary<string, object>();
@@ -196,7 +199,7 @@ namespace PublicUtility {
 
         response = (T)Convert.ChangeType(reader, typeof(T));
       } catch(Exception) {
-        throw new RequiredParamsException(Situation.InvalidType, nameof(T));
+        throw new RequiredParamsException(Situation.InvalidFormat, nameof(T));
       }
 
       return response;
@@ -305,6 +308,26 @@ namespace PublicUtility {
     #region EXTENSION
 
     /// <summary>
+    /// [EN]: Attempts to cast the object to the specified type. Always returns a safe value.<br></br>
+    /// [PT-BR]: Tenta fazer uma conversão do objeto para o tipo especificado. Sempre retorna um valor seguro.
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of file to return<br></br>
+    /// [PT-BR]: Tipo do arquivo a ser retornado
+    /// </typeparam>
+    /// <param name="value">
+    /// [EN]: Value to be converted<br></br>
+    /// [PT-BR]: Valor a ser convertido
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a safe value of the given object's conversion<br></br>
+    /// [PT-BR]: Retorna um valor seguro da conversão do objeto informado
+    /// </returns>
+    public static T GetSafeValue<T>(this object value) {
+      try { return (T)Convert.ChangeType(value, typeof(T)); } catch(Exception) { return default; }
+    }
+
+    /// <summary>
     /// [EN]: Remove all whitespace from string <br></br>
     /// [PT-BR]: Remove todos os espaços em branco da string
     /// </summary>
@@ -320,11 +343,9 @@ namespace PublicUtility {
       string newStr = string.Empty;
 
       if(!string.IsNullOrEmpty(str)) {
-        for(int i = 0; i < str.Length; i++) {
-          if(str[i] == ' ') {
-            continue;
-          }
-          newStr += str[i]; // Concatenates characters to form a string with no white spaces
+        foreach(char c in str) {
+          if(!char.IsWhiteSpace(c))
+            newStr += c;
         }
       }
 
@@ -386,6 +407,117 @@ namespace PublicUtility {
 
       else
         return false;
+    }
+
+    /// <summary>
+    /// [EN]: Checks if the value is the default of the specified type<br></br>
+    /// [PT-BR]: Verifica se o valor é o padrão do tipo especificado
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of object to be analyzed<br></br>
+    /// [PT-BR]: Tipo do objeto a ser analisado
+    /// </typeparam>
+    /// <param name="value">
+    /// [EN]: Value to be analyzed<br></br>
+    /// [PT-BR]: Valor a ser analisado
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns boolean representing the answer whether the value is the type default or not the type default<br></br>
+    /// [PT-BR]: Retorna booleano representando a resposta se o valor é o padrão do tipo ou não é o padrão do tipo
+    /// </returns>
+    public static bool IsDefault<T>(this T value) {
+      T def = default;
+      if(value.Equals(def))
+        return true;
+      return false;
+    }
+
+    /// <summary>
+    /// [EN]: Converts a data table into an object of the estimated type.<br></br>
+    /// [PT-BR]: Converte uma tabela de dados em um objeto do tipo estimado.
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of object to be returned<br></br>
+    /// [PT-BR]: Tipo do objeto que será retornado
+    /// </typeparam>
+    /// <param name="table">
+    /// [EN]: Table containing all data to be converted<br></br>
+    /// [PT-BR]: Tabela que contém todos os dados a serem convertidos
+    /// </param>
+    /// <param name="numTypes">
+    /// [EN]: This item will be used to check if the returned type is available for conversion (in case the table has columns with fixed or floating point numbers)<br></br>
+    /// [PT-BR]: Este item será usado para checar se o tipo retornado está disponivel para conversão (para casos que a tabela possuir colunas com numeros fixos ou com pontos flutuantes)
+    /// </param>
+    /// <returns> 
+    /// [EN]: Returns the table data in the informed object format<br></br>
+    /// [PT-BR]: Retorna os dados da tabela no formado do objeto informado 
+    /// </returns>
+    public static T DeserializeTable<T>(this DataTable table, List<Type> numTypes = null) {
+      var enumerablesTypes = new List<Type>() { typeof(List<object>), typeof(object[]) };
+      var json = new StringBuilder();
+      
+
+      if(numTypes == null)
+        numTypes = new List<Type> { typeof(int), typeof(long), typeof(float), typeof(double), typeof(decimal), typeof(int), typeof(long), typeof(byte) };
+
+      if(table == null)
+        return default;
+
+      if(table.Rows.Count <= 0)
+        return default;
+
+      if(table.Rows.Count > 1)
+        json.Append('['); // START JSON LIST
+
+      int countRow = 0;
+      foreach(DataRow row in table.Rows) {
+        countRow++;
+
+        json.Append('{'); // start json object
+
+        int countCol = 0;
+        foreach(DataColumn col in table.Columns) {
+          countCol++;
+
+          // TO END THE JSON OBJECT
+          if(countCol == table.Columns.Count) {
+            // ONLY NUMBERS
+            if(numTypes.Contains(row[col].GetType()))
+              json.Append($"\"{col.ColumnName}\" : {row[col].ToString().Replace(',', '.')}"); // close json line last item (NUMBER ONLY)
+            else
+              json.Append($"\"{col.ColumnName}\" : \"{row[col]}\""); // close json object last item
+
+            continue; // prevents json from getting unformatted and skips to next item
+          }
+
+          // FOR ITEMS THAT ARE ON THE LIST WAITING TO BE INSERTED
+          if(numTypes.Contains(row[col].GetType()))
+            json.Append($"\"{col.ColumnName}\" : {row[col].ToString().Replace(',', '.')},"); // terminate json line with multiple items (NUMBER ONLY)
+          else
+            json.Append($"\"{col.ColumnName}\" : \"{row[col]}\","); // terminate json line with multiple items
+        }
+
+        if(countRow == table.Rows.Count)
+          json.Append('}'); // close json object last item
+        else
+          json.Append("},"); // terminate json object with multiple items
+
+      }
+
+      if(table.Rows.Count > 1)
+        json.Append(']'); // END JSON LIST
+
+      string jsonConvert = json.ToString(); // redundant - for test only
+      try {
+        return JsonSerializer.Deserialize<T>(jsonConvert);
+
+      } catch(Exception) {
+        if(table.Rows.Count > 1)
+          throw new RequiredParamsException(Situation.TheTypeIsNotAList, nameof(T));
+        else
+          throw new RequiredParamsException(Situation.TheTypeIsAList, nameof(T));
+      }
+      
     }
 
     #region OVERLOAD PRINT

@@ -29,6 +29,11 @@ using System.Net.NetworkInformation;
 using System.Net;
 using ClosedXML.Excel;
 using Testes;
+using System.Data;
+using System.Collections;
+using System.Runtime.Serialization;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Testes {
   internal class Program {
@@ -239,7 +244,7 @@ namespace Testes {
       #region TESTE CLASS XEXCEL
 
       //// SIMULA BANCO DE DADOS
-      //List<Obj> lstObj =  new List<Obj>();
+      //List<Obj> lstObj = new List<Obj>();
       //for(int i = 1; i <= 10; i++) {
       //  Obj obj = new();
       //  obj.str = $"STR {i}";
@@ -250,10 +255,10 @@ namespace Testes {
 
       //// CABECALHO PRIMEIRA TABELA
       //string nextCell = null;
-      //List<Cell> cells = new List<Cell>();
+      //List<XCell> cells = new List<XCell>();
       //for(int i = 1; i <= 3; i++) {
       //  nextCell = XExcel.GetNextColumn(nextCell);
-      //  Cell cell = new();
+      //  XCell cell = new();
       //  cell.Value = $"COLUNA {i}";
       //  cell.Position = nextCell;
       //  cells.Add(cell);
@@ -263,11 +268,11 @@ namespace Testes {
       //nextCell = XExcel.GetNextLine("A1");
       //string aux = nextCell;
       //foreach(Obj obj in lstObj) {
-      //  Cell str = new() { Position = nextCell, Value = $"VALUE STR {obj.str}" };
+      //  XCell str = new() { Position = nextCell, Value = $"VALUE STR {obj.str}" };
       //  nextCell = XExcel.GetNextColumn(nextCell);
-      //  Cell chars = new() { Position = nextCell, Value = $"VALUE CHARS {obj.chars}" };
+      //  XCell chars = new() { Position = nextCell, Value = $"VALUE CHARS {obj.chars}" };
       //  nextCell = XExcel.GetNextColumn(nextCell);
-      //  Cell ints = new() { Position = nextCell, Value = $"VALUE INTS {obj.ints}" };
+      //  XCell ints = new() { Position = nextCell, Value = $"VALUE INTS {obj.ints}" };
 
       //  cells.Add(str);
       //  cells.Add(chars);
@@ -281,10 +286,10 @@ namespace Testes {
 
       //// CABECALHO SEGUNDA TABELA
       //nextCell = "D1";
-      //List<Cell> cells2 = new();
+      //List<XCell> cells2 = new();
       //for(int i = 1; i <= 3; i++) {
       //  nextCell = XExcel.GetNextColumn(nextCell);
-      //  Cell cell = new();
+      //  XCell cell = new();
       //  cell.Value = $"COLUNA SEGUNDA {i}";
       //  cell.Position = nextCell;
       //  cells2.Add(cell);
@@ -294,11 +299,11 @@ namespace Testes {
       //nextCell = XExcel.GetNextLine("E1");
       //aux = nextCell;
       //foreach(Obj obj in lstObj) {
-      //  Cell str = new() { Position = nextCell, Value = $"VALUE STR {obj.str}" };
+      //  XCell str = new() { Position = nextCell, Value = $"VALUE STR {obj.str}" };
       //  nextCell = XExcel.GetNextColumn(nextCell);
-      //  Cell chars = new() { Position = nextCell, Value = $"VALUE CHARS {obj.chars}" };
+      //  XCell chars = new() { Position = nextCell, Value = $"VALUE CHARS {obj.chars}" };
       //  nextCell = XExcel.GetNextColumn(nextCell);
-      //  Cell ints = new() { Position = nextCell, Value = $"VALUE INTS {obj.ints}" };
+      //  XCell ints = new() { Position = nextCell, Value = $"VALUE INTS {obj.ints}" };
 
       //  cells2.Add(str);
       //  cells2.Add(chars);
@@ -310,24 +315,28 @@ namespace Testes {
 
       //// ====================================================
 
-      //TableStyle style = new();
+      //XTableStyle style = new();
       //style.ColumnColor = "#063970";
       //style.FirstLineColor = "#A6cbde";
       //style.SecondLineColor = "#abdbe3";
 
-      //Table table = new();
-      //table.Style = style;
+      //XTable table = new();
+      ////table.Style = style;
       //table.Cells = cells;
       //table.NumberOfColumns = 3;
 
-      //Table table2 = new();
+      //XTable table2 = new();
       ////table2.Style = style;
       //table2.Cells = cells2;
       //table2.NumberOfColumns = 3;
 
+      //XWorkSheet sheet = new XWorkSheet();
+      //sheet.WorkSheetColor = "#30091e";
+      //sheet.WorksheetName = "PLANTESTEE";
+      //sheet.Tables = new List<XTable> { table, table2 };
+
       //XExcel excel = new();
-      //excel.PlanName = "PLANTESTEE";
-      //excel.Tables = new List<Table> { table, table2 };
+      //excel.WorkSheets = new List<XWorkSheet> { sheet };
 
       //excel.Generate(@"C:\MyDocs\planTest");
 
@@ -335,20 +344,22 @@ namespace Testes {
 
       #region TESTE CLASS XSQL
 
-      //SqlCommand sqlCommand= new SqlCommand();
-      //string errorMessage;
+      SqlCommand sqlCommand = new SqlCommand();
+      string errorMessage;
       //sqlCommand.CommandText = "insert into _TB values (@anyv)";
       //sqlCommand.Parameters.AddWithValue("@anyv", "HTTPS");
       //XSql xSql = new XSql(@"Data Source=LUCAS\SQLEXPRESS;Initial Catalog=TEMPDT;Integrated Security=True", sqlCommand);
       //xSql.GoExec(out errorMessage);
 
-      //sqlCommand.CommandText = "select * from _TB"; // RESULT DATA TABLE SELECT
-      //XSql xSql = new XSql(@"Data Source=LUCAS\SQLEXPRESS;Initial Catalog=TEMPDT;Integrated Security=True", sqlCommand);
-      //var tb = xSql.ReturnData(out errorMessage);
+      sqlCommand.CommandText = "select * from _TB"; // RESULT DATA TABLE SELECT
+      XSql xSql = new XSql(@"Data Source=LUCAS\SQLEXPRESS;Initial Catalog=TEMPDT;Integrated Security=True", sqlCommand);
+      var tb = xSql.ReturnData(out errorMessage);
 
       #endregion
 
       #region TESTE CLASS X
+
+      //var value = X.GetSafeValue<DateTime>("20A10-2012");
 
       //IEnumerable<int> enumerable = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
       //List<int> lstod = X.GetOddNumbers(enumerable.ToList());
@@ -405,26 +416,33 @@ namespace Testes {
 
       #endregion
 
-
-
-
-
-
+      var rec = tb.DeserializeTable<List<OB>>();
 
     }
 
-    public static void ShowImage() {
-      string path = string.Format(@"C:\MyDocs\printscreen.png");
-      var im1 = new Image<Bgr, byte>(path);
-      CvInvoke.Imshow("Image", im1);
-      CvInvoke.WaitKey(0);
-    }
+
   }
 
-  public class Obj {
-    public string str { get; set; }
-    public char chars { get; set; }
-    public int ints { get; set; }
+  public class OB {
+    public int ID { get; set; }
+    public string T { get; set; }
+    public decimal NUMERO { get; set; }
+  }
+
+  public class Member {
+    public string name { get; set; }
+    public int age { get; set; }
+    public string secretIdentity { get; set; }
+    public List<string> powers { get; set; }
+  }
+
+  public class Root {
+    public string squadName { get; set; }
+    public string homeTown { get; set; }
+    public int formed { get; set; }
+    public string secretBase { get; set; }
+    public bool active { get; set; }
+    public List<Member> members { get; set; }
   }
 
 }

@@ -181,6 +181,19 @@ namespace PublicUtility {
       return null;
     }
 
+    /// <summary>
+    /// [EN]: Invokes the action of showing an image on screen<br></br>
+    /// [PT-BR]: Invoca a ação de mostrar uma imagem em tela
+    /// </summary>
+    /// <param name="imagePath">
+    /// [EN]: Image location<br></br>
+    /// [PT-BR]: Localização da imagem
+    /// </param>
+    public static void ShowImage(string imagePath) {
+      CvInvoke.Imshow("Image", new Image<Bgr, byte>(imagePath));
+      CvInvoke.WaitKey(0);
+    }
+
     #region OVERLOAD GETXY
 
     /// <summary>
