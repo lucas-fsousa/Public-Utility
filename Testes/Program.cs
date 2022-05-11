@@ -344,16 +344,16 @@ namespace Testes {
 
       #region TESTE CLASS XSQL
 
-      SqlCommand sqlCommand = new SqlCommand();
-      string errorMessage;
+      //SqlCommand sqlCommand = new SqlCommand();
+      //string errorMessage;
       //sqlCommand.CommandText = "insert into _TB values (@anyv)";
       //sqlCommand.Parameters.AddWithValue("@anyv", "HTTPS");
       //XSql xSql = new XSql(@"Data Source=LUCAS\SQLEXPRESS;Initial Catalog=TEMPDT;Integrated Security=True", sqlCommand);
       //xSql.GoExec(out errorMessage);
 
-      sqlCommand.CommandText = "select * from _TB"; // RESULT DATA TABLE SELECT
-      XSql xSql = new XSql(@"Data Source=LUCAS\SQLEXPRESS;Initial Catalog=TEMPDT;Integrated Security=True", sqlCommand);
-      var tb = xSql.ReturnData(out errorMessage);
+      //sqlCommand.CommandText = "select * from _TB"; // RESULT DATA TABLE SELECT
+      //XSql xSql = new XSql(@"Data Source=LUCAS\SQLEXPRESS;Initial Catalog=TEMPDT;Integrated Security=True", sqlCommand);
+      //var tb = xSql.ReturnData(out errorMessage);
 
       #endregion
 
@@ -416,7 +416,6 @@ namespace Testes {
 
       #endregion
 
-      var rec = tb.DeserializeTable<List<OB>>();
 
     }
 

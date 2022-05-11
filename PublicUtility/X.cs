@@ -452,6 +452,7 @@ namespace PublicUtility {
     /// [EN]: Returns the table data in the informed object format<br></br>
     /// [PT-BR]: Retorna os dados da tabela no formado do objeto informado 
     /// </returns>
+    /// <exception cref="RequiredParamsException"></exception>
     public static T DeserializeTable<T>(this DataTable table, List<Type> numTypes = null) {
       var enumerablesTypes = new List<Type>() { typeof(List<object>), typeof(object[]) };
       var json = new StringBuilder();
