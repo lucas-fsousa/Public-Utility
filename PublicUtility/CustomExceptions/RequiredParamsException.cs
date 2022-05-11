@@ -3,6 +3,7 @@ using PublicUtility.Xnm;
 using System;
 
 namespace PublicUtility.CustomExceptions {
+
   [Serializable]
   public class RequiredParamsException: BaseException {
     private static string ErrorMessage => "Required parameters not filled in correctly";

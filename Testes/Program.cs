@@ -344,16 +344,16 @@ namespace Testes {
 
       #region TESTE CLASS XSQL
 
-      //SqlCommand sqlCommand = new SqlCommand();
-      //string errorMessage;
+      SqlCommand sqlCommand = new SqlCommand();
+      string errorMessage;
       //sqlCommand.CommandText = "insert into _TB values (@anyv)";
       //sqlCommand.Parameters.AddWithValue("@anyv", "HTTPS");
       //XSql xSql = new XSql(@"Data Source=LUCAS\SQLEXPRESS;Initial Catalog=TEMPDT;Integrated Security=True", sqlCommand);
       //xSql.GoExec(out errorMessage);
 
-      //sqlCommand.CommandText = "select * from _TB"; // RESULT DATA TABLE SELECT
-      //XSql xSql = new XSql(@"Data Source=LUCAS\SQLEXPRESS;Initial Catalog=TEMPDT;Integrated Security=True", sqlCommand);
-      //var tb = xSql.ReturnData(out errorMessage);
+      sqlCommand.CommandText = "select ID, T, NUMERO, cast(DataAtual as Date) as DataAtual, Cast(DataAtual2 as Date) as DataAtual2 from _TB;"; // RESULT DATA TABLE SELECT
+      XSql xSql = new XSql(@"Data Source=LUCAS\SQLEXPRESS;Initial Catalog=TEMPDT;Integrated Security=True", sqlCommand);
+      var tb = xSql.ReturnData(out errorMessage);
 
       #endregion
 
@@ -416,16 +416,39 @@ namespace Testes {
 
       #endregion
 
+      var date = DateTime.Now.ToString("dd-mm-yyyy");
 
+      var result = tb.DeserializeTable<List<OB>>();
+
+
+    }
+    public class XDateTimeFormmat {
+
+      public string Formmat { get; }
+
+      public XDateTimeFormmat(string dateTimeFormmat) {
+        if(string.IsNullOrEmpty(dateTimeFormmat))
+          throw new RequiredParamsException(Situation.IsNullOrEmpty, nameof(dateTimeFormmat));
+        
+        this.Formmat = dateTimeFormmat;
+      }
     }
 
 
   }
-
+  
+  [Serializable]
   public class OB {
     public int ID { get; set; }
     public string T { get; set; }
     public decimal NUMERO { get; set; }
+
+    [DataMember(EmitDefaultValue = true)]
+    public DateTime DataAtual { get; set; }
+
+    [DataMember(EmitDefaultValue = true)]
+    public DateTime DataAtual2 { get; set; }
+
   }
 
   public class Member {

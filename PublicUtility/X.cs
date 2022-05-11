@@ -4,11 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using zip = System.IO.Compression;
 
@@ -29,6 +32,17 @@ namespace PublicUtility {
     #region OTHERS
 
     #region PRIVATE METHODS
+
+    private static Dictionary<string, char> GetSeparators() {
+      Dictionary<string, char> separators = new Dictionary<string, char>();
+      separators.Add("Dot", '.');
+      separators.Add("Hyphen", '-');
+      separators.Add("Bar", '/');
+      separators.Add("Semicolon", ';');
+      separators.Add("Colon", ':');
+
+      return separators;
+    }
 
     private static IEnumerable<T> OddNumbers<T>(IEnumerable<T> enumrable) {
       List<T> oddNumbers = new List<T>();
@@ -117,9 +131,7 @@ namespace PublicUtility {
       return enumrable.ToList()[new Random().Next(0, enumrable.Count())];
     }
 
-
-
-    private static Dictionary<string, object> ValidInputs() {
+    private static Dictionary<string, object> PrimitiveTypes() {
       Dictionary<string, object> validInputs = new Dictionary<string, object>();
       validInputs.Add("datetime", typeof(DateTime));
       validInputs.Add("decimal", typeof(decimal));
@@ -308,6 +320,32 @@ namespace PublicUtility {
     #region EXTENSION
 
     /// <summary>
+    /// [EN]: Checks if the item has a valid Datetime format<br></br>
+    /// [PT-BR]: Verifica se o item possui formato de Data tempo válido
+    /// </summary>
+    /// <param name="input">
+    /// [EN]: Item to be analyzed<br></br>
+    /// [PT-BR]: Item a ser analisado
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a boolean value indicating whether it is a valid or invalid datetime format.<br></br>
+    /// [PT-BR]: Retorna valor booleano indicando se é um formato data tempo válido ou inválido.
+    /// </returns>
+    public static bool IsAnyDate(this string input) {
+      try {
+        if(string.IsNullOrEmpty(input))
+          return false;
+
+        DateTime newDate = Convert.ToDateTime(input);
+        if(newDate.IsDefault())
+          return false;
+
+      } catch(Exception) { return false; }
+
+      return true;
+    }
+
+    /// <summary>
     /// [EN]: Attempts to cast the object to the specified type. Always returns a safe value.<br></br>
     /// [PT-BR]: Tenta fazer uma conversão do objeto para o tipo especificado. Sempre retorna um valor seguro.
     /// </summary>
@@ -452,11 +490,13 @@ namespace PublicUtility {
     /// [EN]: Returns the table data in the informed object format<br></br>
     /// [PT-BR]: Retorna os dados da tabela no formado do objeto informado 
     /// </returns>
-    /// <exception cref="RequiredParamsException"></exception>
-    public static T DeserializeTable<T>(this DataTable table, List<Type> numTypes = null) {
+    /// <remarks>
+    /// [EN]: Does not guarantee conversion of dates to DateTime format, only to string format<br></br>
+    /// [PT-BR]: Não garante a conversão de datas para formato DateTime, apenas para formato de cadeia de caracteres
+    /// </remarks>
+    public static T DeserializeTable<T>(this DataTable table, JsonSerializerOptions options = null, List<Type> numTypes = null) {
       var enumerablesTypes = new List<Type>() { typeof(List<object>), typeof(object[]) };
       var json = new StringBuilder();
-      
 
       if(numTypes == null)
         numTypes = new List<Type> { typeof(int), typeof(long), typeof(float), typeof(double), typeof(decimal), typeof(int), typeof(long), typeof(byte) };
@@ -467,8 +507,14 @@ namespace PublicUtility {
       if(table.Rows.Count <= 0)
         return default;
 
-      if(table.Rows.Count > 1)
-        json.Append('['); // START JSON LIST
+      if(options == null) {
+        options = new JsonSerializerOptions();
+        options.PropertyNameCaseInsensitive = true;
+        options.NumberHandling = JsonNumberHandling.AllowReadingFromString;
+        options.DefaultIgnoreCondition = JsonIgnoreCondition.Never;
+      }
+
+      json.Append('['); // START JSON LIST
 
       int countRow = 0;
       foreach(DataRow row in table.Rows) {
@@ -482,9 +528,10 @@ namespace PublicUtility {
 
           // TO END THE JSON OBJECT
           if(countCol == table.Columns.Count) {
-            // ONLY NUMBERS
+            // ONLY NUMBERS OR DATES
             if(numTypes.Contains(row[col].GetType()))
               json.Append($"\"{col.ColumnName}\" : {row[col].ToString().Replace(',', '.')}"); // close json line last item (NUMBER ONLY)
+
             else
               json.Append($"\"{col.ColumnName}\" : \"{row[col]}\""); // close json object last item
 
@@ -494,31 +541,23 @@ namespace PublicUtility {
           // FOR ITEMS THAT ARE ON THE LIST WAITING TO BE INSERTED
           if(numTypes.Contains(row[col].GetType()))
             json.Append($"\"{col.ColumnName}\" : {row[col].ToString().Replace(',', '.')},"); // terminate json line with multiple items (NUMBER ONLY)
+
           else
             json.Append($"\"{col.ColumnName}\" : \"{row[col]}\","); // terminate json line with multiple items
         }
 
         if(countRow == table.Rows.Count)
           json.Append('}'); // close json object last item
+        
         else
           json.Append("},"); // terminate json object with multiple items
 
       }
 
-      if(table.Rows.Count > 1)
-        json.Append(']'); // END JSON LIST
+      json.Append(']'); // END JSON LIST
 
       string jsonConvert = json.ToString(); // redundant - for test only
-      try {
-        return JsonSerializer.Deserialize<T>(jsonConvert);
-
-      } catch(Exception) {
-        if(table.Rows.Count > 1)
-          throw new RequiredParamsException(Situation.TheTypeIsNotAList, nameof(T));
-        else
-          throw new RequiredParamsException(Situation.TheTypeIsAList, nameof(T));
-      }
-      
+      return JsonSerializer.Deserialize<T>(jsonConvert, options);
     }
 
     #region OVERLOAD PRINT
