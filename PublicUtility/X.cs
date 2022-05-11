@@ -336,13 +336,8 @@ namespace PublicUtility {
         if(string.IsNullOrEmpty(input))
           return false;
 
-        DateTime newDate = Convert.ToDateTime(input);
-        if(newDate.IsDefault())
-          return false;
-
+        return GetSafeValue<DateTime>(input).IsDefault() ? false : true;
       } catch(Exception) { return false; }
-
-      return true;
     }
 
     /// <summary>
@@ -508,7 +503,7 @@ namespace PublicUtility {
               json.Append($"\"{col.ColumnName}\" : \"{row[col].ConvertToDate()}\""); // close json line last item (DATETIME ONLY)
 
             } else {
-              
+
               json.Append($"\"{col.ColumnName}\" : \"{row[col]}\""); // close json object last item
 
             }

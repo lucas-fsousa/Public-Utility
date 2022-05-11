@@ -344,21 +344,22 @@ namespace Testes {
 
       #region TESTE CLASS XSQL
 
-      SqlCommand sqlCommand = new SqlCommand();
-      string errorMessage;
+      //SqlCommand sqlCommand = new SqlCommand();
+      //string errorMessage;
       //sqlCommand.CommandText = "insert into _TB values (@anyv)";
       //sqlCommand.Parameters.AddWithValue("@anyv", "HTTPS");
       //XSql xSql = new XSql(@"Data Source=LUCAS\SQLEXPRESS;Initial Catalog=TEMPDT;Integrated Security=True", sqlCommand);
       //xSql.GoExec(out errorMessage);
 
-      sqlCommand.CommandText = "select top 6 ID, T, NUMERO, DataAtual, DataAtual2 from _TB;"; // RESULT DATA TABLE SELECT
-      XSql xSql = new XSql(@"Data Source=LUCAS\SQLEXPRESS;Initial Catalog=TEMPDT;Integrated Security=True", sqlCommand);
-      var tb = xSql.ReturnData(out errorMessage);
+      //sqlCommand.CommandText = "select top 6 ID, T, NUMERO, DataAtual, DataAtual2 from _TB;"; // RESULT DATA TABLE SELECT
+      //XSql xSql = new XSql(@"Data Source=LUCAS\SQLEXPRESS;Initial Catalog=TEMPDT;Integrated Security=True", sqlCommand);
+      //var tb = xSql.ReturnData(out errorMessage);
 
       #endregion
 
       #region TESTE CLASS X
-
+      //var result = tb.DeserializeTable<List<OB>>();
+      
       //var value = X.GetSafeValue<DateTime>("20A10-2012");
 
       //IEnumerable<int> enumerable = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
@@ -416,7 +417,6 @@ namespace Testes {
 
       #endregion
 
-      var result = tb.DeserializeTable<List<OB>>();
 
     }
     
