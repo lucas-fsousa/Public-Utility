@@ -351,7 +351,7 @@ namespace Testes {
       //XSql xSql = new XSql(@"Data Source=LUCAS\SQLEXPRESS;Initial Catalog=TEMPDT;Integrated Security=True", sqlCommand);
       //xSql.GoExec(out errorMessage);
 
-      sqlCommand.CommandText = "select ID, T, NUMERO, cast(DataAtual as Date) as DataAtual, Cast(DataAtual2 as Date) as DataAtual2 from _TB;"; // RESULT DATA TABLE SELECT
+      sqlCommand.CommandText = "select ID, T, NUMERO, DataAtual, DataAtual2 from _TB;"; // RESULT DATA TABLE SELECT
       XSql xSql = new XSql(@"Data Source=LUCAS\SQLEXPRESS;Initial Catalog=TEMPDT;Integrated Security=True", sqlCommand);
       var tb = xSql.ReturnData(out errorMessage);
 
@@ -416,27 +416,17 @@ namespace Testes {
 
       #endregion
 
-      var date = DateTime.Now.ToString("dd-mm-yyyy");
+      var data = DateTime.Now.ToString("s");
+
 
       var result = tb.DeserializeTable<List<OB>>();
 
 
     }
-    public class XDateTimeFormmat {
 
-      public string Formmat { get; }
-
-      public XDateTimeFormmat(string dateTimeFormmat) {
-        if(string.IsNullOrEmpty(dateTimeFormmat))
-          throw new RequiredParamsException(Situation.IsNullOrEmpty, nameof(dateTimeFormmat));
-        
-        this.Formmat = dateTimeFormmat;
-      }
-    }
-
-
+    
   }
-  
+
   [Serializable]
   public class OB {
     public int ID { get; set; }

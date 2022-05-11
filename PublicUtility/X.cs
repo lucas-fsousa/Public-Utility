@@ -10,8 +10,6 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using zip = System.IO.Compression;
 
@@ -32,6 +30,8 @@ namespace PublicUtility {
     #region OTHERS
 
     #region PRIVATE METHODS
+
+    private static string ConvertInDateOrEmpty(this object data) => data.GetSafeValue<DateTime>().IsDefault() ? "" : data.GetSafeValue<DateTime>().ToString("s");
 
     private static Dictionary<string, char> GetSeparators() {
       Dictionary<string, char> separators = new Dictionary<string, char>();
@@ -494,7 +494,7 @@ namespace PublicUtility {
     /// [EN]: Does not guarantee conversion of dates to DateTime format, only to string format<br></br>
     /// [PT-BR]: Não garante a conversão de datas para formato DateTime, apenas para formato de cadeia de caracteres
     /// </remarks>
-    public static T DeserializeTable<T>(this DataTable table, JsonSerializerOptions options = null, List<Type> numTypes = null) {
+    public static T DeserializeTable<T>(this DataTable table, List<Type> numTypes = null) {
       var enumerablesTypes = new List<Type>() { typeof(List<object>), typeof(object[]) };
       var json = new StringBuilder();
 
@@ -506,13 +506,6 @@ namespace PublicUtility {
 
       if(table.Rows.Count <= 0)
         return default;
-
-      if(options == null) {
-        options = new JsonSerializerOptions();
-        options.PropertyNameCaseInsensitive = true;
-        options.NumberHandling = JsonNumberHandling.AllowReadingFromString;
-        options.DefaultIgnoreCondition = JsonIgnoreCondition.Never;
-      }
 
       json.Append('['); // START JSON LIST
 
@@ -529,26 +522,36 @@ namespace PublicUtility {
           // TO END THE JSON OBJECT
           if(countCol == table.Columns.Count) {
             // ONLY NUMBERS OR DATES
-            if(numTypes.Contains(row[col].GetType()))
+            if(numTypes.Contains(row[col].GetType())) {
               json.Append($"\"{col.ColumnName}\" : {row[col].ToString().Replace(',', '.')}"); // close json line last item (NUMBER ONLY)
 
-            else
+            } else if(row[col].ToString().IsAnyDate()) {
+              json.Append($"\"{col.ColumnName}\" : \"{row[col].ConvertInDateOrEmpty()}\""); // close json line last item (DATETIME ONLY)
+
+            } else {
               json.Append($"\"{col.ColumnName}\" : \"{row[col]}\""); // close json object last item
+
+            }
 
             continue; // prevents json from getting unformatted and skips to next item
           }
 
           // FOR ITEMS THAT ARE ON THE LIST WAITING TO BE INSERTED
-          if(numTypes.Contains(row[col].GetType()))
+          if(numTypes.Contains(row[col].GetType())) {
             json.Append($"\"{col.ColumnName}\" : {row[col].ToString().Replace(',', '.')},"); // terminate json line with multiple items (NUMBER ONLY)
 
-          else
+          } else if(row[col].ToString().IsAnyDate()) {
+            json.Append($"\"{col.ColumnName}\" : \"{row[col].ConvertInDateOrEmpty()}\","); // terminate json line with multiple items (DATETIME ONLY)
+
+          } else {
             json.Append($"\"{col.ColumnName}\" : \"{row[col]}\","); // terminate json line with multiple items
+          }
+
         }
 
         if(countRow == table.Rows.Count)
           json.Append('}'); // close json object last item
-        
+
         else
           json.Append("},"); // terminate json object with multiple items
 
@@ -557,7 +560,7 @@ namespace PublicUtility {
       json.Append(']'); // END JSON LIST
 
       string jsonConvert = json.ToString(); // redundant - for test only
-      return JsonSerializer.Deserialize<T>(jsonConvert, options);
+      return JsonSerializer.Deserialize<T>(jsonConvert);
     }
 
     #region OVERLOAD PRINT
