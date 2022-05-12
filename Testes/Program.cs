@@ -358,9 +358,11 @@ namespace Testes {
       #endregion
 
       #region TESTE CLASS X
-      //var result = tb.DeserializeTable<List<OB>>();
-      
-      //var value = X.GetSafeValue<DateTime>("20A10-2012");
+
+
+      //var result = DeserializeTable<Object>(your data table here); // Transforms the data returned from the database into a typed object
+
+      //var value = X.GetSafeValue<DateTime>("20A10-2012"); // gets the input value converted to the specified type. On error returns a safe value of the specified type
 
       //IEnumerable<int> enumerable = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
       //List<int> lstod = X.GetOddNumbers(enumerable.ToList());
@@ -419,7 +421,7 @@ namespace Testes {
 
 
     }
-    
+
   }
 
   [Serializable]

@@ -29,8 +29,12 @@ using PublicUtility.Xnm; //  call aux Namespace
 string[] commands = new { "echo Hello", "echo World" };
 XSystem.RunCmdScript(commands);
 
+// ------------------------------------------------------------------
+
 // returns a list of files from the indicated path
 List<FileInfo> files = XSystem.GrabFilesFromFolder(@"C:\MyDocs");
+
+// ------------------------------------------------------------------
 
 // gets all processes that have "chrome" signature or similar
 List<Process> processes = XSystem.GetAllProcessByName("chrome", false);
@@ -45,6 +49,8 @@ string errorMessage;
 sqlCommand.CommandText = "select * from yourTable";
 XSql xSql = new XSql(@"your connection string here", sqlCommand);
 DataTable table = xSql.ReturnData(out errorMessage);
+
+// ------------------------------------------------------------------
 
 // run a void sql statement using SqlServer
 SqlCommand sqlCommand= new SqlCommand();
@@ -63,6 +69,8 @@ xSql.GoExec(out errorMessage);
 // shows a text box in graphic format
 XScreen.ShowMessageBox("INFORMATION", "THIS IS A MESSAGE BOX");
 
+// ------------------------------------------------------------------
+
 // Get a printscreen / currently only available for windows / Available for other platforms soon
 object response = XScreen.PrintScreen();
 if(response.GetType().Name == "Bitmap") {
@@ -75,37 +83,82 @@ if(response.GetType().Name == "Bitmap") {
 // get a hash
 string oneHash = XSecurity.GetHash();
 
+// ------------------------------------------------------------------
+
 // Get an MD5 encryption standard
 string strHashMd5 = XSecurity.GetHashMD5("KeUabaN!a=a%@15LNBaiQ");
+
+// ------------------------------------------------------------------
 
 // Encrypting a string with a numeric key 
 string encrypt = XSecurity.Encrypt("string for encrypto", "12345678");
 
+// ------------------------------------------------------------------
+
 // Decrypting a string encrypted by a numeric key
 string decrypt = XSecurity.Decrypt(encrypt, "12345678");
 
-
 // ================= examples of use of the X class =================
 
+// ------------------------------------------------------------------
+
+string[] stringArray = new[] { "one value", "two value", "three value", "four value", "five value" }; // array len is 5
+string newValue = "six Value";
+X.AddOnArray(ref stringArray, newValue); // added the item to the end of the array! After this, array len is 6
+
+// ------------------------------------------------------------------
+
+IEnumerable<string> strs = new List<string>() { "value 01", "value 02", "value 03", "value 04", "value 05" };
+int index = strs.GetIndex("value 03"); // get the index of the specified item in an array, list or enumerator
+
+var randomValue = strs.GetRandomValue(); // get a random item from an array, list, or enumerator
+
+// ------------------------------------------------------------------
+
+var str = string.Empty;
+bool isdef = str.IsDefault(); //checks if the object value is the default specified by the compiler
+
+// ------------------------------------------------------------------
+
+var value = X.GetSafeValue<DateTime>("20A10-2012"); // gets the input value converted to the specified type. On error returns a safe value of the specified type
+
+// ------------------------------------------------------------------
+IEnumerable<int> enumerable = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+// get all odd numbers from a list, array or enumerator
+List<int> lstod = X.GetOddNumbers(enumerable.ToList());
+int[] arrod = X.GetOddNumbers(enumerable.ToArray());
+var enumod = X.GetOddNumbers(enumerable);
+
+// get all even numbers from a list, array or enumerator
+List<int> evlst = X.GetEvenNumbers(enumerable.ToList());
+int[] evarr = X.GetEvenNumbers(enumerable.ToArray());
+var evenum = X.GetEvenNumbers(enumerable);
+
+// ------------------------------------------------------------------
+
+var result = X.DeserializeTable<YourObjectHere>(your data table here); // Transforms the data returned from the database into a typed object
+
 string a = "A 1 4 1 ;A,. BCCC a daad ad.,.,.,78 aJdyha @ 1 :44Gajç1:#lXpP#; 13 1* a;)#(:!!.,;%%!";
+var letters = a.GetOnlyLetters(); // get only Letters from string
 
-var letters = a.GetOnlyLetters();
+var digits = a.GetOnlyLetterAndNumber(); // get only Letters and numbers from string
 
-var digits = a.GetOnlyLetterAndNumber();
+var numbers = a.GetOnlyNumbers(); // Get only numbers from string
 
-var numbers = a.GetOnlyNumbers(); // Get only numbers
+var simb = a.GetOnlySymbol(); // get only symbols from string
 
-var simb = a.GetOnlySymbol(); // get only symbols
+var branco = a.GetOnlyWhiteSpace(); // get only whitespace from string
 
-var branco = a.GetOnlyWhiteSpace(); // get only whitespace
+var lower = a.GetOnlyLowerCase(); // get only lowercase characters from string
 
-var lower = a.GetOnlyLowerCase(); // get only lowercase characters
+var upper = a.GetOnlyUpperCase(); // get only uppercase characters from string
 
-var upper = a.GetOnlyUpperCase(); // get only uppercase characters
-
-var tes = a.GetOnlySpecialChars(); // get only special characters
+var tes = a.GetOnlySpecialChars(); // get only special characters from string
 
 var one = a.GetOne(); // get a random item from an array, list, or enumerator
+
+// ------------------------------------------------------------------
 
 float f = 15.10f;
 bool fb = f.MaxMin(20.41f, 150.50f); // returns a false value
@@ -122,10 +175,13 @@ bool isValid = anyInvalidNumber.IsNumber(); // return false value
 string anyValidNumber = "10000.50"; // supports floating-point or non-floating-point checking
 bool isValid = anyValidNumber.IsNumber(); // return true value
 
+// ------------------------------------------------------------------
+
 // requests a response confirmation from the server
 var ping = X.GetPing("8.8.8.8").Result; // 8.8.8.8 is a google server IP
 ping.ToString().Print(); 
 
+// ------------------------------------------------------------------
 
 /* Usage example: Inform the type of object that will be imputed and the conversion will be performed at the time of data entry.
  * Data entry is valid only for predetermined items. It is not possible to use a Custom Object as input input.
@@ -144,10 +200,13 @@ char anyChar = X.Input<char>("Enter a new Char: ");
 // DateTime input Examples: 2022/01/01 | 2022-01-01 | 01/01/2022 | 01-01-2022 will be converted to 01/01/2022 00:00:00
 DateTime anyDate = X.Input<DateTime>("Enter a Date: ");
 
+// ------------------------------------------------------------------
+
 // Examples of using Custom Print
 long a = 13193141; // object to print
 a.Print(); // 1st way to use
 X.Print(a); // 2nd way to use
+
 
 string message = "Hello World!"; // string message to print
 message.Print(); // 1st way to use
@@ -159,6 +218,8 @@ X.Print(message); // 2nd way to use
 // Makes a Get on the given URL and returns a content in json format / Can be used asynchronously
 string url = string.Format("http://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1"); // URL of a free API for testing
 Root response = XRequest.HttpGet<Root>(url).GetAwaiter().GetResult();
+
+// ------------------------------------------------------------------
 
 // Make a Post request by sending an object to the server via URL
 string url = string.Format("http://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1");
@@ -177,25 +238,39 @@ HttpResponseMessage response = XRequest.HttpPost(url, root).GetAwaiter().GetResu
 // quickly moves to the indicated location and performs a click
 XMouse.MoveToAndClick(10, 10, MouseSpeed.X4);
 
+// ------------------------------------------------------------------
+
 // performs a click on the current mouse position (left button)
 XMouse.LeftClick();
+
+// ------------------------------------------------------------------
 
 // performs a double-click in the current mouse position (left button)
 XMouse.LeftClick(true);
 
+// ------------------------------------------------------------------
+
 // performs a click on the current mouse position (right button)
 XMouse.RightClick();
 
+// ------------------------------------------------------------------
+
 // Moves the mouse to the specified screen coordinate instantly, without motion animation.
 XMouse.MoveTo(150, 200, MouseSpeed.Full);
+
+// ------------------------------------------------------------------
 
 Point start = new(10, 15); // start x y coordinate point
 Point end = new(220, 500); // end x y coordinate point
 // Performs drag from start point and drop to end point with x2 move animation
 XMouse.Drag(start, end, MouseSpeed.X2);
 
+// ------------------------------------------------------------------
+
 // get the current cursor position
 Point currentPos = XMouse.GetPosition();
+
+// ------------------------------------------------------------------
 
 // triggers the mouse scroll by scrolling down and then scrolling up
 XMouse.RollDown(600);
@@ -218,6 +293,8 @@ XKeyboard.PressKey(Key.Shif);
 XKeyboard.PressKey(Key.N1);
 XKeyboard.UnPressKey(Key.N1);
 XKeyboard.UnPressKey(Key.Shif);
+
+// ------------------------------------------------------------------
 
 // Executes the action of manipulating the keys creating the following output: "hello!"
 // Single digit combines Presskey with UnpressKey
