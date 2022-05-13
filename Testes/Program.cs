@@ -243,102 +243,76 @@ namespace Testes {
 
       #region TESTE CLASS XEXCEL
 
-      //// SIMULA BANCO DE DADOS
-      //List<Obj> lstObj = new List<Obj>();
-      //for(int i = 1; i <= 10; i++) {
-      //  Obj obj = new();
-      //  obj.str = $"STR {i}";
-      //  obj.ints = i;
-      //  obj.chars = Convert.ToChar(i);
-      //  lstObj.Add(obj);
-      //}
+      // DATABASE SIMULATOR
+      List<Obj> lstObj = new List<Obj>();
+      for(int i = 1; i <= 10; i++) {
+        Obj obj = new();
+        obj.ID = i;
+        obj.Name = $"NAME {i}";
+        obj.Date = DateTime.Now.AddDays(i * i);
+        lstObj.Add(obj);
+      }
 
-      //// CABECALHO PRIMEIRA TABELA
-      //string nextCell = null;
-      //List<XCell> cells = new List<XCell>();
-      //for(int i = 1; i <= 3; i++) {
-      //  nextCell = XExcel.GetNextColumn(nextCell);
-      //  XCell cell = new();
-      //  cell.Value = $"COLUNA {i}";
-      //  cell.Position = nextCell;
-      //  cells.Add(cell);
-      //}
+      // TABLE COLUMN NAMES
+      List<XCell> cells = new List<XCell>() {
+        new XCell{ Position = "A1", Value = "ID" },
+        new XCell{ Position = "B1", Value = "NAME" },
+        new XCell{ Position = "C1", Value = "DATE" }
+      };
 
-      //// START INSERT ITENS PRIMEIRA TABELA
-      //nextCell = XExcel.GetNextLine("A1");
-      //string aux = nextCell;
-      //foreach(Obj obj in lstObj) {
-      //  XCell str = new() { Position = nextCell, Value = $"VALUE STR {obj.str}" };
-      //  nextCell = XExcel.GetNextColumn(nextCell);
-      //  XCell chars = new() { Position = nextCell, Value = $"VALUE CHARS {obj.chars}" };
-      //  nextCell = XExcel.GetNextColumn(nextCell);
-      //  XCell ints = new() { Position = nextCell, Value = $"VALUE INTS {obj.ints}" };
+      // VALUES TO INSERT IN TABLE
+      string nextCell = XExcel.GetNextLine("A1"); // get the next line using the current one as a reference (this next is 'A2')
+      string aux = nextCell; // Saves the safe position of the used line
+      foreach(Obj obj in lstObj) {
+        cells.Add(new XCell { Position = nextCell, Value = $"{obj.ID}" });
+        nextCell = XExcel.GetNextColumn(nextCell); // get the next column based on the current column
 
-      //  cells.Add(str);
-      //  cells.Add(chars);
-      //  cells.Add(ints);
+        cells.Add(new XCell { Position = nextCell, Value = obj.Name });
+        nextCell = XExcel.GetNextColumn(nextCell); // get the next column based on the current column
 
-      //  nextCell = XExcel.GetNextLine(aux);
-      //  aux = nextCell;
-      //}
+        cells.Add(new XCell { Position = nextCell, Value = $"{obj.Date:dd/MM/yyyy}" });
 
-      //// ===================================================
+        nextCell = XExcel.GetNextLine(aux); // get the next line using the current one as a reference
+        aux = nextCell; // Saves the safe position of the used line
+      }
 
-      //// CABECALHO SEGUNDA TABELA
-      //nextCell = "D1";
-      //List<XCell> cells2 = new();
-      //for(int i = 1; i <= 3; i++) {
-      //  nextCell = XExcel.GetNextColumn(nextCell);
-      //  XCell cell = new();
-      //  cell.Value = $"COLUNA SEGUNDA {i}";
-      //  cell.Position = nextCell;
-      //  cells2.Add(cell);
-      //}
+      // Table style is optional.
+      XTableStyle style = new();
+      style.ColumnColor = "#063970";
+      style.FirstLineColor = "#A6cbde";
+      style.SecondLineColor = "#abdbe3";
+      style.FontColumnColor = "#000";
+      style.FontLineColor = "#000";
 
-      //// START INSERT ITENS SEGUNDA TABELA
-      //nextCell = XExcel.GetNextLine("E1");
-      //aux = nextCell;
-      //foreach(Obj obj in lstObj) {
-      //  XCell str = new() { Position = nextCell, Value = $"VALUE STR {obj.str}" };
-      //  nextCell = XExcel.GetNextColumn(nextCell);
-      //  XCell chars = new() { Position = nextCell, Value = $"VALUE CHARS {obj.chars}" };
-      //  nextCell = XExcel.GetNextColumn(nextCell);
-      //  XCell ints = new() { Position = nextCell, Value = $"VALUE INTS {obj.ints}" };
+      XTable table = new();
+      table.Style = style; //  table style
+      table.Cells = cells; // data that will be inserted into the table (columns and rows)
+      table.NumberOfColumns = 3; // COUNT OF COLUMNS [ID - NAME - DATE] 
 
-      //  cells2.Add(str);
-      //  cells2.Add(chars);
-      //  cells2.Add(ints);
+      // WorkSheet that will hold the table
+      XWorkSheet sheet = new XWorkSheet();
+      sheet.WorkSheetColor = "#30091e";
+      sheet.WorksheetName = "Dashboard";
+      sheet.Tables = new List<XTable> { table };
 
-      //  nextCell = XExcel.GetNextLine(aux);
-      //  aux = nextCell;
-      //}
+      // Excel document that will be created
+      XExcel excel = new();
+      excel.WorkSheets = new List<XWorkSheet> { sheet };
+      excel.Generate(@"C:\MyDocs\planTest.xlsx");
 
-      //// ====================================================
+      // AFTER GENERATE, THIS IS A TABLE RESULT IN DOC XLSX
+      //| ID |  NAME  |      DATE      |
+      //| 1  | NAME 1 | 14 / 05 / 2022 |
+      //| 2  | NAME 2 | 17 / 05 / 2022 |
+      //| 3  | NAME 3 | 22 / 05 / 2022 |
+      //| 4  | NAME 4 | 29 / 05 / 2022 |
+      //| 5  | NAME 5 | 07 / 06 / 2022 |
+      //| 6  | NAME 6 | 18 / 06 / 2022 |
+      //| 7  | NAME 7 | 01 / 07 / 2022 |
+      //| 8  | NAME 8 | 16 / 07 / 2022 |
+      //| 9  | NAME 9 | 02 / 08 / 2022 |
+      //| 10 | NAME 10| 21 / 08 / 2022 |
 
-      //XTableStyle style = new();
-      //style.ColumnColor = "#063970";
-      //style.FirstLineColor = "#A6cbde";
-      //style.SecondLineColor = "#abdbe3";
-
-      //XTable table = new();
-      ////table.Style = style;
-      //table.Cells = cells;
-      //table.NumberOfColumns = 3;
-
-      //XTable table2 = new();
-      ////table2.Style = style;
-      //table2.Cells = cells2;
-      //table2.NumberOfColumns = 3;
-
-      //XWorkSheet sheet = new XWorkSheet();
-      //sheet.WorkSheetColor = "#30091e";
-      //sheet.WorksheetName = "PLANTESTEE";
-      //sheet.Tables = new List<XTable> { table, table2 };
-
-      //XExcel excel = new();
-      //excel.WorkSheets = new List<XWorkSheet> { sheet };
-
-      //excel.Generate(@"C:\MyDocs\planTest");
 
       #endregion
 
@@ -419,19 +393,17 @@ namespace Testes {
 
       #endregion
 
-      var dic = X.EnumToDict<Key>();
 
     }
+
 
   }
 
   [Serializable]
-  public class OB {
+  public class Obj {
     public int ID { get; set; }
-    public string T { get; set; }
-    public decimal NUMERO { get; set; }
-    public DateTime DataAtual { get; set; }
-    public DateTime DataAtual2 { get; set; }
+    public string Name { get; set; }
+    public DateTime Date { get; set; }
 
   }
 

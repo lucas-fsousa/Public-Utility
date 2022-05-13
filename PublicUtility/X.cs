@@ -177,7 +177,7 @@ namespace PublicUtility {
     /// [PT-BR]: Retorna um objeto do tipo que foi informado durante a chamada do método
     /// </returns>
     /// <exception cref="RequiredParamsException"></exception>
-    public static T Input<T>(string messageToPrint = "", bool hidden = false) {
+    public static T Input<T>(string messageToPrint = "", bool hidden = false) where T : struct {
       T response = default;
 
       if(string.IsNullOrEmpty(messageToPrint))
@@ -189,9 +189,8 @@ namespace PublicUtility {
         string reader = string.Empty;
 
         if(hidden) {
-          ConsoleKeyInfo enterKey;
           do {
-            enterKey = Console.ReadKey(true);
+            ConsoleKeyInfo enterKey = Console.ReadKey(true);
 
             if(enterKey.Key == ConsoleKey.Enter) {
               Console.Write("\n");
@@ -326,7 +325,7 @@ namespace PublicUtility {
     /// [EN]: Returns a dictionary with integer key and name in string format<br></br>
     /// [PT-BR]: Retorna um dicionário com chave inteira e nome no formato de cadeia de caractere
     /// </returns>
-    public static Dictionary<int, string> EnumToDict<TEnum>() where TEnum: struct, Enum {
+    public static Dictionary<int, string> EnumToDict<TEnum>() where TEnum : struct, Enum {
       var lstSituations = Enum.GetValues<TEnum>().ToList();
       var dict = new Dictionary<int, string>();
 
@@ -440,6 +439,9 @@ namespace PublicUtility {
       else if(input == string.Format("true") || input == string.Format("True"))
         return true;
 
+      else if(input == string.Format("0") || input == string.Format("1"))
+        return true;
+
       else
         return false;
     }
@@ -491,7 +493,7 @@ namespace PublicUtility {
     /// [EN]: Does not guarantee conversion of dates to DateTime format, only to string format<br></br>
     /// [PT-BR]: Não garante a conversão de datas para formato DateTime, apenas para formato de cadeia de caracteres
     /// </remarks>
-    public static T DeserializeTable<T>(this DataTable table, List<Type> numTypes = null) where T: IEnumerable {
+    public static T DeserializeTable<T>(this DataTable table, List<Type> numTypes = null) where T : IEnumerable {
       var json = new StringBuilder();
 
       if(numTypes == null)

@@ -27,9 +27,7 @@ namespace PublicUtility {
 
     #region PRIVATE METHODS
 
-    private static void CombineMultiKeys(KeyAction action, List<Key> keys) {
-      List<Key> blacklist = new List<Key>() { Key.Shif, Key.Alt, Key.Ctrl, Key.Tab, Key.Esc };
-
+    private static void CombineMultiKeys(KeyAction action, IEnumerable<Key> keys) {
       foreach(Key key in keys) {
         if(action == KeyAction.Press) {
           PressKey(key);
@@ -42,7 +40,6 @@ namespace PublicUtility {
       }
 
     }
-
 
     #endregion 
 
@@ -100,9 +97,7 @@ namespace PublicUtility {
     /// <remarks>
     /// IN TESTING PHASE!
     /// </remarks>
-    public static void KeyCombine(KeyAction action, Key[] keys) {
-      CombineMultiKeys(action, keys.ToList());
-    }
+    public static void KeyCombine(KeyAction action, Key[] keys) => CombineMultiKeys(action, keys);
 
     /// <summary>
     /// [EN]: Combine two or more keys to perform keyboard actions<br></br>
@@ -119,9 +114,7 @@ namespace PublicUtility {
     /// <remarks>
     /// IN TESTING PHASE!
     /// </remarks>
-    public static void KeyCombine(KeyAction action, List<Key> keys) {
-      CombineMultiKeys(action, keys);
-    }
+    public static void KeyCombine(KeyAction action, List<Key> keys) => CombineMultiKeys(action, keys);
 
     /// <summary>
     /// [EN]: Get information about the current state of a key<br></br>
