@@ -1,10 +1,9 @@
 ﻿using PublicUtility.CustomExceptions;
 using PublicUtility.Xnm;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -315,6 +314,29 @@ namespace PublicUtility {
       array[^1] = value;
     }
 
+    /// <summary>
+    /// [EN]: Convert an enumerator to a dictionary<br></br>
+    /// [PT-BR]: Converte um enumerador para um dicionario
+    /// </summary>
+    /// <typeparam name="TEnum">
+    /// [EN]: Enumerator to be converted<br></br>
+    /// [PT-BR]: Enumerador a ser convertido
+    /// </typeparam>
+    /// <returns>
+    /// [EN]: Returns a dictionary with integer key and name in string format<br></br>
+    /// [PT-BR]: Retorna um dicionário com chave inteira e nome no formato de cadeia de caractere
+    /// </returns>
+    public static Dictionary<int, string> EnumToDict<TEnum>() where TEnum: struct, Enum {
+      var lstSituations = Enum.GetValues<TEnum>().ToList();
+      var dict = new Dictionary<int, string>();
+
+      for(int i = 0; i < lstSituations.Count; i++) {
+        dict.Add(Convert.ToInt32(lstSituations[i]), Enum.GetName(lstSituations[i]));
+      }
+
+      return dict;
+    }
+
     #endregion
 
     #region EXTENSION
@@ -450,8 +472,8 @@ namespace PublicUtility {
     /// [PT-BR]: Converte uma tabela de dados em um objeto do tipo estimado.
     /// </summary>
     /// <typeparam name="T">
-    /// [EN]: Type of object to be returned<br></br>
-    /// [PT-BR]: Tipo do objeto que será retornado
+    /// [EN]: Type of object to be returned (the type must be a list or array of the object to be used as a reference)<br></br>
+    /// [PT-BR]: Tipo do objeto que será retornado (o tipo deve ser uma lista ou array do objeto a ser utilizado como referência)
     /// </typeparam>
     /// <param name="table">
     /// [EN]: Table containing all data to be converted<br></br>
@@ -469,7 +491,7 @@ namespace PublicUtility {
     /// [EN]: Does not guarantee conversion of dates to DateTime format, only to string format<br></br>
     /// [PT-BR]: Não garante a conversão de datas para formato DateTime, apenas para formato de cadeia de caracteres
     /// </remarks>
-    public static T DeserializeTable<T>(this DataTable table, List<Type> numTypes = null) {
+    public static T DeserializeTable<T>(this DataTable table, List<Type> numTypes = null) where T: IEnumerable {
       var json = new StringBuilder();
 
       if(numTypes == null)

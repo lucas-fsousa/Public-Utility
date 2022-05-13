@@ -172,7 +172,7 @@ namespace PublicUtility {
     /// [EN]: Line of text to include at the end of the file<br></br>
     /// [PT-BR]: Linha de texto a ser incluida no final do arquivo
     /// </param>
-    public static void AppendLine(string filePath, string newTextLine) => File.AppendAllText(filePath, newTextLine + "\r\n");
+    public static void AppendLine(string filePath, string newTextLine) => File.AppendAllText(filePath, newTextLine.Replace("\n", "").Replace("\r", "") + "\r\n");
 
     /// <summary>
     /// [EN]: Insert multiple lines of text into the target file<br></br>

@@ -419,6 +419,7 @@ namespace Testes {
 
       #endregion
 
+      var dic = X.EnumToDict<Key>();
 
     }
 
@@ -434,20 +435,5 @@ namespace Testes {
 
   }
 
-  public class Member {
-    public string name { get; set; }
-    public int age { get; set; }
-    public string secretIdentity { get; set; }
-    public List<string> powers { get; set; }
-  }
-
-  public class Root {
-    public string squadName { get; set; }
-    public string homeTown { get; set; }
-    public int formed { get; set; }
-    public string secretBase { get; set; }
-    public bool active { get; set; }
-    public List<Member> members { get; set; }
-  }
 
 }
