@@ -244,74 +244,61 @@ namespace Testes {
       #region TESTE CLASS XEXCEL
 
       // DATABASE SIMULATOR
-      List<Obj> lstObj = new List<Obj>();
-      for(int i = 1; i <= 10; i++) {
-        Obj obj = new();
-        obj.ID = i;
-        obj.Name = $"NAME {i}";
-        obj.Date = DateTime.Now.AddDays(i * i);
-        lstObj.Add(obj);
-      }
+      //List<Obj> lstObj = new List<Obj>();
+      //for(int i = 1; i <= 10; i++) {
+      //  Obj obj = new();
+      //  obj.ID = i;
+      //  obj.Name = $"NAME {i}";
+      //  obj.Date = DateTime.Now.AddDays(i * i);
+      //  lstObj.Add(obj);
+      //}
 
-      // TABLE COLUMN NAMES
-      List<XCell> cells = new List<XCell>() {
-        new XCell{ Position = "A1", Value = "ID" },
-        new XCell{ Position = "B1", Value = "NAME" },
-        new XCell{ Position = "C1", Value = "DATE" }
-      };
+      //// TABLE COLUMN NAMES
+      //List<XCell> cells = new List<XCell>() {
+      //  new XCell{ Position = "A1", Value = "ID" },
+      //  new XCell{ Position = "B1", Value = "NAME" },
+      //  new XCell{ Position = "C1", Value = "DATE" }
+      //};
 
-      // VALUES TO INSERT IN TABLE
-      string nextCell = XExcel.GetNextLine("A1"); // get the next line using the current one as a reference (this next is 'A2')
-      string aux = nextCell; // Saves the safe position of the used line
-      foreach(Obj obj in lstObj) {
-        cells.Add(new XCell { Position = nextCell, Value = $"{obj.ID}" });
-        nextCell = XExcel.GetNextColumn(nextCell); // get the next column based on the current column
+      //// VALUES TO INSERT IN TABLE
+      //string nextCell = XExcel.GetNextLine("A1"); // get the next line using the current one as a reference (this next is 'A2')
+      //string aux = nextCell; // Saves the safe position of the used line
+      //foreach(Obj obj in lstObj) {
+      //  cells.Add(new XCell { Position = nextCell, Value = $"{obj.ID}" });
+      //  nextCell = XExcel.GetNextColumn(nextCell); // get the next column based on the current column
 
-        cells.Add(new XCell { Position = nextCell, Value = obj.Name });
-        nextCell = XExcel.GetNextColumn(nextCell); // get the next column based on the current column
+      //  cells.Add(new XCell { Position = nextCell, Value = obj.Name });
+      //  nextCell = XExcel.GetNextColumn(nextCell); // get the next column based on the current column
 
-        cells.Add(new XCell { Position = nextCell, Value = $"{obj.Date:dd/MM/yyyy}" });
+      //  cells.Add(new XCell { Position = nextCell, Value = $"{obj.Date:dd/MM/yyyy}" });
 
-        nextCell = XExcel.GetNextLine(aux); // get the next line using the current one as a reference
-        aux = nextCell; // Saves the safe position of the used line
-      }
+      //  nextCell = XExcel.GetNextLine(aux); // get the next line using the current one as a reference
+      //  aux = nextCell; // Saves the safe position of the used line
+      //}
 
-      // Table style is optional.
-      XTableStyle style = new();
-      style.ColumnColor = "#063970";
-      style.FirstLineColor = "#A6cbde";
-      style.SecondLineColor = "#abdbe3";
-      style.FontColumnColor = "#000";
-      style.FontLineColor = "#000";
+      //// Table style is optional.
+      //XTableStyle style = new();
+      //style.ColumnColor = "#063970";
+      //style.FirstLineColor = "#A6cbde";
+      //style.SecondLineColor = "#abdbe3";
+      //style.FontColumnColor = "#000";
+      //style.FontLineColor = "#000";
 
-      XTable table = new();
-      table.Style = style; //  table style
-      table.Cells = cells; // data that will be inserted into the table (columns and rows)
-      table.NumberOfColumns = 3; // COUNT OF COLUMNS [ID - NAME - DATE] 
+      //XTable table = new();
+      //table.Style = style; //  table style
+      //table.Cells = cells; // data that will be inserted into the table (columns and rows)
+      //table.NumberOfColumns = 3; // COUNT OF COLUMNS [ID - NAME - DATE] 
 
-      // WorkSheet that will hold the table
-      XWorkSheet sheet = new XWorkSheet();
-      sheet.WorkSheetColor = "#30091e";
-      sheet.WorksheetName = "Dashboard";
-      sheet.Tables = new List<XTable> { table };
+      //// WorkSheet that will hold the table
+      //XWorkSheet sheet = new XWorkSheet();
+      //sheet.WorkSheetColor = "#30091e";
+      //sheet.WorksheetName = "Dashboard";
+      //sheet.Tables = new List<XTable> { table };
 
-      // Excel document that will be created
-      XExcel excel = new();
-      excel.WorkSheets = new List<XWorkSheet> { sheet };
-      excel.Generate(@"C:\MyDocs\planTest.xlsx");
-
-      // AFTER GENERATE, THIS IS A TABLE RESULT IN DOC XLSX
-      //| ID |  NAME  |      DATE      |
-      //| 1  | NAME 1 | 14 / 05 / 2022 |
-      //| 2  | NAME 2 | 17 / 05 / 2022 |
-      //| 3  | NAME 3 | 22 / 05 / 2022 |
-      //| 4  | NAME 4 | 29 / 05 / 2022 |
-      //| 5  | NAME 5 | 07 / 06 / 2022 |
-      //| 6  | NAME 6 | 18 / 06 / 2022 |
-      //| 7  | NAME 7 | 01 / 07 / 2022 |
-      //| 8  | NAME 8 | 16 / 07 / 2022 |
-      //| 9  | NAME 9 | 02 / 08 / 2022 |
-      //| 10 | NAME 10| 21 / 08 / 2022 |
+      //// Excel document that will be created
+      //XExcel excel = new();
+      //excel.WorkSheets = new List<XWorkSheet> { sheet };
+      //excel.Generate(@"C:\MyDocs\planTest.xlsx");
 
 
       #endregion
@@ -332,7 +319,6 @@ namespace Testes {
       #endregion
 
       #region TESTE CLASS X
-
 
       //var result = DeserializeTable<Object>(your data table here); // Transforms the data returned from the database into a typed object
 
@@ -393,8 +379,45 @@ namespace Testes {
 
       #endregion
 
+      //List<Obj> lstObj = new List<Obj>();
+      //for(int i = 1; i <= 10; i++) {
+      //  Obj obj = new();
+      //  obj.ID = i;
+      //  obj.Name = $"NAME {i}";
+      //  obj.Date = DateTime.Now.AddDays(i * i);
+      //  lstObj.Add(obj);
+      //}
 
+      //var listaDalista = new List<List<Obj>>();
+      //listaDalista.Add(lstObj);
+
+      //var prods = from prod in lstObj where prod.ID == 10 select new { prod.ID, prod.Name };
+      //var newProds = lstObj.Select(x=> (x.ID, x.Name)).Where(x=> x.ID == 10).First();
+      //var outroProds = new { lstObj[9].ID, lstObj[9].Name };
+
+      string[] array = new string[] { "OPA", "OPA", "OPA" };
+      string[][] array2 = new string[][] { new string[] { "OPA MY", "OPA MY", "OPA MY" }, new string[] { "OPA MY", "OPA MY", "OPA MY" }, new string[] { "OPA MY", "OPA MY", "OPA MY" } };
+
+      List<int> lstInt = new List<int>() { 1, 2, 3, 4, 5 };
+      //X.Print(lstObj);
+      //X.Print(listaDalista);
+
+      //X.Print(array);
+      //X.Print(array2);
+      //X.Print(lstInt);
+
+      var response = JsonSerializer.Serialize(array2);
+      array2.Print();
+      array.Print();
+      lstInt.Print();
+
+      char a = 'X';
+      a.Print();
+
+      //response.Print();
     }
+
+
 
 
   }

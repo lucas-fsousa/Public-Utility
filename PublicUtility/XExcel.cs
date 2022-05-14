@@ -139,7 +139,7 @@ namespace PublicUtility {
               style.ColumnColor = "#252525";
               style.FirstLineColor = "#959595";
               style.SecondLineColor = "#C0C0C0";
-              style.FontColumnColor = "#EE0000";
+              style.FontColumnColor = "#FFF";
               style.FontLineColor = "#000";
 
               table.Style = style;

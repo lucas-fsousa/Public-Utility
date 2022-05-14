@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -620,6 +621,52 @@ namespace PublicUtility {
     /// </summary>
     public static void Print() => Console.WriteLine();
 
+    /// <summary>
+    /// [EN]: Console.WriteLine() simplification / Write to console <br></br>
+    /// [PT-BR]: Simplificação do Console.WriteLine() / Escreve no console
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of object that will be written to the console<br></br>
+    /// [PT-BR]: Tipo do objeto que será escrito no console
+    /// </typeparam>
+    /// <param name="array">
+    /// [EN]: Object to be written to the console<br></br>
+    /// [PT-BR]: Objeto a ser escrito no console
+    /// </param>
+    public static void Print<T>(this T[] array) {
+      try {JsonSerializer.Serialize(array).Print();} catch(Exception){ Print(array.ToString()); }
+    }
+
+    /// <summary>
+    /// [EN]: Console.WriteLine() simplification / Write to console <br></br>
+    /// [PT-BR]: Simplificação do Console.WriteLine() / Escreve no console
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of object that will be written to the console<br></br>
+    /// [PT-BR]: Tipo do objeto que será escrito no console
+    /// </typeparam>
+    /// <param name="list">
+    /// [EN]: Object to be written to the console<br></br>
+    /// [PT-BR]: Objeto a ser escrito no console
+    /// </param>
+    public static void Print<T>(this List<T> list) {
+      try { JsonSerializer.Serialize(list).Print(); } catch(Exception) { Print(list.ToString()); }
+    }
+
+    /// <summary>
+    /// [EN]: Console.WriteLine() simplification / Write to console <br></br>
+    /// [PT-BR]: Simplificação do Console.WriteLine() / Escreve no console
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of object that will be written to the console<br></br>
+    /// [PT-BR]: Tipo do objeto que será escrito no console
+    /// </typeparam>
+    /// <param name="obj">
+    /// [EN]: Object to be written to the console<br></br>
+    /// [PT-BR]: Objeto a ser escrito no console
+    /// </param>
+    public static void Print<T>(this T obj) => Console.WriteLine(obj);
+    
     #endregion
 
     #region OVERLOAD MAXMIN
