@@ -20,11 +20,6 @@ namespace PublicUtility {
   /// [EN]: Public utility class that contains several methods to aid in application development <br></br>
   /// [PT-BR]: Classe de utilidade publica que contém diversos métodos para auxiliar no desenvolvimento de aplicações
   /// </summary>
-  /// <remarks>
-  /// [EN]: This class may throw an incorrectly formatted Image exception. To fix, go to consoleapp properties and change the "Platform target" to [x86] which by default is marked with [Any CPU] <br></br>
-  /// [PT-BR]: Esta classe pode gerar exceção de Imagem com formato incorreto. Para corrigir, acesse as propriedades do consoleapp e altere o "Destino da plataforma" para [x86] que por padrão está marcada com [Any CPU]
-  /// </remarks>
-  /// <exception cref="BadImageFormatException"></exception>
   public static class X {
 
     #region OTHERS

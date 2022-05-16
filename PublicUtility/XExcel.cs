@@ -122,7 +122,7 @@ namespace PublicUtility {
       if(!filepath.EndsWith(".xlsx"))
         filepath += ".xlsx";
 
-      using(XLWorkbook workb = new()) {
+      using(XLWorkbook workb = new XLWorkbook()) {
         foreach(XWorkSheet sheet in WorkSheets) {
           var plan = workb.Worksheets.Add(string.IsNullOrEmpty(sheet.WorksheetName) ? "PLAN1" : sheet.WorksheetName); // Create the Worksheet
           string cellFirstColumn;

@@ -380,7 +380,7 @@ namespace Testes {
       #endregion
 
       //List<Obj> lstObj = new List<Obj>();
-      //for(int i = 1; i <= 10; i++) {
+      //for(int i = 1; i <= 25; i++) {
       //  Obj obj = new();
       //  obj.ID = i;
       //  obj.Name = $"NAME {i}";
@@ -388,37 +388,10 @@ namespace Testes {
       //  lstObj.Add(obj);
       //}
 
-      //var listaDalista = new List<List<Obj>>();
-      //listaDalista.Add(lstObj);
+      
 
-      //var prods = from prod in lstObj where prod.ID == 10 select new { prod.ID, prod.Name };
-      //var newProds = lstObj.Select(x=> (x.ID, x.Name)).Where(x=> x.ID == 10).First();
-      //var outroProds = new { lstObj[9].ID, lstObj[9].Name };
 
-      string[] array = new string[] { "OPA", "OPA", "OPA" };
-      string[][] array2 = new string[][] { new string[] { "OPA MY", "OPA MY", "OPA MY" }, new string[] { "OPA MY", "OPA MY", "OPA MY" }, new string[] { "OPA MY", "OPA MY", "OPA MY" } };
-
-      List<int> lstInt = new List<int>() { 1, 2, 3, 4, 5 };
-      //X.Print(lstObj);
-      //X.Print(listaDalista);
-
-      //X.Print(array);
-      //X.Print(array2);
-      //X.Print(lstInt);
-
-      var response = JsonSerializer.Serialize(array2);
-      array2.Print();
-      array.Print();
-      lstInt.Print();
-
-      char a = 'X';
-      a.Print();
-
-      //response.Print();
     }
-
-
-
 
   }
 
