@@ -59,6 +59,10 @@ namespace PublicUtility {
   /// </summary>
   public class XTable {
 
+    public XTable(int numberOfColumns) {
+      this.NumberOfColumns = numberOfColumns;
+    }
+
     /// <summary>
     /// [EN]: Represents excel table styling<br></br>
     /// [PT-BR]: Representa a estilização da tabela excel
@@ -69,13 +73,20 @@ namespace PublicUtility {
     /// [EN]: Number of columns that tables have<br></br>
     /// [PT-BR]: Numero de colunas que as tabelas possuem
     /// </summary>
-    public int NumberOfColumns { get; set; }
+    public int NumberOfColumns { get; }
 
     /// <summary>
     /// [EN]: Represents excel cells.<br></br>
     /// [PT-BR]: Representa as células do excel.
     /// </summary>
-    public List<XCell> Cells { get; set; }
+    public List<XCell> Cells { get; private set; }
+
+    public void AddCell(string cell, string value) {
+      if(Cells == null)
+        Cells = new List<XCell>();
+
+      Cells.Add( new XCell { Position = cell, Value = value });
+    }
   }
 
   /// <summary>

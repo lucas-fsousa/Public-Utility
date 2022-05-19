@@ -22,9 +22,78 @@ namespace PublicUtility {
   /// </summary>
   public static class X {
 
-    #region OTHERS
-
     #region PRIVATE METHODS
+
+    private static T ConverToType<T>(object obj, int precision = 0, bool asBool = false, bool asNumber = false, bool asChar = false, bool asString = false) {
+      T response = default;
+      try {
+
+        if(asBool) {
+          if(obj.ToString().IsSomeBool()) {
+
+            if(obj.ToString().IsNumber())
+              response = (T)Convert.ChangeType(Convert.ToInt32(obj), TypeCode.Boolean);
+
+            else
+              response = (T)Convert.ChangeType(obj, TypeCode.Boolean);
+          }
+
+          return response;
+        }
+
+        if(asNumber) {
+
+          if(obj.ToString().IsNumber()) {
+            string value = obj.ToString().Replace('.', ',');
+
+            if(typeof(T).Name == "Decimal") {
+              decimal dc = decimal.Round(decimal.Parse(value, System.Globalization.NumberStyles.Currency), precision);
+              response = (T)Convert.ChangeType(dc, typeof(T));
+
+            } else if(typeof(T).Name == "Single") {
+              float ft = float.Parse(value, System.Globalization.NumberStyles.Float);
+              response = (T)Convert.ChangeType(ft, typeof(T));
+
+            } else if(typeof(T).Name == "Double") {
+              double db = double.Parse(value, System.Globalization.NumberStyles.Any);
+              response = (T)Convert.ChangeType(db, typeof(T));
+
+            } else if(typeof(T).Name == "Int16") {
+              short st = short.Parse(value.Split(',')[0], System.Globalization.NumberStyles.Integer);
+              response = (T)Convert.ChangeType(st, typeof(T));
+
+            } else if(typeof(T).Name == "Int32") {
+              int it = int.Parse(value.Split(',')[0], System.Globalization.NumberStyles.Integer);
+              response = (T)Convert.ChangeType(it, typeof(T));
+
+            } else if(typeof(T).Name == "Int64") {
+              long lg = long.Parse(value.Split(',')[0], System.Globalization.NumberStyles.Integer);
+              response = (T)Convert.ChangeType(lg, typeof(T));
+
+            }
+
+          }
+
+          return response;
+        }
+
+        if(asChar) {
+          if(obj.ToString().Length == 1)
+            response = (T)Convert.ChangeType(obj, TypeCode.Char);
+
+          return response;
+        }
+
+        if(asString) {
+          response = (T)Convert.ChangeType(obj, TypeCode.String);
+
+          return response;
+        }
+
+      } catch(Exception) { }
+
+      return response;
+    }
 
     private static string ConvertToDate(this object data) => data.GetSafeValue<DateTime>().ToString("s");
 
@@ -151,6 +220,8 @@ namespace PublicUtility {
     }
 
     #endregion
+
+    #region OTHERS
 
     /// <summary>
     /// [EN]: Captures Keyboard input and converts it to the object type given during the method call <br></br>
@@ -337,27 +408,6 @@ namespace PublicUtility {
     #region EXTENSION
 
     /// <summary>
-    /// [EN]: Checks if the item has a valid Datetime format<br></br>
-    /// [PT-BR]: Verifica se o item possui formato de Data tempo válido
-    /// </summary>
-    /// <param name="input">
-    /// [EN]: Item to be analyzed<br></br>
-    /// [PT-BR]: Item a ser analisado
-    /// </param>
-    /// <returns>
-    /// [EN]: Returns a boolean value indicating whether it is a valid or invalid datetime format.<br></br>
-    /// [PT-BR]: Retorna valor booleano indicando se é um formato data tempo válido ou inválido.
-    /// </returns>
-    public static bool IsAnyDate(this string input) {
-      try {
-        if(string.IsNullOrEmpty(input))
-          return false;
-
-        return GetSafeValue<DateTime>(input).IsDefault() ? false : true;
-      } catch(Exception) { return false; }
-    }
-
-    /// <summary>
     /// [EN]: Remove all whitespace from string <br></br>
     /// [PT-BR]: Remove todos os espaços em branco da string
     /// </summary>
@@ -380,89 +430,6 @@ namespace PublicUtility {
       }
 
       return newStr;
-    }
-
-    /// <summary>
-    /// [EN]: Checks if the string has a valid numeric format containing no letters or special characters <br></br>
-    /// [PT-BR]: verifica se a cadeia de caracteres possui formato numérico válido não contendo letras ou caracteres especiais
-    /// </summary>
-    /// <param name="input">
-    /// </param>
-    /// <returns>
-    /// [EN]: Returns a boolean value <br></br>
-    /// [PT-BR]: Returns a boolean value
-    /// </returns>
-    public static bool IsNumber(this string input) {
-      List<char> numbers = new List<char> { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.' };
-      int countFloatPoint = 0;
-
-      if(string.IsNullOrEmpty(input))
-        return false;
-
-      foreach(char c in input.ToList()) {
-        if(c == '.')
-          countFloatPoint++;
-
-        if(countFloatPoint > 1)
-          return false;
-
-        if(!numbers.Contains(c))
-          return false;
-      }
-
-      return true;
-    }
-
-    /// <summary>
-    /// [EN]: Checks if the string has some boolean format <br></br>
-    /// [PT-BR]: Verifica se a cadeia de caracteres possui algum formato booleano
-    /// </summary>
-    /// <param name="input">
-    /// [EN]: String to be checked <br></br>
-    /// [PT-BR]: Cadeia de caracteres a ser verificada
-    /// </param>
-    /// <returns>
-    /// [EN]: returns a boolean value indicating whether the string has boolean format <br></br>
-    /// [PT-BR]: retorna um valor booleano indicando se a string possui formato boolean
-    /// </returns>
-    public static bool IsSomeBool(this string input) {
-      if(string.IsNullOrEmpty(input))
-        return false;
-
-      else if(input == string.Format("false") || input == string.Format("False"))
-        return true;
-
-      else if(input == string.Format("true") || input == string.Format("True"))
-        return true;
-
-      else if(input == string.Format("0") || input == string.Format("1"))
-        return true;
-
-      else
-        return false;
-    }
-
-    /// <summary>
-    /// [EN]: Checks if the value is the default of the specified type<br></br>
-    /// [PT-BR]: Verifica se o valor é o padrão do tipo especificado
-    /// </summary>
-    /// <typeparam name="T">
-    /// [EN]: Type of object to be analyzed<br></br>
-    /// [PT-BR]: Tipo do objeto a ser analisado
-    /// </typeparam>
-    /// <param name="value">
-    /// [EN]: Value to be analyzed<br></br>
-    /// [PT-BR]: Valor a ser analisado
-    /// </param>
-    /// <returns>
-    /// [EN]: Returns boolean representing the answer whether the value is the type default or not the type default<br></br>
-    /// [PT-BR]: Retorna booleano representando a resposta se o valor é o padrão do tipo ou não é o padrão do tipo
-    /// </returns>
-    public static bool IsDefault<T>(this T value) {
-      T def = default;
-      if(value.Equals(def))
-        return true;
-      return false;
     }
 
     /// <summary>
@@ -491,15 +458,16 @@ namespace PublicUtility {
     /// </remarks>
     public static T DeserializeTable<T>(this DataTable table, List<Type> numTypes = null) where T : IEnumerable {
       var json = new StringBuilder();
+      T typedObject = default;
 
       if(numTypes == null)
         numTypes = new List<Type> { typeof(int), typeof(long), typeof(float), typeof(double), typeof(decimal), typeof(int), typeof(long), typeof(byte) };
 
       if(table == null)
-        return default;
+        return typedObject;
 
       if(table.Rows.Count <= 0)
-        return default;
+        return typedObject;
 
       json.Append('['); // START JSON LIST
 
@@ -523,7 +491,6 @@ namespace PublicUtility {
               json.Append($"\"{col.ColumnName}\" : \"{row[col].ConvertToDate()}\""); // close json line last item (DATETIME ONLY)
 
             } else {
-
               json.Append($"\"{col.ColumnName}\" : \"{row[col]}\""); // close json object last item
 
             }
@@ -545,18 +512,21 @@ namespace PublicUtility {
 
         }
 
-        if(countRow == table.Rows.Count)
+        if(countRow == table.Rows.Count) {
           json.Append('}'); // close json object last item
 
-        else
+        } else {
           json.Append("},"); // terminate json object with multiple items
 
+        }
       }
 
       json.Append(']'); // END JSON LIST
 
       string jsonConvert = json.ToString(); // redundant - for test only
-      return JsonSerializer.Deserialize<T>(jsonConvert);
+      typedObject = JsonSerializer.Deserialize<T>(jsonConvert);
+      return typedObject;
+
     }
 
     #region OVERLOAD PRINT
@@ -629,7 +599,7 @@ namespace PublicUtility {
     /// [PT-BR]: Objeto a ser escrito no console
     /// </param>
     public static void Print<T>(this T[] array) {
-      try {JsonSerializer.Serialize(array).Print();} catch(Exception){ Print(array.ToString()); }
+      try { JsonSerializer.Serialize(array).Print(); } catch(Exception) { Print(array.ToString()); }
     }
 
     /// <summary>
@@ -661,7 +631,7 @@ namespace PublicUtility {
     /// [PT-BR]: Objeto a ser escrito no console
     /// </param>
     public static void Print<T>(this T obj) => Console.WriteLine(obj);
-    
+
     #endregion
 
     #region OVERLOAD MAXMIN
@@ -993,6 +963,76 @@ namespace PublicUtility {
 
     #endregion
 
+    #region OVERLOAD GETNEXT
+
+    /// <summary>
+    /// [EN]: Gets the value of the next item in the enumerator, list or array sequence.<br></br>
+    /// [PT-BR]: Obtém o valor do próximo item na sequencia do enumerador, lista ou matriz.
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of object to be analyzed.<br></br>
+    /// [PT-BR]: Tipo do objeto que será analisado.
+    /// </typeparam>
+    /// <param name="enumerable">
+    /// [EN]: Enumerator that contains the value to find.<br></br>
+    /// [PT-BR]: Enumerador que contém o valor a ser localizado.
+    /// </param>
+    /// <param name="value">
+    /// [EN]: Value used as the basis for the search<br></br>
+    /// [PT-BR]: Valor utilizado como base para a busca
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns the object found<br></br>
+    /// [PT-BR]: Retorna o objeto localizado
+    /// </returns>
+    public static T GetNext<T>(this IEnumerable<T> enumerable, T value) {
+      int next = enumerable.GetIndex(value) + 1;
+      if(next < 0)
+        return default;
+      else
+        return enumerable.ToList()[next];
+    }
+
+    /// <summary>
+    /// [EN]: Gets the value corresponding to the next (value + 1)<br></br>
+    /// [PT-BR]: Obtém o valor correspondente ao próximo (value + 1)
+    /// </summary>
+    /// <param name="value">
+    /// [EN]: Value used as the basis for the search<br></br>
+    /// [PT-BR]: Valor utilizado como base para a busca
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns next number <br></br>
+    /// [PT-BR]: Retorna o proximo numero.
+    /// </returns>
+    public static int GetNext(this int value) {
+      if(value >= 0)
+        return value + 1;
+
+      return (Math.Abs(value) + 1) * -1;
+    }
+
+    /// <summary>
+    /// [EN]: Gets the value corresponding to the next (value + 1)<br></br>
+    /// [PT-BR]: Obtém o valor correspondente ao próximo (value + 1)
+    /// </summary>
+    /// <param name="value">
+    /// [EN]: Value used as the basis for the search<br></br>
+    /// [PT-BR]: Valor utilizado como base para a busca
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns next number <br></br>
+    /// [PT-BR]: Retorna o proximo numero.
+    /// </returns>
+    public static long GetNext(this long value) {
+      if(value >= 0)
+        return value + 1;
+
+      return (Math.Abs(value) + 1) * -1;
+    }
+
+    #endregion
+
     #region OVERLOAD GETONLY
 
     /// <summary>
@@ -1176,6 +1216,77 @@ namespace PublicUtility {
     /// [PT-BR]: Retorna o indice do item no enumerador caso ele exista ou -1 para não existente.
     /// </returns>
     public static int GetIndex<T>(this IEnumerable<T> enumerable, T itemToLoc) => OneIndex(enumerable, itemToLoc);
+
+    #endregion
+
+    #region OVERLOAD GETPREVIOUS
+
+    /// <summary>
+    /// [EN]: Get the lower number corresponding to the current index (value - 1)<br></br>
+    /// [PT-BR]: Obtem o numero inferior correspondente ao indice atual (value - 1)
+    /// </summary>
+    /// <param name="value">
+    /// [EN]: Value used as the basis for the search<br></br>
+    /// [PT-BR]: Valor utilizado como base para a busca
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns previous number <br></br>
+    /// [PT-BR]: Retorna o numero anterior.
+    /// </returns>
+    public static long GetPrevious(this long value) {
+      if(value >= 0)
+        return value - 1;
+
+      return (Math.Abs(value) - 1) * -1;
+    }
+
+
+    /// <summary>
+    /// [EN]: Get the lower number corresponding to the current index (value - 1)<br></br>
+    /// [PT-BR]: Obtem o numero inferior correspondente ao indice atual (value - 1)
+    /// </summary>
+    /// <param name="value">
+    /// [EN]: Value used as the basis for the search<br></br>
+    /// [PT-BR]: Valor utilizado como base para a busca
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns previous number <br></br>
+    /// [PT-BR]: Retorna o numero anterior.
+    /// </returns>
+    public static int GetPrevious(this int value) {
+      if(value >= 0)
+        return value - 1;
+
+      return (Math.Abs(value) - 1) * -1;
+    }
+
+    /// <summary>
+    /// [EN]: Gets the value of the previous item in the enumerator sequence, list, or array.<br></br>
+    /// [PT-BR]: Obtém o valor do item anterior da sequência do enumerador, lista ou matriz.
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of object to be analyzed.<br></br>
+    /// [PT-BR]: Tipo do objeto que será analisado.
+    /// </typeparam>
+    /// <param name="enumerable">
+    /// [EN]: Enumerator that contains the value to find.<br></br>
+    /// [PT-BR]: Enumerador que contém o valor a ser localizado.
+    /// </param>
+    /// <param name="value">
+    /// [EN]: Value used as the basis for the search<br></br>
+    /// [PT-BR]: Valor utilizado como base para a busca
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns the object found<br></br>
+    /// [PT-BR]: Retorna o objeto localizado
+    /// </returns>
+    public static T GetPrevious<T>(this IEnumerable<T> enumerable, T value) {
+      int previous = enumerable.GetIndex(value) - 1;
+      if(previous < 0)
+        return default;
+      else
+        return enumerable.ToList()[previous];
+    }
 
     #endregion
 
@@ -1914,6 +2025,302 @@ namespace PublicUtility {
     /// [PT-BR]: Retorna um novo enumerador contendo somente os valores pares
     /// </returns>
     public static IEnumerable<T> GetEvenNumbers<T>(IEnumerable<T> input) => EvenNumbers(input);
+
+    #endregion
+
+    #region OVERLOAD 'IS' TYPE VALUE
+
+    /// <summary>
+    /// [EN]: Checks if the value is the default of the specified type<br></br>
+    /// [PT-BR]: Verifica se o valor é o padrão do tipo especificado
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of object to be analyzed<br></br>
+    /// [PT-BR]: Tipo do objeto a ser analisado
+    /// </typeparam>
+    /// <param name="value">
+    /// [EN]: Value to be analyzed<br></br>
+    /// [PT-BR]: Valor a ser analisado
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns boolean representing the answer whether the value is the type default or not the type default<br></br>
+    /// [PT-BR]: Retorna booleano representando a resposta se o valor é o padrão do tipo ou não é o padrão do tipo
+    /// </returns>
+    public static bool IsDefault<T>(this T value) {
+      T def = default;
+      if(value.Equals(def))
+        return true;
+      return false;
+    }
+
+    /// <summary>
+    /// [EN]: Checks if the string has some boolean format <br></br>
+    /// [PT-BR]: Verifica se a cadeia de caracteres possui algum formato booleano
+    /// </summary>
+    /// <param name="input">
+    /// [EN]: String to be checked <br></br>
+    /// [PT-BR]: Cadeia de caracteres a ser verificada
+    /// </param>
+    /// <returns>
+    /// [EN]: returns a boolean value indicating whether the string has boolean format <br></br>
+    /// [PT-BR]: retorna um valor booleano indicando se a string possui formato boolean
+    /// </returns>
+    public static bool IsSomeBool(this string input) {
+      if(string.IsNullOrEmpty(input))
+        return false;
+
+      else if(input == string.Format("false") || input == string.Format("False"))
+        return true;
+
+      else if(input == string.Format("true") || input == string.Format("True"))
+        return true;
+
+      else if(input == string.Format("0") || input == string.Format("1"))
+        return true;
+
+      else
+        return false;
+    }
+
+    /// <summary>
+    /// [EN]: Checks if the item has a valid Datetime format<br></br>
+    /// [PT-BR]: Verifica se o item possui formato de Data tempo válido
+    /// </summary>
+    /// <param name="input">
+    /// [EN]: Item to be analyzed<br></br>
+    /// [PT-BR]: Item a ser analisado
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a boolean value indicating whether it is a valid or invalid datetime format.<br></br>
+    /// [PT-BR]: Retorna valor booleano indicando se é um formato data tempo válido ou inválido.
+    /// </returns>
+    public static bool IsAnyDate(this string input) {
+      try {
+        if(string.IsNullOrEmpty(input))
+          return false;
+
+        return GetSafeValue<DateTime>(input).IsDefault() ? false : true;
+      } catch(Exception) { return false; }
+    }
+
+    /// <summary>
+    /// [EN]: Checks if the string has a valid numeric format containing no letters or special characters <br></br>
+    /// [PT-BR]: verifica se a cadeia de caracteres possui formato numérico válido não contendo letras ou caracteres especiais
+    /// </summary>
+    /// <param name="input">
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a boolean value <br></br>
+    /// [PT-BR]: Returns a boolean value
+    /// </returns>
+    public static bool IsNumber(this string input) {
+      List<char> numbers = new List<char> { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ',' };
+      int countFloatPoint = 0;
+
+      if(string.IsNullOrEmpty(input))
+        return false;
+
+      foreach(char c in input.ToList()) {
+        if(c == '.' || c == ',')
+          countFloatPoint++;
+
+        if(countFloatPoint > 1)
+          return false;
+
+        if(!numbers.Contains(c))
+          return false;
+      }
+
+      return true;
+    }
+
+    #endregion
+
+    #region OVERLOAD 'AS' CONVERT TYPES
+
+    /// <summary>
+    /// [EN]: Converts a string to the desired date format<br></br>
+    /// [PT-BR]: Converte uma string para o formato de data desejado
+    /// </summary>
+    /// <param name="dateTime">
+    /// [EN]: String containing the date/time value<br></br>
+    /// [PT-BR]: Cadeia de caracteres que contém o valor da data/hora
+    /// </param>
+    /// <param name="formmat">
+    /// [EN]: Date formatting that will be applied to the string<br></br>
+    /// [PT-BR]: Formatação de data que será aplicada na cadeia de caracteres
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a new string with the desired date format<br></br>
+    /// [PT-BR]: Retorna uma nova cadeia de caracteres com o formato de data desejado
+    /// </returns>
+    public static string AsDateFormmat(this string dateTime, string formmat = "yyyy/MM/dd HH:mm:ss") => Convert.ToDateTime(dateTime).ToString(formmat);
+
+    /// <summary>
+    /// [EN]: Converts the current object to its corresponding boolean type.<br></br>
+    /// [PT-BR]: Converte o objeto atual para seu tipo booleano correspondente.
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of object being analyzed<br></br>
+    /// [PT-BR]: Tipo do objeto que está sendo analisado
+    /// </typeparam>
+    /// <param name="obj">
+    /// [EN]: Object to convert to boolean<br></br>
+    /// [PT-BR]: Objeto a ser convertido para boolean
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns the object in its boolean format<br></br>
+    /// [PT-BR]: Retorna o objeto em seu formato booleano
+    /// </returns>
+    public static bool AsBool<T>(this T obj) => ConverToType<bool>(obj, asBool: true);
+
+    /// <summary>
+    /// [EN]: Converts the current object to its corresponding an int32<br></br>
+    /// [PT-BR]: Converte o objeto atual para seu valor correspondente ao int32.
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of object being analyzed<br></br>
+    /// [PT-BR]: Tipo do objeto que está sendo analisado
+    /// </typeparam>
+    /// <param name="obj">
+    /// [EN]: Object to convert to boolean<br></br>
+    /// [PT-BR]: Objeto a ser convertido para boolean
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns the object in int32 formmat<br></br>
+    /// [PT-BR]: Retorna o objeto em formato int32
+    /// </returns>
+    public static int AsInt32<T>(this T obj) => ConverToType<int>(obj, asNumber: true);
+
+    /// <summary>
+    /// [EN]: Converts the current object to its corresponding an int64<br></br>
+    /// [PT-BR]: Converte o objeto atual para seu valor correspondente ao int64.
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of object being analyzed<br></br>
+    /// [PT-BR]: Tipo do objeto que está sendo analisado
+    /// </typeparam>
+    /// <param name="obj">
+    /// [EN]: Object to convert to boolean<br></br>
+    /// [PT-BR]: Objeto a ser convertido para boolean
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns the object in int64 formmat<br></br>
+    /// [PT-BR]: Retorna o objeto em formato int64
+    /// </returns>
+    public static long AsInt64<T>(this T obj) => ConverToType<long>(obj, asNumber: true);
+
+    /// <summary>
+    /// [EN]: Converts the current object to its corresponding an int16<br></br>
+    /// [PT-BR]: Converte o objeto atual para seu valor correspondente ao int16.
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of object being analyzed<br></br>
+    /// [PT-BR]: Tipo do objeto que está sendo analisado
+    /// </typeparam>
+    /// <param name="obj">
+    /// [EN]: Object to convert to boolean<br></br>
+    /// [PT-BR]: Objeto a ser convertido para boolean
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns the object in int16 formmat<br></br>
+    /// [PT-BR]: Retorna o objeto em formato int16
+    /// </returns>
+    public static short AsInt16<T>(this T obj) => ConverToType<short>(obj, asNumber: true);
+
+    /// <summary>
+    /// [EN]: Converts an object to the decimal double<br></br>
+    /// [PT-BR]: Converte um objeto para o formato de double.
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of object to be converted<br></br>
+    /// [PT-BR]: Tipo do objeto a ser convertido
+    /// </typeparam>
+    /// <param name="obj">
+    /// [EN]: Object to be converted<br></br>
+    /// [PT-BR]: Objeto que será convertido
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns the object converted to the double format<br></br>
+    /// [PT-BR]: Retorna o objeto convertido para o formato double
+    /// </returns>
+    public static double AsDouble<T>(this T obj) => ConverToType<double>(obj, asNumber: true);
+
+    /// <summary>
+    /// [EN]: Converts an object to the decimal format<br></br>
+    /// [PT-BR]: Converte um objeto para o formato de decimal.
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of object to be converted<br></br>
+    /// [PT-BR]: Tipo do objeto a ser convertido
+    /// </typeparam>
+    /// <param name="obj">
+    /// [EN]: Object to be converted<br></br>
+    /// [PT-BR]: Objeto que será convertido
+    /// </param>
+    /// <param name="decimalPrecision">
+    /// [EN]: Precision of decimal places<br></br>
+    /// [PT-BR]: Precisão das casas decimais
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns the object converted to the decimal format<br></br>
+    /// [PT-BR]: Retorna o objeto convertido para o formato decimal
+    /// </returns>
+    public static decimal AsDecimal<T>(this T obj, int decimalPrecision = 2) => ConverToType<decimal>(obj, precision: decimalPrecision, asNumber: true);
+
+    /// <summary>
+    /// [EN]: Converts an object to the float format<br></br>
+    /// [PT-BR]: Converte um objeto para o formato de float.
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of object to be converted<br></br>
+    /// [PT-BR]: Tipo do objeto a ser convertido
+    /// </typeparam>
+    /// <param name="obj">
+    /// [EN]: Object to be converted<br></br>
+    /// [PT-BR]: Objeto que será convertido
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns the object converted to the float format<br></br>
+    /// [PT-BR]: Retorna o objeto convertido para o formato de float
+    /// </returns>
+    public static float AsFloat<T>(this T obj) => ConverToType<float>(obj, asNumber: true);
+
+    /// <summary>
+    /// [EN]: Converts an object to the format of char<br></br>
+    /// [PT-BR]: Converte um objeto para o formato de caracter.
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of object to be converted<br></br>
+    /// [PT-BR]: Tipo do objeto a ser convertido
+    /// </typeparam>
+    /// <param name="obj">
+    /// [EN]: Object to be converted<br></br>
+    /// [PT-BR]: Objeto que será convertido
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns the object converted to the format of char<br></br>
+    /// [PT-BR]: Retorna o objeto convertido para o formato de caractere
+    /// </returns>
+    public static char AsChar<T>(this T obj) => ConverToType<char>(obj, asChar: true);
+
+    /// <summary>
+    /// [EN]: Converts an object to the format of string<br></br>
+    /// [PT-BR]: Converte um objeto para o formato de  cadeia de caracteres.
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of object to be converted<br></br>
+    /// [PT-BR]: Tipo do objeto a ser convertido
+    /// </typeparam>
+    /// <param name="obj">
+    /// [EN]: Object to be converted<br></br>
+    /// [PT-BR]: Objeto que será convertido
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns the object converted to the format of string<br></br>
+    /// [PT-BR]: Retorna o objeto convertido para o formato de cadeia de caracteres
+    /// </returns>
+    public static string AsString<T>(this T obj) => ConverToType<string>(obj, asString: true);
 
     #endregion
 

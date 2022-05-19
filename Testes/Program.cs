@@ -243,34 +243,36 @@ namespace Testes {
 
       #region TESTE CLASS XEXCEL
 
-      // DATABASE SIMULATOR
+      //DATABASE SIMULATOR
       //List<Obj> lstObj = new List<Obj>();
+      //XTable table = new XTable(3);
+
       //for(int i = 1; i <= 10; i++) {
       //  Obj obj = new();
       //  obj.ID = i;
       //  obj.Name = $"NAME {i}";
-      //  obj.Date = DateTime.Now.AddDays(i * i);
+      //  obj.NUMERO = (i * i);
       //  lstObj.Add(obj);
       //}
 
       //// TABLE COLUMN NAMES
-      //List<XCell> cells = new List<XCell>() {
-      //  new XCell{ Position = "A1", Value = "ID" },
-      //  new XCell{ Position = "B1", Value = "NAME" },
-      //  new XCell{ Position = "C1", Value = "DATE" }
-      //};
+      //table.AddCell("A1", "ID");
+      //table.AddCell("B1", "NAME");
+      //table.AddCell("C1", "NUMERO");
 
       //// VALUES TO INSERT IN TABLE
       //string nextCell = XExcel.GetNextLine("A1"); // get the next line using the current one as a reference (this next is 'A2')
       //string aux = nextCell; // Saves the safe position of the used line
       //foreach(Obj obj in lstObj) {
-      //  cells.Add(new XCell { Position = nextCell, Value = $"{obj.ID}" });
+
+      //  table.AddCell(nextCell, $"{obj.ID}");
       //  nextCell = XExcel.GetNextColumn(nextCell); // get the next column based on the current column
 
-      //  cells.Add(new XCell { Position = nextCell, Value = obj.Name });
+      //  table.AddCell(nextCell, obj.Name);
       //  nextCell = XExcel.GetNextColumn(nextCell); // get the next column based on the current column
 
-      //  cells.Add(new XCell { Position = nextCell, Value = $"{obj.Date:dd/MM/yyyy}" });
+      //  table.AddCell(nextCell, obj.NUMERO.AsString());
+      //  nextCell = XExcel.GetNextColumn(nextCell); // get the next column based on the current column
 
       //  nextCell = XExcel.GetNextLine(aux); // get the next line using the current one as a reference
       //  aux = nextCell; // Saves the safe position of the used line
@@ -284,10 +286,7 @@ namespace Testes {
       //style.FontColumnColor = "#000";
       //style.FontLineColor = "#000";
 
-      //XTable table = new();
       //table.Style = style; //  table style
-      //table.Cells = cells; // data that will be inserted into the table (columns and rows)
-      //table.NumberOfColumns = 3; // COUNT OF COLUMNS [ID - NAME - DATE] 
 
       //// WorkSheet that will hold the table
       //XWorkSheet sheet = new XWorkSheet();
@@ -300,7 +299,6 @@ namespace Testes {
       //excel.WorkSheets = new List<XWorkSheet> { sheet };
       //excel.Generate(@"C:\MyDocs\planTest.xlsx");
 
-
       #endregion
 
       #region TESTE CLASS XSQL
@@ -312,8 +310,9 @@ namespace Testes {
       //XSql xSql = new XSql(@"Data Source=LUCAS\SQLEXPRESS;Initial Catalog=TEMPDT;Integrated Security=True", sqlCommand);
       //xSql.GoExec(out errorMessage);
 
-      //sqlCommand.CommandText = "select top 6 ID, T, NUMERO, DataAtual, DataAtual2 from _TB;"; // RESULT DATA TABLE SELECT
+      //sqlCommand.CommandText = "select top 5 ID, T as Name, NUMERO, DataAtual, DataAtual2 from _TB;"; // RESULT DATA TABLE SELECT
       //XSql xSql = new XSql(@"Data Source=LUCAS\SQLEXPRESS;Initial Catalog=TEMPDT;Integrated Security=True", sqlCommand);
+
       //var tb = xSql.ReturnData(out errorMessage);
 
       #endregion
@@ -384,14 +383,17 @@ namespace Testes {
       //  Obj obj = new();
       //  obj.ID = i;
       //  obj.Name = $"NAME {i}";
-      //  obj.Date = DateTime.Now.AddDays(i * i);
+      //  obj.NUMERO = i * i;
       //  lstObj.Add(obj);
       //}
 
-      
+      int nextint = X.GetNext(151);
+      int previousInt = X.GetPrevious(151);
 
-
+      long nextlong = X.GetNext(-15);
+      long previouslong = X.GetPrevious(-15);
     }
+
 
   }
 
@@ -399,7 +401,9 @@ namespace Testes {
   public class Obj {
     public int ID { get; set; }
     public string Name { get; set; }
-    public DateTime Date { get; set; }
+    public decimal NUMERO { get; set; }
+    public string DataAtual { get; set; }
+    public string DataAtual2 { get; set; }
 
   }
 
