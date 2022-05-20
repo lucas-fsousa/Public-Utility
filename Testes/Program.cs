@@ -386,12 +386,6 @@ namespace Testes {
       //  obj.NUMERO = i * i;
       //  lstObj.Add(obj);
       //}
-
-      int nextint = X.GetNext(151);
-      int previousInt = X.GetPrevious(151);
-
-      long nextlong = X.GetNext(-15);
-      long previouslong = X.GetPrevious(-15);
     }
 
 

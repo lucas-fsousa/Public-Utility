@@ -12,6 +12,7 @@ namespace PublicUtility {
   /// [PT-BR]: Representa uma célula de uma planilha Excel
   /// </summary>
   public class XCell {
+
     /// <summary>
     /// [EN]: Represents the position of the cell in the worksheet<br></br>
     /// [PT-BR]: Representa a posição da célula da na planilha
@@ -108,6 +109,7 @@ namespace PublicUtility {
     /// </summary>
     public List<XTable> Tables { get; set; }
   }
+
   /// <summary>
   /// [EN]: Represents an Excel Spreadsheet<br></br>
   /// [PT-BR]: Representa uma Planilha do Excel

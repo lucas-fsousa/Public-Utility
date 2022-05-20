@@ -56,13 +56,13 @@ namespace PublicUtility {
       this.Priority = MailPriority.Normal;
 
       if(!IsValid(credentialEmail)) {
-        throw new RequiredParamsException(Situation.InvalidFormat, "credentialEmail");
+        throw new RequiredParamsException(Situation.InvalidFormat, nameof(credentialEmail));
 
       } else if(string.IsNullOrEmpty(credentialPassword)) {
-        throw new RequiredParamsException(Situation.IsNullOrEmpty, "credentialPassword");
+        throw new RequiredParamsException(Situation.IsNullOrEmpty, nameof(credentialPassword));
 
       } else if(string.IsNullOrEmpty(presentationName)) {
-        throw new RequiredParamsException(Situation.IsNullOrEmpty, "PresentationName");
+        throw new RequiredParamsException(Situation.IsNullOrEmpty, nameof(presentationName));
 
       }
     }
