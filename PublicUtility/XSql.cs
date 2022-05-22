@@ -114,6 +114,14 @@ namespace PublicUtility {
       this.Cmd = sqlCommand;
     }
 
+    /// <summary>
+    /// [EN]: Constructor method with required parameters<br></br>
+    /// [PT-BR]: Método construtor com parametros obrigatórios
+    /// </summary>
+    /// <param name="connectionString">
+    /// [EN]: String referring to database connection<br></br>
+    /// [PT-BR]: Cadeia de caracteres referente a conexão com o banco de dados
+    /// </param>
     public XSql(string connectionString) {
       if(!string.IsNullOrEmpty(connectionString)) {
         throw new RequiredParamsException(Situation.IsNullOrEmpty, nameof(connectionString));
