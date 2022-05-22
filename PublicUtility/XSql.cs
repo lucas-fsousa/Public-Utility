@@ -13,8 +13,9 @@ namespace PublicUtility {
   /// </summary>
   public class XSql {
     private readonly SqlConnection con = null;
-    private readonly SqlCommand cmd = null;
     private SqlTransaction tran = null;
+
+    public SqlCommand Cmd { get; set; }
 
     #region PRIVATE METHODS
 
@@ -23,8 +24,8 @@ namespace PublicUtility {
     /// [PT-BR]: Volta atrás das modificações realizadas no banco e cancela todas as atualizações.
     /// </summary>
     private void RollBack() {
-      if(this.cmd.Transaction != null) {
-        this.cmd.Transaction.Rollback();
+      if(this.Cmd.Transaction != null) {
+        this.Cmd.Transaction.Rollback();
       }
     }
 
@@ -33,8 +34,8 @@ namespace PublicUtility {
     /// [PT-BR]: Faz o commit de uma transação em aberto.
     /// </summary>
     private void Commit() {
-      if(this.cmd.Transaction != null) {
-        this.cmd.Transaction.Commit();
+      if(this.Cmd.Transaction != null) {
+        this.Cmd.Transaction.Commit();
       }
     }
 
@@ -73,7 +74,7 @@ namespace PublicUtility {
     /// [PT-BR]: Auxiliar de comando sql que contém informações necessárias para realizar as atividades na base de dados.
     /// </param>
     /// <exception cref="RequiredParamsException"></exception>
-    private static string IsValid(string connectionString, SqlCommand sqlCommand) {
+    private static string IsValid(string connectionString, SqlCommand sqlCommand = null) {
       string notValidName = string.Empty;
 
       if(sqlCommand == null)
@@ -110,7 +111,15 @@ namespace PublicUtility {
       }
 
       this.con = new SqlConnection(connectionString);
-      this.cmd = sqlCommand;
+      this.Cmd = sqlCommand;
+    }
+
+    public XSql(string connectionString) {
+      if(!string.IsNullOrEmpty(connectionString)) {
+        throw new RequiredParamsException(Situation.IsNullOrEmpty, nameof(connectionString));
+      }
+
+      this.con = new SqlConnection(connectionString);
     }
 
     /// <summary>
@@ -137,9 +146,9 @@ namespace PublicUtility {
     public void GoExec(out string execMessage) {
       try {
         using(con) {
-          this.cmd.Connection = this.Open();
-          this.cmd.Transaction = tran;
-          this.cmd.ExecuteNonQuery();
+          this.Cmd.Connection = this.Open();
+          this.Cmd.Transaction = tran;
+          this.Cmd.ExecuteNonQuery();
           this.Commit();
         }
         execMessage = string.Format($"## SUCCESS ## {DateTime.Now} ## OK ##");
@@ -181,10 +190,10 @@ namespace PublicUtility {
       try {
         SqlDataAdapter adapter = new SqlDataAdapter();
         using(con) {
-          this.cmd.Connection = this.Open();
-          this.cmd.Transaction = tran;
+          this.Cmd.Connection = this.Open();
+          this.Cmd.Transaction = tran;
 
-          adapter.SelectCommand = this.cmd;
+          adapter.SelectCommand = this.Cmd;
           adapter.Fill(table);
 
           this.Commit();

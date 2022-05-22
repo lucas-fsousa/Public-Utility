@@ -12,7 +12,7 @@ namespace PublicUtility {
 
     #region PRIVATE METHODS
 
-    private static List<string> TextWhere(string filePath, string lineDelimiter, ActionType actionType, int uniqueLineNumber = 0, int startIndex = 0, int endIndex = 0, List<int> multiLines = null) {
+    private static List<string> TextWhere(string filePath, string lineDelimiter, ActionType actionType, int uniqueLineNumber = 0, int startIndex = 0, int endIndex = 0, List<int> multiLines = null, bool allLines = false) {
       List<string> response = new List<string>();
       List<string> lines = File.ReadAllText(filePath).Split(lineDelimiter).ToList();
 
@@ -97,6 +97,21 @@ namespace PublicUtility {
           AppendMultLines(filePath, newLines);
         }
 
+      }
+
+      #endregion
+
+      #region ALLLINES
+
+      if(allLines) {
+        if(actionType == ActionType.Select) {
+          response = lines;
+          return response;
+
+        } else if(actionType == ActionType.Delete) {
+          ClearText(filePath);
+
+        }
       }
 
       #endregion
@@ -237,6 +252,21 @@ namespace PublicUtility {
     /// </param>
     public static void ClearText(string filePath) => File.WriteAllText(filePath, "");
 
+    /// <summary>
+    /// [EN]: Checks if the text file exists at the specified path.<br></br>
+    /// [PT-BR]: Verifica se existe o arquivo de texto no caminho especificado.
+    /// </summary>
+    /// <param name="filePath">
+    /// [EN]: location of the file to be cleaned<br></br>
+    /// [PT-BR]: localização do arquivo a ser limpo
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns True for found or false for not found.<br></br>
+    /// [PT-BR]: Devolve True para encontrado ou falso para não encontrado.
+    /// </returns>
+    public static bool Exists(string filePath) => File.Exists(filePath);
+
+
     #region OVERLOAD DELETELINES
 
     /// <summary>
@@ -372,6 +402,33 @@ namespace PublicUtility {
       TextWhere(filePath, lineDelimiter, ActionType.Delete, multiLines: SpecificLines.ToList());
     }
 
+    /// <summary>
+    /// [EN]: Delete all the lines of text belonging to the line indicators contained in the array or list<br></br>
+    /// [PT-BR]: Deleta todas as linhas de texto pertencentes aos indicadores de linha contidos na matriz ou lista 
+    /// </summary>
+    /// <param name="filePath">
+    /// [EN]: File path for reading lines<br></br>
+    /// [PT-BR]: Caminho do arquivo para a leitura das linhas
+    /// </param>
+    /// <param name="lineDelimiter">
+    /// [EN]: Character string used to slice text into lines.<br></br>
+    /// [PT-BR]: Sequencia de caractere utilizada para fatiar o texto em linhas.
+    /// </param>
+    /// <exception cref="RequiredParamsException"></exception>
+    public static void DeleteLines(string filePath, string lineDelimiter = "\r\n") {
+
+      #region PARAM VALIDATION
+
+      if(string.IsNullOrEmpty(filePath))
+        throw new RequiredParamsException(Situation.IsNullOrEmpty, nameof(filePath));
+
+      if(!File.Exists(filePath))
+        throw new RequiredParamsException(Situation.NotExists, nameof(filePath));
+
+      #endregion
+
+      TextWhere(filePath, lineDelimiter, ActionType.Delete, allLines: true);
+    }
     #endregion
 
     #region OVERLOAD REPLACELINE
@@ -625,6 +682,38 @@ namespace PublicUtility {
       #endregion
 
       return TextWhere(filePath, lineDelimiter, ActionType.Select, multiLines: SpecificLines.ToList());
+    }
+
+    /// <summary>
+    /// [EN]: Gets all the lines of text belonging to the line indicators contained in the array or list that appear<br></br>
+    /// [PT-BR]: Obtém todas as linhas de texto pertencentes aos indicadores de linha contidos na matriz ou lista que constam
+    /// </summary>
+    /// <param name="filePath">
+    /// [EN]: File path for reading lines<br></br>
+    /// [PT-BR]: Caminho do arquivo para a leitura das linhas
+    /// </param>
+    /// <param name="lineDelimiter">
+    /// [EN]: Character string used to slice text into lines.<br></br>
+    /// [PT-BR]: Sequencia de caractere utilizada para fatiar o texto em linhas.
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a array of lines of text corresponding to the given line indicators<br></br>
+    /// [PT-BR]: Retorna uma matriz de linhas de texto correspondentes aos indicadores de linha informados
+    /// </returns>
+    /// <exception cref="RequiredParamsException"></exception>
+    public static List<string> GetTextLines(string filePath, string lineDelimiter = "\r\n") {
+
+      #region PARAM VALIDATION
+
+      if(string.IsNullOrEmpty(filePath))
+        throw new RequiredParamsException(Situation.IsNullOrEmpty, nameof(filePath));
+
+      if(!File.Exists(filePath))
+        throw new RequiredParamsException(Situation.NotExists, nameof(filePath));
+
+      #endregion
+
+      return TextWhere(filePath, lineDelimiter, ActionType.Select, allLines: true);
     }
 
     #endregion

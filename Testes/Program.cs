@@ -1,6 +1,9 @@
 ﻿using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
 using PublicUtility.CustomExceptions;
+using System.Text.Json.Serialization;
+using System.Net.NetworkInformation;
+using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
@@ -8,32 +11,28 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.IO.Compression;
 using System.Net.Http.Json;
+using Emgu.CV.Features2D;
+using System.Collections;
 using System.Diagnostics;
 using Emgu.CV.Structure;
 using PublicUtility.Xnm;
+using System.Text.Json;
 using System.Threading;
+using ClosedXML.Excel;
 using System.Net.Http;
 using System.Net.Mail;
 using System.Drawing;
+using Emgu.CV.CvEnum;
 using PublicUtility;
+using Emgu.CV.Util;
+using System.Data;
 using Emgu.CV.Dnn;
 using System.Linq;
 using System.Text;
+using System.Net;
 using System.IO;
 using Emgu.CV;
 using System;
-using Emgu.CV.CvEnum;
-using Emgu.CV.Util;
-using Emgu.CV.Features2D;
-using System.Net.NetworkInformation;
-using System.Net;
-using ClosedXML.Excel;
-using Testes;
-using System.Data;
-using System.Collections;
-using System.Runtime.Serialization;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace Testes {
   internal class Program {
@@ -386,6 +385,9 @@ namespace Testes {
       //  obj.NUMERO = i * i;
       //  lstObj.Add(obj);
       //}
+
+
+
     }
 
 
