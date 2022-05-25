@@ -487,7 +487,7 @@ namespace PublicUtility {
             if(numTypes.Contains(row[col].GetType())) {
               json.Append($"\"{col.ColumnName}\" : {row[col].ToString().Replace(',', '.')}"); // close json line last item (NUMBER ONLY)
 
-            } else if(row[col].ToString().IsAnyDate()) {
+            } else if(col.DataType.Name.ToLower().Contains("date")) {
               json.Append($"\"{col.ColumnName}\" : \"{row[col].ConvertToDate()}\""); // close json line last item (DATETIME ONLY)
 
             } else {
@@ -502,7 +502,7 @@ namespace PublicUtility {
           if(numTypes.Contains(row[col].GetType())) {
             json.Append($"\"{col.ColumnName}\" : {row[col].ToString().Replace(',', '.')},"); // terminate json line with multiple items (NUMBER ONLY)
 
-          } else if(row[col].ToString().IsAnyDate()) {
+          } else if(col.DataType.Name.ToLower().Contains("date")) {
             json.Append($"\"{col.ColumnName}\" : \"{row[col].ConvertToDate()}\","); // terminate json line with multiple items (DATETIME ONLY)
 
           } else {

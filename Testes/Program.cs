@@ -310,7 +310,7 @@ namespace Testes {
       //xSql.GoExec(out errorMessage);
 
       //sqlCommand.CommandText = "select top 5 ID, T as Name, NUMERO, DataAtual, DataAtual2 from _TB;"; // RESULT DATA TABLE SELECT
-      //XSql xSql = new XSql(@"Data Source=LUCAS\SQLEXPRESS;Initial Catalog=TEMPDT;Integrated Security=True", sqlCommand);
+      XSql sql = new XSql(@"Data Source=LUCAS\SQLEXPRESS;Initial Catalog=TEMPDT;Integrated Security=True");
 
       //var tb = xSql.ReturnData(out errorMessage);
 
@@ -386,6 +386,12 @@ namespace Testes {
       //  lstObj.Add(obj);
       //}
 
+      string message;
+      //XSql sql = new XSql(@"Data Source=Lucas\sqlexpress;Initial Catalog=Coins;Integrated Security=True;Pooling=False");
+      sql.Cmd = new SqlCommand("SELECT * FROM _TB");
+      var tb = sql.ReturnData(out message);
+      
+      var rec = tb.DeserializeTable<Obj[]>();
 
 
     }
@@ -396,11 +402,26 @@ namespace Testes {
   [Serializable]
   public class Obj {
     public int ID { get; set; }
-    public string Name { get; set; }
+    public string T { get; set; }
     public decimal NUMERO { get; set; }
-    public string DataAtual { get; set; }
+    public DateTime DataAtual { get; set; }
     public string DataAtual2 { get; set; }
 
+  }
+
+  [Serializable]
+  public class CoinDetailsModel {
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Broker { get; set; }
+    public string HighPrice { get; set; }
+    public string LowPrice { get; set; }
+    public string Volume { get; set; }
+    public string OpenTime { get; set; }
+    public string CloseTime { get; set; }
+    public string OpenPrice { get; set; }
+    public float ChangePercent { get; set; }
+    public string LastPrice { get; set; }
   }
 
 
