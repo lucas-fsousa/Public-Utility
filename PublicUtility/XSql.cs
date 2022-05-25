@@ -11,7 +11,7 @@ namespace PublicUtility {
   /// [EN]: Helper class to work with data via SqlServer <br></br>
   /// [PT-BR]: Classe auxiliar para trabalhar com dados via SqlServer
   /// </summary>
-  public class XSql {
+  public class XSql:IDisposable {
     private readonly SqlConnection con = null;
     private SqlTransaction tran = null;
 
@@ -88,7 +88,7 @@ namespace PublicUtility {
 
       return notValidName;
     }
-    
+
     #endregion
 
     /// <summary>
@@ -123,7 +123,7 @@ namespace PublicUtility {
     /// [PT-BR]: Cadeia de caracteres referente a conexão com o banco de dados
     /// </param>
     public XSql(string connectionString) {
-      if(!string.IsNullOrEmpty(connectionString)) {
+      if(string.IsNullOrEmpty(connectionString)) {
         throw new RequiredParamsException(Situation.IsNullOrEmpty, nameof(connectionString));
       }
 
@@ -164,8 +164,6 @@ namespace PublicUtility {
         execMessage = string.Format($"## ERRO ## {DateTime.Now} ## {ex.Message} ##");
         this.RollBack();
 
-      } finally {
-        this.Close();
       }
     }
 
@@ -213,13 +211,15 @@ namespace PublicUtility {
         execMessage = string.Format($"## ERRO ## {DateTime.Now} ## {ex.Message} ##");
         this.RollBack();
 
-      } finally {
-        this.Close();
-
       }
       return table;
     }
 
+    public void Dispose() {
+      this.Close();
+      GC.SuppressFinalize(this);
+      GC.Collect();
+    }
   }
 
 }
