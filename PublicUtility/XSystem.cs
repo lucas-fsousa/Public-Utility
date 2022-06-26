@@ -16,6 +16,54 @@ namespace PublicUtility {
   /// </summary>
   public static class XSystem {
 
+    #region PRIVATE METHODS
+
+    private static void BaseLocateFileOnSystem(string fileName, string rootDir, bool firstOnly, ref List<string> lstFilePath) {
+      /* This method is used recursively to read all files from the root path. 
+       * Folders are traversed one by one until all files with the specified name are found 
+       * or the first to be found which depends on the "firstOnly" parameter.
+       * Folders that require administrator access will be blocked and cause an access denied error that is handled directly within the folder reading loop.
+       * The list of paths is passed by reference so it is possible to keep a single list in memory and persist the data through recursive calls.
+       */
+
+      bool found = false;
+      List<string> lstdir = Directory.GetDirectories(rootDir).ToList();
+
+      foreach(string dir in lstdir) {
+        try {
+
+          // checks if the repository has other repositories. If yes, make a recursive call.
+          if(Directory.GetDirectories(dir).ToList().Count > 1)
+            BaseLocateFileOnSystem(fileName, dir, firstOnly, ref lstFilePath);
+
+        } catch(Exception ex) {
+
+          // checks if the error is access denied
+          if(ex.Message.ToLower().Contains("is denied"))
+            continue;
+          else
+            throw new Exception(ex.Message);
+        }
+
+        List<FileInfo> lstFiles = XSystem.GrabFilesFromFolder(dir);
+        foreach(var file in lstFiles) {
+          if(file.Name == fileName) {
+            lstFilePath.Add(file.FullName);
+            found = true;
+            break;
+          }
+        }
+
+        if(firstOnly && found)
+          return;
+
+      }
+
+    }
+
+
+    #endregion
+
     #region INTEROPT DLLS
 
     [DllImport("kernel32.dll")]
@@ -188,5 +236,33 @@ namespace PublicUtility {
 
     }
 
+    /// <summary>
+    /// [EN]: Scans the root folder and subfolders to find the given file<br></br>
+    /// [PT-BR]: Faz uma varredura na pasta root e subpastas para localizar o arquivo fornecido
+    /// </summary>
+    /// <param name="fileName">
+    /// [EN]: Exact file name with extension - Example: logs.txt<br></br>
+    /// [PT-BR]: Nome exato do arquivo com extensão - Exemplo: logs.txt
+    /// </param>
+    /// <param name="firstOnly">
+    /// [EN]: Determines whether the search should be canceled when finding the first file that matches the name entered.<br></br>
+    /// [PT-BR]: Determina se a busca deverá ser cancelada ao localizar o primeiro arquivo que corresponda ao nome informado.
+    /// </param>
+    /// <param name="rootDir">
+    /// [EN]: Root folder from which searches will start.<br></br>
+    /// [PT-BR]: Pasta raiz de onde se iniciará as buscas.
+    /// </param>
+    /// <returns>
+    /// [EN]: It will return a list containing the path referring to all items found.<br></br>
+    /// [PT-BR]: Retornará uma lista contendo o caminho referente a todos os itens encontrados.
+    /// </returns>
+    public static List<string> LocateFileOnSystem(string fileName, bool firstOnly = false, string rootDir = "C://") {
+      var result = new List<string>();
+
+      BaseLocateFileOnSystem(fileName, rootDir, firstOnly, ref result);
+
+      return result;
+
+    }
   }
 }

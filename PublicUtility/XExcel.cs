@@ -86,7 +86,7 @@ namespace PublicUtility {
       if(Cells == null)
         Cells = new List<XCell>();
 
-      Cells.Add( new XCell { Position = cell, Value = value });
+      Cells.Add( new XCell { Position = cell.ToUpper(), Value = value });
     }
   }
 

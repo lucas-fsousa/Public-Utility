@@ -310,7 +310,7 @@ namespace Testes {
       //xSql.GoExec(out errorMessage);
 
       //sqlCommand.CommandText = "select top 5 ID, T as Name, NUMERO, DataAtual, DataAtual2 from _TB;"; // RESULT DATA TABLE SELECT
-      XSql sql = new XSql(@"Data Source=LUCAS\SQLEXPRESS;Initial Catalog=TEMPDT;Integrated Security=True");
+      //XSql sql = new XSql(@"Data Source=LUCAS\SQLEXPRESS;Initial Catalog=TEMPDT;Integrated Security=True");
 
       //var tb = xSql.ReturnData(out errorMessage);
 
@@ -378,24 +378,35 @@ namespace Testes {
       #endregion
 
       //List<Obj> lstObj = new List<Obj>();
-      //for(int i = 1; i <= 25; i++) {
+      //for(int i = 1; i <= 5; i++) {
       //  Obj obj = new();
       //  obj.ID = i;
-      //  obj.Name = $"NAME {i}";
-      //  obj.NUMERO = i * i;
+      //  obj.T = $"NAME {i}";
+      //  obj.NUMERO = i + i;
       //  lstObj.Add(obj);
       //}
+      //lstObj.Add(new Obj() { ID = 11, NUMERO = 200 + 1, T = "STRING ALEATORIO"});
+      //lstObj.Add(new Obj() { ID = 52, NUMERO = 203 + 6, T = "STRING ALEATORIA1" });
+      //lstObj.Add(new Obj() { ID = 181, NUMERO = 10 + 5, T = "STRING ALEATORIA2" });
 
-      string message;
-      //XSql sql = new XSql(@"Data Source=Lucas\sqlexpress;Initial Catalog=Coins;Integrated Security=True;Pooling=False");
-      sql.Cmd = new SqlCommand("SELECT * FROM _TB");
-      var tb = sql.ReturnData(out message);
-      
-      var rec = tb.DeserializeTable<Obj[]>();
+      //var lstnewObjct = new List<Obj>();
+      //for(int i = 1; i <= 7; i++) {
+      //  Obj obj = new();
+      //  obj.ID = i;
+      //  obj.T = $"NAME {i}";
+      //  obj.NUMERO = i + i;
+      //  lstnewObjct.Add(obj);
+      //}
+      //lstnewObjct.Add(new Obj() { ID = 17, NUMERO = 9, T = "o lst 2" });
 
+      //var result = lstObj.GetUniques(lstnewObjct).ToList();
 
+      var locs = XSystem.LocateFileOnSystem("Playerss.log", false);
+
+    
     }
 
+   
 
   }
 

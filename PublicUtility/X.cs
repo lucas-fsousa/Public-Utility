@@ -21,7 +21,7 @@ namespace PublicUtility {
   /// [PT-BR]: Classe de utilidade publica que contém diversos métodos para auxiliar no desenvolvimento de aplicações
   /// </summary>
   public static class X {
-
+    
     #region PRIVATE METHODS
 
     private static T ConverToType<T>(object obj, int precision = 0, bool asBool = false, bool asNumber = false, bool asChar = false, bool asString = false) {
@@ -408,6 +408,111 @@ namespace PublicUtility {
     #region EXTENSION
 
     /// <summary>
+    /// [EN]: Converts the initial letter of each word to uppercase <br></br>
+    /// [PT-BR]: Transforma a letra inicial de cada palavra para o formato maiusculo
+    /// </summary>
+    /// <param name="input">
+    /// [EN]: String input to be converted.<br></br>
+    /// [PT-BR]: Entrada da cadeia de caracteres a ser convertida.
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a string whose initial letter of each word is in uppercase.<br></br>
+    /// [PT-BR]: Retorna uma cadeia de caracteres cuja letral inicial de cada palavra está no formato maiusculo.
+    /// </returns>
+    public static string Capitalize(this string input) {
+      string result = string.Empty;
+      foreach(string word in input.Split(' ')) {
+
+        result = string.Concat(result, word[..1].ToUpper(), word[1..], ' ');
+      }
+      return result.Trim();
+    }
+
+    /// <summary>
+    /// [EN]: Compares two lists or arrays of objects and gets only items that are not repeated.<br></br>
+    /// [PT-BR]: Compara duas listas ou matrizes de objetos e obtém apenas os itens que não estão repetidos.
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of the object contained in the enumerator.<br></br>
+    /// [PT-BR]: Tipo do objeto contido no enumerador.
+    /// </typeparam>
+    /// <param name="mainEnumerable">
+    /// [EN]: Main list containing values.<br></br>
+    /// [PT-BR]: Lista principal contendo valores.
+    /// </param>
+    /// <param name="offEnumerable">
+    /// [EN]: Secondary list containing values ​​to be compared with the main list.<br></br>
+    /// [PT-BR]: Lista secundarária contendo valores a serem comparados com a lista principal.
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns an enumerator that contains only items that did not repeat in the comparison.<br></br>
+    /// [PT-BR]: Retorna um enumerador que contém apenas os itens que não se repetiram na comparação.
+    /// </returns>
+    public static IEnumerable<T> GetUniques<T>(this IEnumerable<T> mainEnumerable, IEnumerable<T> offEnumerable) {
+      var result = new List<T>();
+      var mainlst = mainEnumerable.ToList();
+      var offlst = offEnumerable.ToList();
+      int i = 0;
+
+      while(true) {
+        if(i < mainlst.Count) {
+          result.Add(mainlst[i]);
+        }
+
+        if(i < offlst.Count) {
+          result.Add(offlst[i]);
+        }
+
+        if(i >= offlst.Count && i > mainlst.Count)
+          break;
+
+        i++;
+      }
+
+      // CLEAR MAIN LIST
+      foreach(var item in mainlst) {
+        string jsonItem = JsonSerializer.Serialize(item).ToLower().RemoveWhiteSpaces();
+        bool mainRemoved = false;
+
+        foreach(var offitem in offlst) {
+          string jsonOffItem = JsonSerializer.Serialize(offitem).ToLower().RemoveWhiteSpaces();
+
+          if(jsonItem.Equals(jsonOffItem)) {
+            result.Remove(offitem);
+
+            if(!mainRemoved) {
+              result.Remove(item);
+              mainRemoved = true;
+            }
+
+          }
+        }
+      }
+
+      // CLEAR OFF LIST
+      foreach(var offitem in offlst) {
+        string jsonItem = JsonSerializer.Serialize(offitem).ToLower().RemoveWhiteSpaces();
+        bool offRemoved = false;
+
+        foreach(var item in mainlst) {
+          string jsonOffItem = JsonSerializer.Serialize(item).ToLower().RemoveWhiteSpaces();
+
+          if(jsonItem.Equals(jsonOffItem)) {
+            result.Remove(item);
+
+            if(!offRemoved) {
+              result.Remove(offitem);
+              offRemoved = true;
+            }
+
+          }
+        }
+      }
+
+      return result;
+    }
+
+    /// <summary>
     /// [EN]: Remove all whitespace from string <br></br>
     /// [PT-BR]: Remove todos os espaços em branco da string
     /// </summary>
@@ -452,10 +557,6 @@ namespace PublicUtility {
     /// [EN]: Returns the table data in the informed object format<br></br>
     /// [PT-BR]: Retorna os dados da tabela no formado do objeto informado 
     /// </returns>
-    /// <remarks>
-    /// [EN]: Does not guarantee conversion of dates to DateTime format, only to string format<br></br>
-    /// [PT-BR]: Não garante a conversão de datas para formato DateTime, apenas para formato de cadeia de caracteres
-    /// </remarks>
     public static T DeserializeTable<T>(this DataTable table, List<Type> numTypes = null) where T : IEnumerable {
       var json = new StringBuilder();
       T typedObject = default;
@@ -2133,6 +2234,24 @@ namespace PublicUtility {
 
       return true;
     }
+
+    /// <summary>
+    /// [EN]: Checks if enumerator, list or array is ​​empty<br></br>
+    /// [PT-BR]: Checa se o enumerador, lista ou matriz está vazio
+    /// </summary>
+    /// <typeparam name="T">
+    /// [EN]: Type of object to be analyzed<br></br>
+    /// [PT-BR]: Tipo do objeto a ser analisado
+    /// </typeparam>
+    /// <param name="enumerable">
+    /// [EN]: Enumerator that contains the values<br></br>
+    /// [PT-BR]: Enumerador que contém os valores.
+    /// </param>
+    /// <returns>
+    /// [EN]: Returns a Boolean value representing the check performed on the enumerator, list, or array.<br></br>
+    /// [PT-BR]: retorna um valor booleano representando a checagem realizada no enumerador, lista ou matriz.
+    /// </returns>
+    public static bool IsEmpty<T>(this IEnumerable<T> enumerable) => !enumerable.Any();
 
     #endregion
 
