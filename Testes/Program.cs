@@ -402,7 +402,9 @@ namespace Testes {
       //var result = lstObj.GetUniques(lstnewObjct).ToList();
 
       var locs = XSystem.LocateFileOnSystem("Player.log", false, firstOnly: false);
-
+      foreach(var loc in locs) {
+        loc.Print();
+      }
 
     }
 

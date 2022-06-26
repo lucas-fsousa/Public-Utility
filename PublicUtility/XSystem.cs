@@ -31,7 +31,6 @@ namespace PublicUtility {
 
       foreach(string dir in lstdir) {
         try {
-
           // checks if the repository has other repositories. If yes, make a recursive call.
           if(Directory.GetDirectories(dir).ToList().Count > 1)
             BaseLocateFileOnSystem(fileName, dir, firstOnly, ref lstFilePath, exactFileName);
@@ -43,6 +42,7 @@ namespace PublicUtility {
             continue;
           else
             throw new Exception(ex.Message);
+
         }
 
         List<FileInfo> lstFiles = XSystem.GrabFilesFromFolder(dir);
