@@ -18,7 +18,7 @@ namespace PublicUtility {
 
     #region PRIVATE METHODS
 
-    private static void BaseLocateFileOnSystem(string fileName, string rootDir, bool firstOnly, ref List<string> lstFilePath) {
+    private static void BaseLocateFileOnSystem(string fileName, string rootDir, bool firstOnly, ref List<string> lstFilePath, bool exactFileName) {
       /* This method is used recursively to read all files from the root path. 
        * Folders are traversed one by one until all files with the specified name are found 
        * or the first to be found which depends on the "firstOnly" parameter.
@@ -34,7 +34,7 @@ namespace PublicUtility {
 
           // checks if the repository has other repositories. If yes, make a recursive call.
           if(Directory.GetDirectories(dir).ToList().Count > 1)
-            BaseLocateFileOnSystem(fileName, dir, firstOnly, ref lstFilePath);
+            BaseLocateFileOnSystem(fileName, dir, firstOnly, ref lstFilePath, exactFileName);
 
         } catch(Exception ex) {
 
@@ -47,11 +47,23 @@ namespace PublicUtility {
 
         List<FileInfo> lstFiles = XSystem.GrabFilesFromFolder(dir);
         foreach(var file in lstFiles) {
-          if(file.Name == fileName) {
-            lstFilePath.Add(file.FullName);
-            found = true;
-            break;
+
+          if(exactFileName) {
+            if(file.Name == fileName) {
+              lstFilePath.Add(file.FullName);
+              found = true;
+              break;
+            }
+
+          } else {
+            if(file.Name.ToLower().Contains(fileName.ToLower())) {
+              lstFilePath.Add(file.FullName);
+              found = true;
+              break;
+            }
           }
+
+
         }
 
         if(firstOnly && found)
@@ -248,6 +260,10 @@ namespace PublicUtility {
     /// [EN]: Determines whether the search should be canceled when finding the first file that matches the name entered.<br></br>
     /// [PT-BR]: Determina se a busca deverá ser cancelada ao localizar o primeiro arquivo que corresponda ao nome informado.
     /// </param>
+    /// <param name="exactFilename">
+    /// [EN]: Defines if searches must occur for a specific name or if they must occur searching for names that are close or similar or that contain part of the name.<br></br>
+    /// [PT-BR]: Define se as buscas devem ocorrer para um nome especifico ou se deverão ocorrer buscando nomes próximos ou parecidos ou que contenham parte do nome.
+    /// </param>
     /// <param name="rootDir">
     /// [EN]: Root folder from which searches will start.<br></br>
     /// [PT-BR]: Pasta raiz de onde se iniciará as buscas.
@@ -256,13 +272,14 @@ namespace PublicUtility {
     /// [EN]: It will return a list containing the path referring to all items found.<br></br>
     /// [PT-BR]: Retornará uma lista contendo o caminho referente a todos os itens encontrados.
     /// </returns>
-    public static List<string> LocateFileOnSystem(string fileName, bool firstOnly = false, string rootDir = "C://") {
+    public static List<string> LocateFileOnSystem(string fileName, bool exactFilename, bool firstOnly = false, string rootDir = "C://") {
       var result = new List<string>();
 
-      BaseLocateFileOnSystem(fileName, rootDir, firstOnly, ref result);
+      BaseLocateFileOnSystem(fileName, rootDir, firstOnly, ref result, exactFilename);
 
       return result;
 
     }
+
   }
 }

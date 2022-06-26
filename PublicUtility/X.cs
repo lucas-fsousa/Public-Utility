@@ -98,12 +98,13 @@ namespace PublicUtility {
     private static string ConvertToDate(this object data) => data.GetSafeValue<DateTime>().ToString("s");
 
     private static Dictionary<string, char> GetSeparators() {
-      Dictionary<string, char> separators = new Dictionary<string, char>();
-      separators.Add("Dot", '.');
-      separators.Add("Hyphen", '-');
-      separators.Add("Bar", '/');
-      separators.Add("Semicolon", ';');
-      separators.Add("Colon", ':');
+      var separators = new Dictionary<string, char> {
+        { "Dot", '.' },
+        { "Hyphen", '-' },
+        { "Bar", '/' },
+        { "Semicolon", ';' },
+        { "Colon", ':' }
+      };
 
       return separators;
     }
@@ -2200,7 +2201,7 @@ namespace PublicUtility {
         if(string.IsNullOrEmpty(input))
           return false;
 
-        return GetSafeValue<DateTime>(input).IsDefault() ? false : true;
+        return GetSafeValue<DateTime>(input).IsDefault();
       } catch(Exception) { return false; }
     }
 
@@ -2215,7 +2216,7 @@ namespace PublicUtility {
     /// [PT-BR]: Returns a boolean value
     /// </returns>
     public static bool IsNumber(this string input) {
-      List<char> numbers = new List<char> { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ',' };
+      var numbers = new List<char> { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ',' };
       int countFloatPoint = 0;
 
       if(string.IsNullOrEmpty(input))

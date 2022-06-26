@@ -401,12 +401,12 @@ namespace Testes {
 
       //var result = lstObj.GetUniques(lstnewObjct).ToList();
 
-      var locs = XSystem.LocateFileOnSystem("Playerss.log", false);
+      var locs = XSystem.LocateFileOnSystem("Player.log", false, firstOnly: false);
 
-    
+
     }
 
-   
+
 
   }
 
